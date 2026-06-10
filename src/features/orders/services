@@ -1,0 +1,49 @@
+import apiFetch from './api.service';
+import { API_CONFIG } from '@/config/api.config';
+
+export const orderService = {
+  // GET all orders
+  getOrders: (params) => {
+    const query = params ? `?${new URLSearchParams(params)}` : '';
+    return apiFetch(`${API_CONFIG.endpoints.orders}${query}`);
+  },
+
+  // GET single order
+  getOrderById: (id) => apiFetch(API_CONFIG.endpoints.orderById(id)),
+
+  // POST create order
+  createOrder: (data) =>
+    apiFetch(API_CONFIG.endpoints.orders, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  // PATCH update order (status + addresses — NOT for cancellation)
+  updateOrder: (id, data) =>
+    apiFetch(API_CONFIG.endpoints.orderById(id), {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
+
+  // PUT cancel order (dedicated endpoint — restores stock)
+  cancelOrder: (id) =>
+    apiFetch(API_CONFIG.endpoints.cancelOrder(id), {
+      method: 'PUT',
+    }),
+};
+
+export const invoiceService = {
+  // POST generate invoice from a completed order
+  createInvoice: (orderId) =>
+    apiFetch(API_CONFIG.endpoints.createInvoice(orderId), {
+      method: 'POST',
+    }),
+
+  // GET invoice by human-readable ID (e.g. INV-2026-0001)
+  getInvoiceById: (invoiceId) =>
+    apiFetch(API_CONFIG.endpoints.invoiceById(invoiceId)),
+
+  // GET invoice linked to an order
+  getInvoiceByOrder: (orderId) =>
+    apiFetch(API_CONFIG.endpoints.invoiceByOrder(orderId)),
+};

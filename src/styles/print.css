@@ -1,0 +1,184 @@
+/* ═══════════════════════════════════════════════════════════════
+   PRINT CENTER — Print Media Queries
+   ═══════════════════════════════════════════════════════════════
+   Architecture:
+     body.print-shipping-label  →  4×6 in thermal label
+     body.print-tax-invoice     →  A4 tax invoice
+
+   Strategy:
+     1. Hide EVERYTHING on the page by default
+     2. Then show ONLY the specific print content container
+     3. Flatten all layout wrappers so content flows freely
+   ═══════════════════════════════════════════════════════════════ */
+
+@media print {
+
+  /* ══════════════════════════════════════════════════════════
+     STEP 1 — NUCLEAR RESET: Hide all dashboard chrome
+     ══════════════════════════════════════════════════════════ */
+
+  /* Sidebar */
+  aside,
+  .sidebar,
+  [data-slot="sidebar"] {
+    display: none !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    visibility: hidden !important;
+    overflow: hidden !important;
+  }
+
+  /* Navbar / Header */
+  header,
+  nav,
+  .navbar,
+  [data-slot="navbar"] {
+    display: none !important;
+    height: 0 !important;
+    visibility: hidden !important;
+    overflow: hidden !important;
+  }
+
+  /* Footer */
+  footer {
+    display: none !important;
+  }
+
+  /* All UI elements marked as print-hide */
+  .print-hide,
+  [data-print="hide"] {
+    display: none !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     STEP 2 — FLATTEN LAYOUT CONTAINERS
+     ══════════════════════════════════════════════════════════
+     The root layout uses:
+       div.flex.h-screen.overflow-hidden > aside + div > header + main
+     We need to flatten this so content flows naturally.
+  */
+
+  body {
+    background: white !important;
+    color: black !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Root flex container — flatten */
+  body > div,
+  body > div > div,
+  .flex.h-screen,
+  .flex.h-screen.overflow-hidden {
+    display: block !important;
+    height: auto !important;
+    width: 100% !important;
+    overflow: visible !important;
+    min-height: 0 !important;
+  }
+
+  /* Main content area — remove padding, allow overflow */
+  main,
+  main.flex-1,
+  .flex-1.overflow-y-auto {
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+    flex: none !important;
+  }
+
+  /* Inner wrapper — remove padding */
+  .flex.flex-col.flex-1 {
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  /* Remove shadows globally in print */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     STEP 3 — PRINT-ONLY CONTENT CONTAINERS
+     ══════════════════════════════════════════════════════════ */
+
+  /* Print preview wrapper — remove decorative styling */
+  .print-preview-card {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .print-preview-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    max-width: none !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     SHIPPING LABEL — 4×6 inch thermal
+     ══════════════════════════════════════════════════════════ */
+  body.print-shipping-label .tax-invoice-content {
+    display: none !important;
+  }
+
+  body.print-shipping-label .shipping-label-content {
+    display: block !important;
+    width: 4in !important;
+    height: 6in !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    page-break-after: always;
+    border: none !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     TAX INVOICE — A4
+     ══════════════════════════════════════════════════════════ */
+  body.print-tax-invoice .shipping-label-content {
+    display: none !important;
+  }
+
+  body.print-tax-invoice .tax-invoice-content {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   @page rules — must be top-level
+   ══════════════════════════════════════════════════════════ */
+
+@page {
+  margin: 0;
+}
+
+/* Shipping Label: 4×6 thermal */
+body.print-shipping-label {
+  @page {
+    size: 4in 6in;
+    margin: 0;
+  }
+}
+
+/* Tax Invoice: A4 */
+body.print-tax-invoice {
+  @page {
+    size: A4;
+    margin: 12mm 10mm;
+  }
+}

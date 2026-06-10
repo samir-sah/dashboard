@@ -1,0 +1,160 @@
+'use client'
+
+import { Mail, Phone, Calendar, MapPin, CheckCircle2 } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card"
+import { Badge } from "@/components/ui/Badge"
+import CustomerOrders from "./CustomerOrders"
+
+export default function CustomerProfile({ customer, orders, loadingOrders }) {
+  if (!customer) return null;
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "-";
+    return new Date(dateString).toLocaleDateString('en-IN', {
+      day: 'numeric', month: 'short', year: 'numeric'
+    });
+  };
+
+  const getStatusBadgeVariant = (status) => {
+    switch (status) {
+      case "Active": return "default";
+      case "Inactive": return "destructive";
+      case "New": return "secondary";
+      default: return "outline";
+    }
+  };
+
+  const getCustomBadgeStyle = (status) => {
+    switch (status) {
+      case "Active": return "bg-emerald-100 text-emerald-700 hover:bg-emerald-200 border-transparent";
+      case "Inactive": return "bg-rose-100 text-rose-700 hover:bg-rose-200 border-transparent";
+      case "New": return "bg-purple-100 text-purple-700 hover:bg-purple-200 border-transparent";
+      default: return "bg-gray-100 text-gray-700 hover:bg-gray-200 border-transparent";
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      
+      {/* Top Section: Profile Info & KPI Summary */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Customer Information */}
+        <Card className="col-span-1 border-border shadow-sm">
+          <CardContent className="p-6">
+            <div className="flex flex-col items-center text-center mb-6">
+              <div className="size-20 rounded-full bg-muted flex items-center justify-center text-muted-foreground mb-4 border-2 border-background shadow-sm">
+                <span className="text-2xl font-bold">
+                  {customer.name.split(' ').map(n => n[0]).join('')}
+                </span>
+              </div>
+              <h2 className="text-xl font-bold text-foreground">{customer.name}</h2>
+              <div className="mt-2">
+                <Badge className={getCustomBadgeStyle(customer.status)} variant={getStatusBadgeVariant(customer.status)}>
+                  {customer.status}
+                </Badge>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                <Mail className="size-4 shrink-0" />
+                <span>{customer.email}</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                <Phone className="size-4 shrink-0" />
+                <span>{customer.phone}</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                <Calendar className="size-4 shrink-0" />
+                <span>Joined {formatDate(customer.joinedDate)}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Summary Cards */}
+        <div className="col-span-1 lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <Card className="border-border shadow-sm flex flex-col justify-center">
+            <CardContent className="p-6">
+              <p className="text-sm font-medium text-muted-foreground mb-1">Total Orders</p>
+              <h3 className="text-3xl font-bold text-foreground">{customer.totalOrders}</h3>
+            </CardContent>
+          </Card>
+          
+          <Card className="border-border shadow-sm flex flex-col justify-center">
+            <CardContent className="p-6">
+              <p className="text-sm font-medium text-muted-foreground mb-1">Total Spend</p>
+              <h3 className="text-3xl font-bold text-foreground">₹{customer.totalSpend.toLocaleString()}</h3>
+            </CardContent>
+          </Card>
+
+          <Card className="border-border shadow-sm flex flex-col justify-center">
+            <CardContent className="p-6">
+              <p className="text-sm font-medium text-muted-foreground mb-1">Average Order Value</p>
+              <h3 className="text-3xl font-bold text-foreground">
+                ₹{customer.totalOrders > 0 ? Math.round(customer.totalSpend / customer.totalOrders).toLocaleString() : 0}
+              </h3>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Recent Orders Section */}
+        <Card className="border-border shadow-sm">
+          <CardHeader>
+            <CardTitle>Recent Orders</CardTitle>
+            <CardDescription>Latest transactions from this customer.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <CustomerOrders orders={orders} loading={loadingOrders} />
+          </CardContent>
+        </Card>
+
+        {/* Addresses Section */}
+        <Card className="border-border shadow-sm">
+          <CardHeader>
+            <CardTitle>Addresses</CardTitle>
+            <CardDescription>Saved shipping and billing locations.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {customer.addresses && customer.addresses.length > 0 ? (
+              <div className="flex flex-col gap-4">
+                {customer.addresses.map((addr) => (
+                  <div key={addr.id} className="relative rounded-lg border border-border p-4 bg-muted/20">
+                     {addr.isDefault && (
+                        <div className="absolute top-0 right-0 bg-primary/10 text-primary px-2.5 py-1 text-xs font-semibold rounded-bl-lg rounded-tr-lg flex items-center gap-1">
+                          <CheckCircle2 className="size-3" />
+                          Default
+                        </div>
+                      )}
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 bg-background border border-border shadow-sm rounded-full shrink-0">
+                          <MapPin className="size-4 text-muted-foreground" />
+                        </div>
+                        <div>
+                          <div className="font-medium text-foreground text-sm mb-1">{addr.type} Address</div>
+                          <div className="text-sm text-muted-foreground space-y-0.5">
+                            <p>{addr.line1}</p>
+                            <p>{addr.street}</p>
+                            <p>{addr.city}, {addr.state}</p>
+                            <p>PIN: {addr.pincode}</p>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center p-8 text-muted-foreground border border-dashed border-border rounded-lg">
+                No addresses saved for this customer.
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+    </div>
+  )
+}

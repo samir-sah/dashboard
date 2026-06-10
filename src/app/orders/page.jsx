@@ -1,0 +1,57 @@
+'use client'
+import { useEffect, useState } from 'react'
+import StatCard from "@/features/orders/components/dashboard/StatCard"
+import OrdersTable from "@/features/orders/components/dashboard/OrdersTable"
+
+const defaultStats = [
+  { label: 'TOTAL ORDERS', value: '—', color: '#111827' },
+  { label: 'PENDING',      value: '—', color: '#f59e0b' },
+  { label: 'DISPATCHED',   value: '—', color: '#111827' },
+  { label: 'DELIVERED',    value: '—', color: '#16a34a' },
+  { label: 'CANCELLED',    value: '—', color: '#e11d48' },
+]
+
+export default function OrdersPage() {
+  const [stats, setStats] = useState(defaultStats)
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/stats`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+    })
+      .then(r => r.json())
+      .then(data => {
+        setStats([
+          { label: 'TOTAL ORDERS', value: data.total?.toLocaleString('en-IN')      ?? '—', color: '#111827' },
+          { label: 'PENDING',      value: data.pending?.toLocaleString('en-IN')    ?? '—', color: '#f59e0b' },
+          { label: 'DISPATCHED',   value: data.dispatched?.toLocaleString('en-IN') ?? '—', color: '#111827' },
+          { label: 'DELIVERED',    value: data.delivered?.toLocaleString('en-IN')  ?? '—', color: '#16a34a' },
+          { label: 'CANCELLED',    value: data.cancelled?.toLocaleString('en-IN')  ?? '—', color: '#e11d48' },
+        ])
+      })
+      .catch(err => console.error('Stats fetch failed:', err))
+  }, [])
+
+  return (
+    <div style={{ maxWidth: '1400px' }}>
+
+      {/* Stat Cards */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(5, 1fr)',
+        gap: '16px',
+        marginBottom: '20px',
+      }}>
+        {stats.map(({ label, value, color }) => (
+          <StatCard key={label} label={label} value={value} valueColor={color} />
+        ))}
+      </div>
+
+      <OrdersTable />
+    </div>
+  )
+}
