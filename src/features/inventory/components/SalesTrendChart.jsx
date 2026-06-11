@@ -9,6 +9,13 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Info } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/Select';
 
 export default function SalesTrendChart({ data, daysRemaining, period, setPeriod }) {
   if (!data || data.length === 0) {
@@ -34,17 +41,23 @@ export default function SalesTrendChart({ data, daysRemaining, period, setPeriod
       
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-lg font-bold text-gray-900">Sales Trend</h3>
-        <select 
-          value={period}
-          onChange={(e) => setPeriod(Number(e.target.value))}
-          className="text-sm border-gray-200 rounded-lg text-gray-600 focus:ring-[#5048e5] focus:border-[#5048e5] p-2 border bg-white outline-none cursor-pointer hover:bg-gray-50"
-        >
-          <option value={7}>1 Week</option>
-          <option value={30}>1 Month</option>
-          <option value={180}>6 Months</option>
-          <option value={365}>1 Year</option>
-          <option value={730}>All Time</option>
-        </select>
+        <div className="relative min-w-[140px]">
+          <span className="absolute -top-1.5 left-3 px-1 bg-white text-[9px] font-bold uppercase tracking-wider text-muted-foreground z-10 pointer-events-none">
+            Period
+          </span>
+          <Select value={period.toString()} onValueChange={(val) => setPeriod(Number(val))}>
+            <SelectTrigger className="h-10 text-[13.5px]">
+              <SelectValue placeholder="Period" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="7">1 Week</SelectItem>
+              <SelectItem value="30">1 Month</SelectItem>
+              <SelectItem value="180">6 Months</SelectItem>
+              <SelectItem value="365">1 Year</SelectItem>
+              <SelectItem value="730">All Time</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <div className="flex-1 w-full min-h-[300px]">
