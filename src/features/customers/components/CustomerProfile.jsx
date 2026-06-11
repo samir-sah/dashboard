@@ -75,28 +75,25 @@ export default function CustomerProfile({ customer, orders, loadingOrders }) {
 
         {/* Summary Cards */}
         <div className="col-span-1 lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <Card className="border-border shadow-sm flex flex-col justify-center">
-            <CardContent className="p-6">
-              <p className="text-sm font-medium text-muted-foreground mb-1">Total Orders</p>
-              <h3 className="text-3xl font-bold text-foreground">{customer.totalOrders}</h3>
-            </CardContent>
-          </Card>
+          <div className="kpi-card bg-white rounded-xl border border-gray-200 p-5 flex flex-col gap-3 justify-center"
+            style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)', transition: 'box-shadow 0.2s ease, transform 0.2s ease' }}>
+            <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase">Total Orders</p>
+            <p className="text-3xl font-bold leading-none text-gray-900">{customer.totalOrders}</p>
+          </div>
           
-          <Card className="border-border shadow-sm flex flex-col justify-center">
-            <CardContent className="p-6">
-              <p className="text-sm font-medium text-muted-foreground mb-1">Total Spend</p>
-              <h3 className="text-3xl font-bold text-foreground">₹{customer.totalSpend.toLocaleString()}</h3>
-            </CardContent>
-          </Card>
+          <div className="kpi-card bg-white rounded-xl border border-gray-200 p-5 flex flex-col gap-3 justify-center"
+            style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)', transition: 'box-shadow 0.2s ease, transform 0.2s ease' }}>
+            <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase">Total Spend</p>
+            <p className="text-3xl font-bold leading-none text-gray-900">₹{customer.totalSpend.toLocaleString()}</p>
+          </div>
 
-          <Card className="border-border shadow-sm flex flex-col justify-center">
-            <CardContent className="p-6">
-              <p className="text-sm font-medium text-muted-foreground mb-1">Average Order Value</p>
-              <h3 className="text-3xl font-bold text-foreground">
-                ₹{customer.totalOrders > 0 ? Math.round(customer.totalSpend / customer.totalOrders).toLocaleString() : 0}
-              </h3>
-            </CardContent>
-          </Card>
+          <div className="kpi-card bg-white rounded-xl border border-gray-200 p-5 flex flex-col gap-3 justify-center"
+            style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)', transition: 'box-shadow 0.2s ease, transform 0.2s ease' }}>
+            <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase">Average Order Value</p>
+            <p className="text-3xl font-bold leading-none text-gray-900">
+              ₹{customer.totalOrders > 0 ? Math.round(customer.totalSpend / customer.totalOrders).toLocaleString() : 0}
+            </p>
+          </div>
         </div>
       </div>
 
