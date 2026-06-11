@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { cn } from '@/lib/utils'
 import {
   Table,
   TableHeader,
@@ -22,26 +23,21 @@ import {
 import { Button } from "@/components/ui/Button"
 import { Eye, Search, ChevronLeft, ChevronRight } from "lucide-react"
 
-export default function CustomerTable({ customers, loading }) {
+export default function CustomerTable({ 
+  customers, 
+  loading,
+  currentPage,
+  totalPages,
+  totalCustomers,
+  searchQuery,
+  statusFilter,
+  onPageChange,
+  onSearchChange,
+  onStatusChange
+}) {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
 
-  const filteredCustomers = useMemo(() => {
-    let result = customers;
-    if (searchQuery) {
-      const lower = searchQuery.toLowerCase();
-      result = result.filter(c => 
-        c.name.toLowerCase().includes(lower) || 
-        c.email.toLowerCase().includes(lower) || 
-        c.phone.includes(searchQuery)
-      );
-    }
-    if (statusFilter !== "All") {
-      result = result.filter(c => c.status === statusFilter);
-    }
-    return result;
-  }, [customers, searchQuery, statusFilter]);
+
 
   const handleRowClick = (id) => {
     router.push(`/customers/${id}`);
@@ -75,19 +71,29 @@ export default function CustomerTable({ customers, loading }) {
   return (
     <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden flex flex-col">
       {/* Table Toolbar */}
-      <div className="p-4 border-b border-border flex flex-col sm:flex-row items-center gap-4 justify-between">
-        <div className="relative w-full sm:w-80 flex items-center">
-          <Search size={16} className="absolute left-3 text-muted-foreground" />
-          <Input 
-            className="pl-9 h-10" 
-            placeholder="Search customers..." 
+      <div className="p-4 border-b border-border flex flex-wrap items-center gap-4 justify-between bg-white">
+        <div className="relative flex-1 min-w-[200px]">
+          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+            <Search size={15} className="text-muted-foreground" />
+          </div>
+          <input
+            type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => onSearchChange(e.target.value)}
+            placeholder="Search customers..."
+            className={cn(
+              "h-10 w-full rounded-xl border border-border bg-background pl-9 pr-4 text-[13.5px] text-foreground shadow-xs transition-all",
+              "outline-none focus:border-indigo-400 focus:ring-3 focus:ring-indigo-500/10",
+              "placeholder:text-muted-foreground"
+            )}
           />
         </div>
-        <div className="w-full sm:w-48">
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="h-10">
+        <div className="relative min-w-[160px] sm:w-48">
+          <span className="absolute -top-1.5 left-3 px-1 bg-white text-[9px] font-bold uppercase tracking-wider text-muted-foreground z-10 pointer-events-none">
+            Status
+          </span>
+          <Select value={statusFilter} onValueChange={onStatusChange}>
+            <SelectTrigger className="h-10 text-[13.5px]">
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
             <SelectContent>
@@ -126,14 +132,14 @@ export default function CustomerTable({ customers, loading }) {
                   <TableCell className="p-4 text-right"><div className="h-8 bg-muted animate-pulse rounded-md w-8 ml-auto"></div></TableCell>
                 </TableRow>
               ))
-            ) : filteredCustomers.length === 0 ? (
+            ) : customers.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} className="h-32 text-center text-muted-foreground">
                   No customers found matching your criteria.
                 </TableCell>
               </TableRow>
             ) : (
-              filteredCustomers.map((customer) => (
+              customers.map((customer) => (
                 <TableRow 
                   key={customer.id} 
                   className="cursor-pointer group"
@@ -150,7 +156,7 @@ export default function CustomerTable({ customers, loading }) {
                     {customer.city}
                   </TableCell>
                   <TableCell className="p-4 text-sm text-muted-foreground text-center">
-                    {customer.gender}
+                    {customer.gender || '—'}
                   </TableCell>
                   <TableCell className="p-4 text-center">
                     <Badge className={getCustomBadgeStyle(customer.status)} variant={getStatusBadgeVariant(customer.status)}>
@@ -158,10 +164,10 @@ export default function CustomerTable({ customers, loading }) {
                     </Badge>
                   </TableCell>
                   <TableCell className="p-4 font-medium text-muted-foreground text-center">
-                    {customer.totalOrders}
+                    {customer.totalOrders != null ? customer.totalOrders : 'N/A'}
                   </TableCell>
                   <TableCell className="p-4 font-medium text-foreground text-center">
-                    ₹{customer.totalSpend.toLocaleString()}
+                    {customer.totalSpend != null ? `₹${customer.totalSpend.toLocaleString()}` : 'N/A'}
                   </TableCell>
                   <TableCell className="p-4 text-sm text-muted-foreground text-center">
                     {formatDate(customer.lastOrderDate)}
@@ -184,24 +190,48 @@ export default function CustomerTable({ customers, loading }) {
           </TableBody>
         </Table>
       </div>
+      {/* Pagination UI */}
+      {totalCustomers > 0 && (
+        <div className="p-4 border-t border-border flex items-center justify-between text-sm text-muted-foreground">
+          <div>
+            Showing <span className="font-medium text-foreground">{(currentPage - 1) * 7 + 1}</span> to <span className="font-medium text-foreground">{Math.min(currentPage * 7, totalCustomers)}</span> of <span className="font-medium text-foreground">{totalCustomers}</span> results
+          </div>
+          <div className="flex items-center gap-1">
+            <Button 
+              variant="outline" 
+              size="icon" 
+              disabled={currentPage === 1}
+              onClick={() => onPageChange(p => Math.max(1, p - 1))}
+            >
+              <ChevronLeft className="size-4" />
+            </Button>
+            
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .slice(Math.max(0, currentPage - 3), Math.min(totalPages, currentPage + 2))
+              .map(pageNum => (
+                <Button 
+                  key={pageNum}
+                  variant={currentPage === pageNum ? "default" : "ghost"} 
+                  size="icon" 
+                  className="w-8 h-8"
+                  onClick={() => onPageChange(pageNum)}
+                >
+                  {pageNum}
+                </Button>
+              ))
+            }
 
-      {/* Pagination UI - Mocked */}
-      <div className="p-4 border-t border-border flex items-center justify-between text-sm text-muted-foreground">
-        <div>
-          Showing <span className="font-medium text-foreground">1</span> to <span className="font-medium text-foreground">{filteredCustomers.length}</span> of <span className="font-medium text-foreground">{filteredCustomers.length}</span> results
+            <Button 
+              variant="outline" 
+              size="icon" 
+              disabled={currentPage === totalPages}
+              onClick={() => onPageChange(p => Math.min(totalPages, p + 1))}
+            >
+              <ChevronRight className="size-4" />
+            </Button>
+          </div>
         </div>
-        <div className="flex items-center gap-1">
-          <Button variant="outline" size="icon" disabled>
-            <ChevronLeft className="size-4" />
-          </Button>
-          <Button variant="default" size="icon" className="w-8">
-            1
-          </Button>
-          <Button variant="outline" size="icon" disabled>
-            <ChevronRight className="size-4" />
-          </Button>
-        </div>
-      </div>
+      )}
     </div>
   )
 }
