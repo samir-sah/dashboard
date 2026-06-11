@@ -52,7 +52,7 @@ export default function CustomerProfilePage() {
 
   if (loading) {
     return (
-      <div className="p-6 md:p-8 max-w-7xl mx-auto w-full h-full flex items-center justify-center">
+      <div style={{ maxWidth: '1400px' }} className="flex items-center justify-center h-64">
         <div className="animate-pulse text-muted-foreground">Loading customer profile...</div>
       </div>
     );
@@ -60,7 +60,7 @@ export default function CustomerProfilePage() {
 
   if (error || !customer) {
     return (
-      <div className="p-6 md:p-8 max-w-7xl mx-auto w-full h-full flex flex-col items-center justify-center">
+      <div style={{ maxWidth: '1400px' }} className="flex flex-col items-center justify-center h-64">
         <p className="text-muted-foreground mb-4">{error || "Something went wrong."}</p>
         <Button variant="outline" onClick={() => router.push('/customers')} className="gap-2">
           <ArrowLeft className="size-4" /> Back to Customers
@@ -70,7 +70,7 @@ export default function CustomerProfilePage() {
   }
 
   return (
-    <div className="p-6 md:p-8 max-w-7xl mx-auto w-full h-full">
+    <div style={{ maxWidth: '1400px' }}>
       <div className="mb-6">
         <div className="flex items-center gap-4 mt-2">
           <Button variant="ghost" size="icon" onClick={() => router.push('/customers')}>
