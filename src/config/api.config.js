@@ -17,5 +17,9 @@ export const API_CONFIG = {
     // Product / Inventory (devices collection)
     products: '/api/product',
     productById: (id) => `/api/product/${id}`,
+
+    // Customers (Users collection)
+    users: '/api/users',
+    userById: (id) => `/api/users/${id}`,
   },
 };
