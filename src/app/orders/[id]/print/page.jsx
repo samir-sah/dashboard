@@ -37,7 +37,7 @@ export default function PrintCenterPage() {
       ? `${order.userId.firstName ?? ''} ${order.userId.lastName ?? ''}`.trim()
       : null
 
-  const status = order?.statusHistory?.at(-1)?.status ?? 'Pending'
+  const status = order?.statusHistory?.at(-1)?.status ?? 'Confirmed'
   const orderId = order?.orderId ?? id
 
   // Inject fetched customer details so the print templates can extract name, email, phone correctly
