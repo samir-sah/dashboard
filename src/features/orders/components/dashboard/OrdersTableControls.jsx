@@ -18,13 +18,14 @@ const sortOptions = [
   { value: 'lowest',  label: 'Lowest Amount'  },
 ]
 
-const statusOptions = ['All', 'Pending', 'Dispatched', 'Delivered', 'Cancelled']
+const statusOptions = ['All', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled']
 
 const getStatusColor = (status) => {
   switch (status) {
+    case 'Confirmed': return 'bg-slate-400'
+    case 'Processing': return 'bg-indigo-500'
+    case 'Shipped': return 'bg-amber-500'
     case 'Delivered': return 'bg-emerald-500'
-    case 'Dispatched': return 'bg-amber-500'
-    case 'Pending': return 'bg-slate-300'
     case 'Cancelled': return 'bg-red-500'
     default: return 'bg-transparent'
   }
