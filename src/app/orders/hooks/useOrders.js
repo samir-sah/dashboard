@@ -46,7 +46,7 @@ export function useOrders() {
       const raw = Array.isArray(data) ? data : data.orders ?? []
       setOrders(raw.map(o => {
         const latestStatus = o.statusHistory?.length
-          ? o.statusHistory[o.statusHistory.length - 1].status : 'Pending'
+          ? o.statusHistory[o.statusHistory.length - 1].status : 'Confirmed'
         const user = o.userId
         const customerName = user && typeof user === 'object'
           ? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || 'Unknown'
