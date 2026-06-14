@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useOrderById } from '../hooks/useOrderById'
 import { useCustomerById } from '../hooks/useCustomerById'
-import { ArrowLeft, Package, MapPin, Truck, Calendar, Pencil } from 'lucide-react'
+import { ArrowLeft, Package, MapPin, Truck, Calendar, Pencil, X, AlertCircle } from 'lucide-react'
 import StatusBadge from "@/components/shared/StatusBadge"
 import { cn } from '@/lib/utils'
 // REPLACE lines 8-14 with these corrected imports:
@@ -14,39 +14,58 @@ import { Skeleton }                                 from '@/components/ui/Skelet
 import { Separator }                                from '@/components/ui/separator'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/Tabs'
 
-const getLatestStatus = (order) => order?.statusHistory?.at(-1)?.status ?? 'Pending'
+const getLatestStatus = (order) => order?.statusHistory?.at(-1)?.status ?? 'Confirmed'
 const formatDate = (d) =>
   d ? new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : '—'
 const formatAddr = (a) =>
   a ? [a.addressLine1, a.street, a.city, a.state, a.pincode, a.country].filter(Boolean).join(', ') : 'Not provided'
 
-const STEPS = ['Order Received', 'Processing', 'Packed', 'Shipped', 'Delivered']
-const STEP_MAP = { Pending:1, Confirmed:2, Packed:3, Dispatched:3, Shipping:4, 'In Transit':4, Delivered:5, Cancelled:1 }
+const STEPS = ['Confirmed', 'Processing', 'Shipped', 'Delivered']
+const STEP_MAP = { Confirmed:1, Processing:2, Shipped:3, Delivered:4, Cancelled:1 }
 
-function OrderStepper({ status }) {
-  const done = STEP_MAP[status] ?? 1
+function OrderStepper({ status, order }) {
+  const isCancelled = status === 'Cancelled'
+  let activeStatus = status
+  if (isCancelled && order?.statusHistory?.length >= 2) {
+    activeStatus = order.statusHistory[order.statusHistory.length - 2].status
+  }
+  const done = STEP_MAP[activeStatus] ?? 1
+
   return (
-    <Card className="sticky top-6">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base">Order Processing</CardTitle>
-        <p className="text-xs text-muted-foreground">{done} of {STEPS.length} steps completed</p>
-      </CardHeader>
-      <CardContent>
-        <div className="h-1.5 bg-muted rounded-full mb-5 overflow-hidden">
-          <div className="h-full bg-indigo-600 rounded-full transition-all" style={{ width: `${(done / STEPS.length) * 100}%` }} />
+    <div className="flex flex-col gap-4">
+      {isCancelled && (
+        <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-xl">
+          <div className="flex items-center gap-2 mb-2">
+            <AlertCircle size={16} className="text-red-600" />
+            <span className="text-sm font-bold text-red-700">Order Cancelled</span>
+          </div>
+          <p className="text-xs text-red-600/80 mb-1">
+            <strong>Reason:</strong> {order.cancellationReason || 'No reason provided'}
+          </p>
         </div>
-        <div className="flex flex-col gap-2">
-          {STEPS.map((step, i) => (
-            <div key={step} className={cn('flex items-center gap-3 px-3.5 py-3 rounded-xl border', i < done ? 'bg-green-50 border-green-200' : 'bg-muted/40 border-muted')}>
-              <div className={cn('w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-[11px] font-black', i < done ? 'bg-green-600 text-white' : 'bg-muted')}>
-                {i < done ? '✓' : ''}
+      )}
+      <Card className="sticky top-6">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base">Order Processing</CardTitle>
+          <p className="text-xs text-muted-foreground">{done} of {STEPS.length} steps completed</p>
+        </CardHeader>
+        <CardContent>
+          <div className="h-1.5 bg-muted rounded-full mb-5 overflow-hidden">
+            <div className="h-full bg-indigo-600 rounded-full transition-all" style={{ width: `${(done / STEPS.length) * 100}%` }} />
+          </div>
+          <div className="flex flex-col gap-2">
+            {STEPS.map((step, i) => (
+              <div key={step} className={cn('flex items-center gap-3 px-3.5 py-3 rounded-xl border', i < done ? 'bg-green-50 border-green-200' : 'bg-muted/40 border-muted')}>
+                <div className={cn('w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-[11px] font-black', i < done ? 'bg-green-600 text-white' : 'bg-muted')}>
+                  {i < done ? '✓' : ''}
+                </div>
+                <span className={cn('text-[13.5px] flex-1', i < done ? 'font-semibold text-green-700' : 'text-muted-foreground')}>{step}</span>
               </div>
-              <span className={cn('text-[13.5px] flex-1', i < done ? 'font-semibold text-green-700' : 'text-muted-foreground')}>{step}</span>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 }
 
@@ -232,6 +251,46 @@ export default function OrderDetailPage() {
   const orderId = order?.orderId ?? id
   const goToEdit = () => router.push(`/orders/${orderId}/edit`)
 
+  const [cancelModalOpen, setCancelModalOpen] = useState(false)
+  const [cancelReasonCategory, setCancelReasonCategory] = useState('')
+  const [cancelReasonNote, setCancelReasonNote] = useState('')
+  const [cancelLoading, setCancelLoading] = useState(false)
+  const [cancelError, setCancelError] = useState(null)
+
+  const handleCancelOrder = async () => {
+    if (!cancelReasonCategory) {
+      setCancelError('Please select a cancellation reason')
+      return
+    }
+    
+    const finalReason = cancelReasonCategory === 'Other' 
+      ? `Other: ${cancelReasonNote}`.trim()
+      : (cancelReasonNote ? `${cancelReasonCategory} - ${cancelReasonNote}` : cancelReasonCategory)
+
+    setCancelLoading(true)
+    setCancelError(null)
+    try {
+      const token = localStorage.getItem('token')
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/cancelorder/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { Authorization: `Bearer ${token}` })
+        },
+        body: JSON.stringify({ reason: finalReason })
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.message || 'Failed to cancel order')
+      
+      setCancelModalOpen(false)
+      window.location.reload()
+    } catch (err) {
+      setCancelError(err.message)
+    } finally {
+      setCancelLoading(false)
+    }
+  }
+
   return (
     <div className="max-w-325">
       <nav className="flex items-center gap-2 mb-5 text-[13px]">
@@ -257,6 +316,11 @@ export default function OrderDetailPage() {
             </div>
           </div>
           <div className="flex items-center gap-2.5">
+            {(status === 'Confirmed' || status === 'Processing') && (
+              <Button variant="outline" size="sm" onClick={() => setCancelModalOpen(true)} className="gap-1.5 text-[13px] text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700">
+                <X size={14} /> Cancel Order
+              </Button>
+            )}
             <Button variant="outline" size="sm" onClick={goToEdit} className="gap-1.5 text-[13px] hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50">
               <Pencil size={14} /> Edit Order
             </Button>
@@ -310,11 +374,60 @@ export default function OrderDetailPage() {
                   <Skeleton className="w-3/5 h-5" /><Skeleton className="w-2/5 h-3" /><Skeleton className="w-full h-2 rounded-full" />
                   {STEPS.map((_,i) => <Skeleton key={i} className="w-full h-12 rounded-xl" />)}
                 </CardContent></Card>
-              : <OrderStepper status={status} />
+              : <OrderStepper status={status} order={order} />
             }
           </div>
         </div>
       </Tabs>
+
+      {cancelModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <Card className="w-[400px] shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-red-600 flex items-center gap-2">
+                <AlertCircle size={18} /> Cancel Order
+              </CardTitle>
+              <p className="text-[13.5px] text-muted-foreground mt-1">
+                Are you sure you want to cancel this order?<br/>
+                This action will restore inventory and mark the order as cancelled. Note: Payment refunds must be handled manually.
+              </p>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[13px] font-semibold text-muted-foreground uppercase tracking-wider">Cancellation Reason <span className="text-red-500">*</span></label>
+                <select 
+                  value={cancelReasonCategory} 
+                  onChange={e => setCancelReasonCategory(e.target.value)} 
+                  className="w-full h-10 px-3 rounded-xl border border-border bg-background text-[13.5px] outline-none focus:border-red-400 focus:ring-3 focus:ring-red-500/10"
+                >
+                  <option value="" disabled>Select a reason...</option>
+                  <option value="Customer Request">Customer Request</option>
+                  <option value="Out of Stock">Out of Stock</option>
+                  <option value="Duplicate Order">Duplicate Order</option>
+                  <option value="Fraud Suspected">Fraud Suspected</option>
+                  <option value="Admin Error">Admin Error</option>
+                  <option value="Other">Other</option>
+                </select>
+                {(cancelReasonCategory === 'Other' || cancelReasonCategory) && (
+                  <textarea 
+                    value={cancelReasonNote} 
+                    onChange={e => setCancelReasonNote(e.target.value)} 
+                    placeholder="Optional details..."
+                    className="w-full mt-2 min-h-[60px] p-3 rounded-xl border border-border bg-background text-[13.5px] outline-none focus:border-red-400 focus:ring-3 focus:ring-red-500/10 resize-none"
+                  />
+                )}
+              </div>
+              {cancelError && <p className="text-[13px] text-red-600 font-medium">⚠ {cancelError}</p>}
+              <div className="flex justify-end gap-2 mt-2">
+                <Button variant="outline" onClick={() => { setCancelModalOpen(false); setCancelError(null); setCancelReasonCategory(''); setCancelReasonNote('') }} disabled={cancelLoading}>Go Back</Button>
+                <Button variant="destructive" className="bg-red-600 hover:bg-red-700 text-white" onClick={handleCancelOrder} disabled={cancelLoading}>
+                  {cancelLoading ? 'Cancelling...' : 'Cancel Order'}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   )
 }
