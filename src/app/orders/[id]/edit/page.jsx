@@ -9,13 +9,12 @@ import { Label }     from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Separator } from '@/components/ui/separator'
 
-const STATUS_OPTIONS = ['Pending','Dispatched','Delivered']
+const STATUS_OPTIONS = ['Confirmed','Processing','Shipped','Delivered']
 
 const statusStyles = {
-  Pending:    'bg-gray-100 text-gray-500 border-gray-200',
-  Confirmed:  'bg-blue-100 text-blue-700 border-blue-200',
-  Dispatched: 'bg-yellow-50 text-yellow-700 border-yellow-300',
-  Shipping:   'bg-orange-50 text-orange-700 border-orange-200',
+  Confirmed:  'bg-slate-100 text-slate-700 border-slate-200',
+  Processing: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+  Shipped:    'bg-amber-50 text-amber-700 border-amber-200',
   Delivered:  'bg-green-100 text-green-700 border-green-200',
   Cancelled:  'bg-red-100 text-red-600 border-red-200',
 }
@@ -79,7 +78,7 @@ export default function EditOrderPage() {
     if (!order) return
     const latest = order.statusHistory?.length
       ? order.statusHistory[order.statusHistory.length - 1].status
-      : 'Pending'
+      : 'Confirmed'
     setStatus(latest)
     const sa = order.customer?.shippingAddress ?? {}
     const ba = order.customer?.billingAddress  ?? {}
