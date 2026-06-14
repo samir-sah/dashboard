@@ -27,8 +27,9 @@ export function useCustomerById(userId) {
           throw new Error(err.message || `Error ${res.status}`)
         }
         const json = await res.json()
-        // ✅ your API returns { success: true, data: {...} }
-        setCustomer(json.data)
+        // API returns { success: true, data: { user: {...}, order: [...] } }
+        // We extract the user object from the data payload
+        setCustomer(json.data?.user || json.data)
       } catch (err) {
         setError(err.message)
       } finally {
