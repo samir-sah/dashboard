@@ -21,5 +21,13 @@ export const API_CONFIG = {
     // Customers (Users collection)
     users: '/api/users',
     userById: (id) => `/api/users/${id}`,
+
+    // Payments
+    payments: '/api/payments',
+    paymentStats: '/api/payments/stats',
+    paymentById: (id) => `/api/payments/${id}`,
+    paymentAnalytics: '/api/payments/analytics',
+    failedPayments: '/api/payments/failures',
+    refundPayment: (id) => `/api/payments/${id}/refund`,
   },
 };
