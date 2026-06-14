@@ -17,14 +17,11 @@ const fmtTime = d => d ? new Date(d).toLocaleString('en-IN', { day: '2-digit', m
 const money   = n => `₹${(n ?? 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 
 const STATUS_STYLE = {
-  Pending:      'bg-muted text-muted-foreground',
-  Confirmed:    'bg-blue-50 text-blue-700',
-  Dispatched:   'bg-amber-50 text-amber-700',
-  Shipping:     'bg-orange-50 text-orange-700',
-  'In Transit': 'bg-blue-50 text-blue-700',
+  Confirmed:    'bg-slate-100 text-slate-700',
+  Processing:   'bg-indigo-50 text-indigo-700',
+  Shipped:      'bg-amber-50 text-amber-700',
   Delivered:    'bg-emerald-50 text-emerald-700',
   Cancelled:    'bg-red-50 text-red-600',
-  Packed:       'bg-violet-50 text-violet-700',
 }
 
 /* ─── Data mapper ─────────────────────────────────────── */
@@ -33,7 +30,7 @@ export function extractOrderData(order) {
   const user     = raw?.userId && typeof raw.userId === 'object' ? raw.userId : null
   const shipping = raw?.customer?.shippingAddress ?? null
   const items    = raw?.orderItems ?? []
-  const status   = raw?.statusHistory?.at(-1)?.status ?? 'Pending'
+  const status   = raw?.statusHistory?.at(-1)?.status ?? 'Confirmed'
 
   let extractedName = 'Unknown'
   if (user) {
@@ -133,7 +130,7 @@ const OrderLabel = forwardRef(function OrderLabel({ order, className }, ref) {
               </div>
             </div>
             <div className="text-right flex flex-col items-end gap-1 shrink-0">
-              <Badge className={cn('text-[11px] font-bold print:bg-white print:text-black print:border-black', STATUS_STYLE[d.status] ?? STATUS_STYLE.Pending)}>
+              <Badge className={cn('text-[11px] font-bold print:bg-white print:text-black print:border-black', STATUS_STYLE[d.status] ?? STATUS_STYLE.Confirmed)}>
                 {d.status}
               </Badge>
               <p className="text-[11px] text-muted-foreground"><span className="font-semibold text-foreground/70">Date:</span> {fmt(d.orderDate)}</p>
