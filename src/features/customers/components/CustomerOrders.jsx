@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 import {
   Table,
   TableHeader,
@@ -56,7 +58,11 @@ export default function CustomerOrders({ orders, loading }) {
         <TableBody>
           {orders.map((order) => (
             <TableRow key={order.id} className="hover:bg-gray-50/50">
-              <TableCell className="p-4 font-medium text-gray-900">{order.id}</TableCell>
+              <TableCell className="p-4 font-medium">
+                <Link href={`/orders/${order.id}`} className="text-indigo-600 hover:text-indigo-800 transition-colors">
+                  {order.id}
+                </Link>
+              </TableCell>
               <TableCell className="p-4 text-gray-600 text-sm text-center">{formatDate(order.date)}</TableCell>
               <TableCell className="p-4 font-medium text-gray-900 text-center">₹{order.amount.toLocaleString()}</TableCell>
               <TableCell className="p-4 text-center">
