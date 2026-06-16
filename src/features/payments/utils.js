@@ -1,7 +1,9 @@
 export const getSimplifiedStatus = (status) => {
   switch (status?.toLowerCase()) {
+    case 'completed':
     case 'captured': return 'Paid';
     case 'failed': return 'Failed';
+    case 'pending':
     case 'authorized':
     case 'created': return 'Pending';
     case 'refunded':
