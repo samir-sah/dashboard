@@ -15,20 +15,19 @@ export default function PaymentsTable() {
     handleSearchChange, handleStatusChange, setCurrentPage
   } = usePayments()
 
-  const formatCurrency = (val) => `₹${(val / 100).toLocaleString('en-IN')}`
-  const formatDate = (dateString) => new Date(dateString).toLocaleDateString('en-IN', {
+  const formatCurrency = (val) => `Rs. ${Number(val || 0).toLocaleString('en-IN')}`
+  const formatDate = (dateString) => dateString ? new Date(dateString).toLocaleDateString('en-IN', {
     year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
-  })
+  }) : '-'
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-      {/* Controls */}
       <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50/50">
         <div className="relative w-72">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
           <input
             type="text"
-            placeholder="Search payment ID or customer..."
+            placeholder="Search payment or order ID..."
             value={search}
             onChange={handleSearchChange}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
@@ -42,21 +41,20 @@ export default function PaymentsTable() {
             className="pl-3 pr-8 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
           >
             <option value="All">All Statuses</option>
-            <option value="captured">Paid</option>
-            <option value="failed">Failed</option>
-            <option value="refunded">Refunded</option>
+            <option value="Completed">Paid</option>
+            <option value="Pending">Pending</option>
+            <option value="Failed">Failed</option>
+            <option value="Refunded">Refunded</option>
           </select>
         </div>
       </div>
 
-      {/* Error State */}
       {error && (
         <div className="p-4 bg-red-50 text-red-600 text-sm border-b border-red-100 flex justify-between items-center">
           <span>{error}</span>
         </div>
       )}
 
-      {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full min-w-[900px] text-left border-collapse">
           <thead>
@@ -84,24 +82,27 @@ export default function PaymentsTable() {
                 </td>
               </tr>
             ) : (
-              payments.map(payment => (
-                <tr key={payment.paymentId} className="hover:bg-gray-50/50 transition-colors group">
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900">{payment.paymentId}</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{payment.customerName}</td>
-                  <td className="px-6 py-4 text-sm text-indigo-600 hover:text-indigo-800">
-                    <Link href={`/orders/${payment.orderId}`}>{payment.orderId}</Link>
-                  </td>
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900">{formatCurrency(payment.amount)}</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{payment.paymentMethod}</td>
-                  <td className="px-6 py-4"><StatusBadge status={getSimplifiedStatus(payment.status)} /></td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{formatDate(payment.createdAt)}</td>
-                  <td className="px-6 py-4">
-                    <Link href={`/payments/${payment.paymentId}`} className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors inline-flex">
-                      <Eye size={18} />
-                    </Link>
-                  </td>
-                </tr>
-              ))
+              payments.map(payment => {
+                const detailId = payment.id || payment.paymentId || payment.orderId
+                return (
+                  <tr key={detailId} className="hover:bg-gray-50/50 transition-colors group">
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900">{payment.paymentId || '-'}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{payment.customerName}</td>
+                    <td className="px-6 py-4 text-sm text-indigo-600 hover:text-indigo-800">
+                      <Link href={`/orders/${payment.orderId}`}>{payment.orderId}</Link>
+                    </td>
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900">{formatCurrency(payment.amount)}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{payment.paymentMethod}</td>
+                    <td className="px-6 py-4"><StatusBadge status={getSimplifiedStatus(payment.status)} /></td>
+                    <td className="px-6 py-4 text-sm text-gray-500">{formatDate(payment.paidAt || payment.createdAt)}</td>
+                    <td className="px-6 py-4">
+                      <Link href={`/payments/${detailId}`} className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors inline-flex">
+                        <Eye size={18} />
+                      </Link>
+                    </td>
+                  </tr>
+                )
+              })
             )}
           </tbody>
         </table>
