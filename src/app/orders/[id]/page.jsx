@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useOrderById } from '../hooks/useOrderById'
 import { useCustomerById } from '../hooks/useCustomerById'
-import { ArrowLeft, Package, MapPin, Truck, Calendar, Pencil, X, AlertCircle } from 'lucide-react'
+import { ArrowLeft, Package, MapPin, Truck, Calendar, Pencil, X, AlertCircle, CreditCard } from 'lucide-react'
 import StatusBadge from "@/components/shared/StatusBadge"
 import { cn } from '@/lib/utils'
 // REPLACE lines 8-14 with these corrected imports:
@@ -155,6 +155,43 @@ function DeliveryInfo({ order, onEdit }) {
                 <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">{label}</span>
               </div>
               <p className="text-[13.5px] text-foreground/80 leading-relaxed">{formatAddr(addr)}</p>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function PaymentInfoCard({ order }) {
+  const payment = order?.payment || {}
+  const rows = [
+    ['Payment Status', payment.status || 'Pending'],
+    ['Payment Method', payment.method || '-'],
+    ['Transaction ID', payment.transactionId || '-'],
+    ['Amount', `Rs. ${Number(payment.amount || order?.totalAmount || 0).toLocaleString('en-IN')}`],
+    ['Paid At', payment.paidAt ? new Date(payment.paidAt).toLocaleString('en-IN') : '-'],
+    ['Razorpay Order ID', payment.razorpayOrderId || '-'],
+    ['Razorpay Payment ID', payment.razorpayPaymentId || '-'],
+  ]
+
+  return (
+    <Card className="mb-5">
+      <CardHeader className="pb-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <CreditCard size={16} className="text-indigo-600" />
+            <CardTitle className="text-[15px]">Payment Information</CardTitle>
+          </div>
+          <StatusBadge status={payment.status || 'Pending'} />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {rows.map(([label, value]) => (
+            <div key={label} className="p-3.5 rounded-xl border border-muted bg-muted/30 min-w-0">
+              <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide mb-1">{label}</p>
+              <p className="text-[13.5px] font-semibold text-foreground/80 break-words">{value}</p>
             </div>
           ))}
         </div>
@@ -363,7 +400,7 @@ export default function OrderDetailPage() {
                   ))}
                 </CardContent></Card>
               : <>
-                  <TabsContent value="order" className="mt-0"><OrderItemsCard order={order} /><DeliveryInfo order={order} onEdit={goToEdit} /></TabsContent>
+                  <TabsContent value="order" className="mt-0"><OrderItemsCard order={order} /><PaymentInfoCard order={order} /><DeliveryInfo order={order} onEdit={goToEdit} /></TabsContent>
                   <TabsContent value="customer" className="mt-0"><CustomerInfo order={order} onEdit={goToEdit} /></TabsContent>
                 </>
             }
