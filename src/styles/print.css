@@ -163,22 +163,22 @@
    @page rules — must be top-level
    ══════════════════════════════════════════════════════════ */
 
-@page {
+/* Shipping Label: 4×6 thermal */
+@page shipping-label {
+  size: 4in 6in;
   margin: 0;
 }
 
-/* Shipping Label: 4×6 thermal */
 body.print-shipping-label {
-  @page {
-    size: 4in 6in;
-    margin: 0;
-  }
+  page: shipping-label;
 }
 
 /* Tax Invoice: A4 */
+@page tax-invoice {
+  size: A4;
+  margin: 12mm 10mm;
+}
+
 body.print-tax-invoice {
-  @page {
-    size: A4;
-    margin: 12mm 10mm;
-  }
+  page: tax-invoice;
 }
