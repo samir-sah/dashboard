@@ -196,7 +196,7 @@ function PaymentInfoCard({ order }) {
           {rows.map(([label, value]) => (
             <div key={label} className="p-3.5 rounded-xl border border-muted bg-muted/30 min-w-0">
               <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide mb-1">{label}</p>
-              <p className="text-[13.5px] font-semibold text-foreground/80 break-words">{value}</p>
+              <p className="text-[13.5px] font-semibold text-foreground/80 wrap-break-word">{value}</p>
             </div>
           ))}
         </div>
@@ -424,7 +424,7 @@ export default function OrderDetailPage() {
 
       {cancelModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <Card className="w-[400px] shadow-xl">
+          <Card className="w-100 shadow-xl">
             <CardHeader>
               <CardTitle className="text-red-600 flex items-center gap-2">
                 <AlertCircle size={18} /> Cancel Order
@@ -455,7 +455,7 @@ export default function OrderDetailPage() {
                     value={cancelReasonNote} 
                     onChange={e => setCancelReasonNote(e.target.value)} 
                     placeholder="Optional details..."
-                    className="w-full mt-2 min-h-[60px] p-3 rounded-xl border border-border bg-background text-[13.5px] outline-none focus:border-red-400 focus:ring-3 focus:ring-red-500/10 resize-none"
+                    className="w-full mt-2 min-h-15 p-3 rounded-xl border border-border bg-background text-[13.5px] outline-none focus:border-red-400 focus:ring-3 focus:ring-red-500/10 resize-none"
                   />
                 )}
               </div>
