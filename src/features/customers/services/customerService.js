@@ -3,6 +3,15 @@ import apiFetch from '@/services/api/api.service';
 import { API_CONFIG } from '@/config/api.config';
 
 // API Functions
+const formatGender = (gender) => {
+  const labels = {
+    male: "Male",
+    female: "Female",
+    other: "Other",
+    prefer_not_to_say: "Prefer not to say",
+  };
+  return labels[gender] || null;
+};
 
 export const getCustomers = async (params = {}) => {
   const { page = 1, limit = 7, search = '', status = 'All' } = params;
@@ -24,8 +33,8 @@ export const getCustomers = async (params = {}) => {
     email: user.email || 'N/A',
     phone: user.phone || 'N/A',
     status: user.isActive ? 'Active' : 'Inactive',
-    city: user.addresses && user.addresses.length > 0 ? user.addresses[0].city : 'N/A',
-    gender: null, // Backend doesn't support gender currently
+    city: user.addresses?.shippingAddress?.city || 'N/A',
+    gender: formatGender(user.gender),
     joinedDate: user.createdAt,
     totalOrders: user.totalOrders || 0,
     totalSpend: user.totalSpend || 0,
@@ -52,16 +61,18 @@ export const getCustomerById = async (id) => {
     ? order.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate))[0].orderDate 
     : null;
 
-  const addresses = (user.addresses || []).map((addr, index) => ({
-    id: addr._id || index,
-    type: addr.isDefault ? "Primary" : "Secondary",
-    line1: addr.addressLine1 || '',
-    street: addr.street || '',
-    city: addr.city || '',
-    state: addr.state || '',
-    pincode: addr.pincode || '',
-    isDefault: addr.isDefault || false
-  }));
+  const addresses = Object.entries(user.addresses || {})
+    .filter(([, addr]) => addr)
+    .map(([type, addr], index) => ({
+      id: addr._id || index,
+      type: type === "shippingAddress" ? "Shipping" : "Billing",
+      line1: addr.addressLine1 || '',
+      street: addr.street || '',
+      city: addr.city || '',
+      state: addr.state || '',
+      pincode: addr.pincode || '',
+      isDefault: addr.isDefault || false
+    }));
 
   return {
     id: user._id,
@@ -72,11 +83,20 @@ export const getCustomerById = async (id) => {
     totalOrders,
     totalSpend,
     city: addresses.length > 0 ? addresses[0].city : 'N/A',
-    gender: null,
+    gender: user.gender || null,
+    genderLabel: formatGender(user.gender),
     lastOrderDate,
     joinedDate: user.createdAt,
     addresses
   };
+};
+
+export const updateCustomerGender = async (id, gender) => {
+  const response = await apiFetch(API_CONFIG.endpoints.updateUser(id), {
+    method: 'PATCH',
+    body: JSON.stringify({ gender }),
+  });
+  return response.data;
 };
 
 export const getCustomerOrders = async (id) => {

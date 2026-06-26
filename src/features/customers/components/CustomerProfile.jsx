@@ -6,7 +6,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/Badge"
 import CustomerOrders from "./CustomerOrders"
 
-export default function CustomerProfile({ customer, orders, loadingOrders }) {
+const genderOptions = [
+  { value: "", label: "Not specified" },
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
+  { value: "other", label: "Other" },
+  { value: "prefer_not_to_say", label: "Prefer not to say" },
+]
+
+export default function CustomerProfile({ customer, orders, loadingOrders, onGenderChange, savingGender }) {
   if (!customer) return null;
 
   const formatDate = (dateString) => {
@@ -68,6 +76,19 @@ export default function CustomerProfile({ customer, orders, loadingOrders }) {
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Calendar className="size-4 shrink-0" />
                 <span>Joined {formatDate(customer.joinedDate)}</span>
+              </div>
+              <div className="flex flex-col gap-1.5 text-left">
+                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Gender</span>
+                <select
+                  value={customer.gender || ""}
+                  disabled={savingGender}
+                  onChange={(event) => onGenderChange?.(event.target.value)}
+                  className="h-9 rounded-lg border border-border bg-background px-3 text-sm font-medium text-foreground outline-none focus:border-indigo-400 focus:ring-3 focus:ring-indigo-500/10 disabled:opacity-60"
+                >
+                  {genderOptions.map((option) => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                  ))}
+                </select>
               </div>
             </div>
           </CardContent>
