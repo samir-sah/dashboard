@@ -1,4 +1,4 @@
-import apiFetch from './api.service';
+import apiFetch from '@/services/api/api.service';
 import { API_CONFIG } from '@/config/api.config';
 
 export const orderService = {

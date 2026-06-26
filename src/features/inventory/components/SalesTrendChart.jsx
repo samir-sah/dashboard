@@ -60,7 +60,7 @@ export default function SalesTrendChart({ data, daysRemaining, period, setPeriod
         </div>
       </div>
 
-      <div className="flex-1 w-full min-h-[300px]">
+      <div className="flex-1 w-full min-h-[300px] h-full min-w-0">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={formattedData}
