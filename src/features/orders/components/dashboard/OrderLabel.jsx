@@ -24,13 +24,19 @@ const STATUS_STYLE = {
   Cancelled:    'bg-red-50 text-red-600',
 }
 
+const normalizeOrderStatus = status => {
+  if (status === 'Pending') return 'Confirmed'
+  if (status === 'Dispatched') return 'Shipped'
+  return status || 'Confirmed'
+}
+
 /* ─── Data mapper ─────────────────────────────────────── */
 export function extractOrderData(order) {
   const raw      = order?._raw ?? order
   const user     = raw?.userId && typeof raw.userId === 'object' ? raw.userId : null
   const shipping = raw?.customer?.shippingAddress ?? null
   const items    = raw?.orderItems ?? []
-  const status   = raw?.statusHistory?.at(-1)?.status ?? 'Confirmed'
+  const status   = normalizeOrderStatus(raw?.statusHistory?.at(-1)?.status)
 
   let extractedName = 'Unknown'
   if (user) {

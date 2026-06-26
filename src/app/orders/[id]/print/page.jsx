@@ -10,6 +10,12 @@ import { Skeleton } from '@/components/ui/Skeleton'
 import { Card, CardContent } from '@/components/ui/Card'
 import { AlertTriangle, Printer } from 'lucide-react'
 
+const normalizeOrderStatus = (status) => {
+  if (status === 'Pending') return 'Confirmed'
+  if (status === 'Dispatched') return 'Shipped'
+  return status || 'Confirmed'
+}
+
 /**
  * Print Center Page — /orders/[id]/print
  *
@@ -37,7 +43,7 @@ export default function PrintCenterPage() {
       ? `${order.userId.firstName ?? ''} ${order.userId.lastName ?? ''}`.trim()
       : null
 
-  const status = order?.statusHistory?.at(-1)?.status ?? 'Confirmed'
+  const status = normalizeOrderStatus(order?.statusHistory?.at(-1)?.status)
   const orderId = order?.orderId ?? id
 
   // Inject fetched customer details so the print templates can extract name, email, phone correctly

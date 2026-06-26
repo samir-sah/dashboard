@@ -14,7 +14,12 @@ import { Skeleton }                                 from '@/components/ui/Skelet
 import { Separator }                                from '@/components/ui/separator'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/Tabs'
 
-const getLatestStatus = (order) => order?.statusHistory?.at(-1)?.status ?? 'Confirmed'
+const normalizeOrderStatus = (status) => {
+  if (status === 'Pending') return 'Confirmed'
+  if (status === 'Dispatched') return 'Shipped'
+  return status || 'Confirmed'
+}
+const getLatestStatus = (order) => normalizeOrderStatus(order?.statusHistory?.at(-1)?.status)
 const formatDate = (d) =>
   d ? new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : '—'
 const formatAddr = (a) =>
@@ -27,7 +32,7 @@ function OrderStepper({ status, order }) {
   const isCancelled = status === 'Cancelled'
   let activeStatus = status
   if (isCancelled && order?.statusHistory?.length >= 2) {
-    activeStatus = order.statusHistory[order.statusHistory.length - 2].status
+    activeStatus = normalizeOrderStatus(order.statusHistory[order.statusHistory.length - 2].status)
   }
   const done = STEP_MAP[activeStatus] ?? 1
 

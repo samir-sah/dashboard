@@ -1,6 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 const PAGE_SIZE = 7
+
+const normalizeOrderStatus = (status) => {
+  if (status === 'Pending') return 'Confirmed'
+  if (status === 'Dispatched') return 'Shipped'
+  return status || 'Confirmed'
+}
 
 function getSortParams(sort) {
   switch (sort) {
@@ -22,7 +28,7 @@ export function useOrders() {
   const [totalPages,   setTotalPages]   = useState(1)
   const [totalOrders,  setTotalOrders]  = useState(0)
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     setLoading(true)
     setError(null)
     try {
@@ -46,7 +52,7 @@ export function useOrders() {
       const raw = Array.isArray(data) ? data : data.orders ?? []
       setOrders(raw.map(o => {
         const latestStatus = o.statusHistory?.length
-          ? o.statusHistory[o.statusHistory.length - 1].status : 'Confirmed'
+          ? normalizeOrderStatus(o.statusHistory[o.statusHistory.length - 1].status) : 'Confirmed'
         const user = o.userId
         const customerName = user && typeof user === 'object'
           ? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || 'Unknown'
@@ -61,9 +67,9 @@ export function useOrders() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [currentPage, statusFilter, sortBy, search])
 
-  useEffect(() => { fetchOrders() }, [currentPage, statusFilter, sortBy, search])
+  useEffect(() => { void Promise.resolve().then(fetchOrders) }, [fetchOrders])
 
   const handleSearchChange = (e) => { setSearch(e.target.value);       setCurrentPage(1) }
   const handleSortChange   = (val) => { setSortBy(val);       setCurrentPage(1) }
