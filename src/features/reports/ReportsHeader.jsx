@@ -19,7 +19,7 @@ const buildOrderRows = (data, period) => {
   return data.map((row) => ({
     [label]: row[key],
     'Orders': row.orders,
-    'Dispatched': row.dispatched,
+    'Shipped': row.shipped ?? row.dispatched ?? 0,
     'Delivered': row.delivered,
     'Cancelled': row.cancelled,
   }));

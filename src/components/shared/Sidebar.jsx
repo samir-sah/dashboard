@@ -33,7 +33,7 @@ export default function Sidebar() {
           alt="Mavoix"
           width={120}
           height={32}
-          style={{ objectFit: 'contain', objectPosition: 'left' }}
+          style={{ objectFit: 'contain', objectPosition: 'left', width: 'auto' }}
           priority
         />
       </div>

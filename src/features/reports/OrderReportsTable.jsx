@@ -39,7 +39,7 @@ export default function OrderReportsTable({
           <TableRow>
             <TableHead>{periodLabel}</TableHead>
             <TableHead className="text-right">Orders</TableHead>
-            <TableHead className="text-right">Dispatched</TableHead>
+            <TableHead className="text-right">Shipped</TableHead>
             <TableHead className="text-right">Delivered</TableHead>
             <TableHead className="text-right">Cancelled</TableHead>
           </TableRow>
@@ -87,7 +87,7 @@ export default function OrderReportsTable({
           <TableRow>
             <TableHead>{periodLabel}</TableHead>
             <TableHead className="text-right">Orders</TableHead>
-            <TableHead className="text-right">Dispatched</TableHead>
+            <TableHead className="text-right">Shipped</TableHead>
             <TableHead className="text-right">Delivered</TableHead>
             <TableHead className="text-right">Cancelled</TableHead>
           </TableRow>
@@ -97,7 +97,7 @@ export default function OrderReportsTable({
             <TableRow key={row[periodKey]}>
               <TableCell className="font-medium text-primary">{row[periodKey]}</TableCell>
               <TableCell className="text-right">{row.orders.toLocaleString('en-IN')}</TableCell>
-              <TableCell className="text-right">{row.dispatched.toLocaleString('en-IN')}</TableCell>
+              <TableCell className="text-right">{(row.shipped ?? row.dispatched ?? 0).toLocaleString('en-IN')}</TableCell>
               <TableCell className="text-right">{row.delivered.toLocaleString('en-IN')}</TableCell>
               <TableCell className="text-right text-destructive font-medium">{row.cancelled.toLocaleString('en-IN')}</TableCell>
             </TableRow>
