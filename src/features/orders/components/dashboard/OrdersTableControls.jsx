@@ -39,7 +39,7 @@ export default function OrdersTableControls({
   return (
     <div className="flex flex-wrap items-center gap-3 mb-4">
       {/* ── Search ── */}
-      <div className="relative flex-1 min-w-[200px]">
+      <div className="relative flex-1 min-w-50">
         <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
           <Search size={15} className="text-muted-foreground" />
         </div>
@@ -57,7 +57,7 @@ export default function OrdersTableControls({
       </div>
 
       {/* ── Sort By ── */}
-      <div className="relative min-w-[160px]">
+      <div className="relative min-w-40">
         <span className="absolute -top-1.5 left-3 px-1 bg-background text-[9px] font-bold uppercase tracking-wider text-muted-foreground z-10 pointer-events-none">
           Sort By
         </span>
@@ -76,7 +76,7 @@ export default function OrdersTableControls({
       </div>
 
       {/* ── Status Filter ── */}
-      <div className="relative min-w-[160px]">
+      <div className="relative min-w-40">
         <span className="absolute -top-1.5 left-3 px-1 bg-background text-[9px] font-bold uppercase tracking-wider text-muted-foreground z-10 pointer-events-none">
           Status
         </span>
