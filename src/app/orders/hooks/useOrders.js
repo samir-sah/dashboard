@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from 'react'
 const PAGE_SIZE = 7
 
 const normalizeOrderStatus = (status) => {
-  if (status === 'Pending') return 'Confirmed'
   if (status === 'Dispatched') return 'Shipped'
   return status || 'Confirmed'
 }
