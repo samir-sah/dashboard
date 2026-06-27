@@ -25,7 +25,6 @@ const STATUS_STYLE = {
 }
 
 const normalizeOrderStatus = status => {
-  if (status === 'Pending') return 'Confirmed'
   if (status === 'Dispatched') return 'Shipped'
   return status || 'Confirmed'
 }
