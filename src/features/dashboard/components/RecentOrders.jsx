@@ -13,7 +13,6 @@ const latestStatus = (order) => order.statusHistory?.length
   : "Unknown"
 
 const normalizeOrderStatus = (status) => {
-  if (status === "Pending") return "Confirmed"
   if (status === "Dispatched") return "Shipped"
   return status || "Confirmed"
 }
