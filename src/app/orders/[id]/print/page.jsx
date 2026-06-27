@@ -11,7 +11,6 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { AlertTriangle, Printer } from 'lucide-react'
 
 const normalizeOrderStatus = (status) => {
-  if (status === 'Pending') return 'Confirmed'
   if (status === 'Dispatched') return 'Shipped'
   return status || 'Confirmed'
 }

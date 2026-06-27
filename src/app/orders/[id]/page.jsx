@@ -15,7 +15,6 @@ import { Separator }                                from '@/components/ui/separa
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/Tabs'
 
 const normalizeOrderStatus = (status) => {
-  if (status === 'Pending') return 'Confirmed'
   if (status === 'Dispatched') return 'Shipped'
   return status || 'Confirmed'
 }
