@@ -1,10 +1,9 @@
 import { Montserrat } from 'next/font/google'
+import { Toaster } from 'sonner'
 import './globals.css'
-import Sidebar from "@/components/shared/Sidebar"
-import Navbar from "@/components/shared/Navbar"
-import Providers from "./providers"
 
 const montserrat = Montserrat({
+  variable: '--font-montserrat',
   subsets: ['latin'],
   display: 'swap',
 })
@@ -17,18 +16,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${montserrat.className} bg-gray-50`} suppressHydrationWarning>
-        <Providers>
-          <div className="flex h-screen overflow-hidden">
-            <Sidebar />
-            <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-              <Navbar />
-              <main className="flex-1 overflow-y-auto p-7">
-                {children}
-              </main>
-            </div>
-          </div>
-        </Providers>
+      <body className={`${montserrat.className} ${montserrat.variable} antialiased`} suppressHydrationWarning>
+        {children}
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   )
