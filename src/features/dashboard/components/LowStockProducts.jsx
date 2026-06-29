@@ -11,7 +11,6 @@ export default function LowStockProducts({ params }) {
     <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm flex flex-col h-full w-full">
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-xl font-bold text-gray-900">Low Stock Products</h3>
-        <button className="text-gray-400 hover:text-gray-600"><MoreVertical className="w-5 h-5" /></button>
       </div>
 
       {query.isLoading ? (

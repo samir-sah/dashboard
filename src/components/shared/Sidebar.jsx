@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard, ShoppingCart, Users, TrendingUp,
-  Package, CreditCard, BarChart2, HeadphonesIcon, Settings,
+  Package, CreditCard, BarChart2, HeadphonesIcon,
 } from 'lucide-react'
 
 const navItems = [
@@ -57,17 +57,6 @@ export default function Sidebar() {
 
       {/* Bottom: Settings + User */}
       <div className="border-t border-gray-200 px-3 py-3 flex flex-col gap-0.5">
-        <Link href="/settings">
-          <div className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm cursor-pointer transition-colors
-            ${isActive('/settings')
-              ? 'bg-[#eeecfb] text-[#5048e5] font-semibold'
-              : 'text-gray-500 font-medium hover:bg-gray-50 hover:text-gray-800'
-            }`}
-          >
-            <Settings size={18} strokeWidth={isActive('/settings') ? 2.2 : 1.8} aria-hidden="true" />
-            Settings
-          </div>
-        </Link>
 
         <div className="flex items-center gap-3 px-3 py-2.5 mt-1">
           <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-white text-xs font-semibold shrink-0">

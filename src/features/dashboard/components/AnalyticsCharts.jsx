@@ -25,7 +25,6 @@ const ChartHeader = ({ title, metric, growth, isPositive }) => (
   <div className="flex flex-col mb-6">
     <div className="flex items-center justify-between mb-2">
       <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">{title}</h3>
-      <button className="text-gray-400 hover:text-gray-600 transition-colors"><MoreVertical className="w-5 h-5" /></button>
     </div>
     <div className="flex items-end gap-3 mb-2">
       <span className="text-3xl font-bold text-gray-900 leading-none">{metric}</span>
@@ -109,7 +108,7 @@ export default function AnalyticsCharts({ params }) {
         <ChartHeader title="Order Status" metric={orderStatus.data?.metric || "Current Distribution"} />
         <ChartState query={orderStatus}>
           <div className="h-64 w-full mt-4 min-h-[256px] min-w-0">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <BarChart layout="vertical" data={orderStatusData} margin={{ top: 0, right: 30, left: 40, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f3f4f6" />
                 <XAxis type="number" hide />
@@ -128,7 +127,7 @@ export default function AnalyticsCharts({ params }) {
         <ChartHeader title="Orders vs Units Sold" metric={ordersVsUnits.data?.metric || "0 Units / 0 Orders"} growth={ordersVsUnits.data?.growth || "Avg 0.0 Units/Order"} />
         <ChartState query={ordersVsUnits}>
           <div className="h-64 w-full mt-4 min-h-[256px] min-w-0">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <LineChart data={ordersVsUnitsData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
                 <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 12 }} dy={10} />
@@ -148,7 +147,7 @@ export default function AnalyticsCharts({ params }) {
         <ChartHeader title="New Customers Acquired" metric={customerGrowth.data?.metric || "0 New Customers"} growth={customerGrowth.data?.growth || "+0.0%"} isPositive={customerGrowth.data?.isPositive ?? true} />
         <ChartState query={customerGrowth}>
           <div className="h-64 w-full mt-4 min-h-[256px] min-w-0">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <BarChart data={customerGrowthData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
                 <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 12 }} dy={10} />
@@ -166,7 +165,7 @@ export default function AnalyticsCharts({ params }) {
         <ChartHeader title="Monthly Revenue & Forecast" metric={revenueForecast.data?.metric || "₹0 Current"} growth={revenueForecast.data?.growth || "Projected ₹0"} />
         <ChartState query={revenueForecast}>
           <div className="h-64 w-full mt-4 z-10 min-h-[256px] min-w-0">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <LineChart data={expectedGrowthData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
                 <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 12 }} dy={10} />

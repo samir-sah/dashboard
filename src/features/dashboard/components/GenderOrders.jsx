@@ -13,7 +13,6 @@ export default function GenderOrders({ params }) {
     <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm flex flex-col h-full w-full">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-bold text-gray-900">Gender Based Orders</h3>
-        <button className="text-gray-400 hover:text-gray-600"><MoreVertical className="w-5 h-5" /></button>
       </div>
 
       {query.isLoading ? (
@@ -23,7 +22,7 @@ export default function GenderOrders({ params }) {
       ) : (
         <div className="flex flex-col items-center justify-center gap-6 flex-1">
           <div className="h-48 w-48 relative min-w-0 min-h-0">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <PieChart>
                 <Pie data={genderOrdersData} innerRadius={65} outerRadius={90} paddingAngle={4} dataKey="value" stroke="none">
                   {genderOrdersData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.fill} />)}

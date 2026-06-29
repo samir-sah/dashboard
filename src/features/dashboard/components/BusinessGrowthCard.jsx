@@ -12,7 +12,6 @@ export default function BusinessGrowthCard({ params }) {
     <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm h-full flex flex-col justify-between w-full">
       <div className="flex items-center justify-between mb-6">
          <h3 className="text-xl font-bold text-gray-900">Business Growth</h3>
-         <button className="text-gray-400 hover:text-gray-600"><MoreVertical className="w-5 h-5" /></button>
       </div>
 
       {query.isLoading ? (
@@ -41,7 +40,7 @@ export default function BusinessGrowthCard({ params }) {
             </div>
           </div>
           <div className="h-40 w-full mt-auto min-h-[160px] min-w-0">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <AreaChart data={businessGrowthData?.trendData || []}>
                 <XAxis dataKey="date" hide />
                 <RechartsTooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} />
