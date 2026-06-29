@@ -1,14 +1,13 @@
 import { API_CONFIG } from '@/config/api.config';
 
 const apiFetch = async (endpoint, options = {}) => {
-  const token = localStorage.getItem('token'); // adjust to your auth flow
-
   const res = await fetch(`${API_CONFIG.baseURL}${endpoint}`, {
+    ...options,
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` }),
+      ...(options.headers || {}),
     },
-    ...options,
   });
 
   if (!res.ok) {
