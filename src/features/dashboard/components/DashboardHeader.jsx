@@ -4,7 +4,7 @@ import { TabsList, TabsTrigger } from "@/components/ui/Tabs"
 import { Button } from "@/components/ui/Button"
 import { Calendar, ChevronLeft, ChevronRight, BarChart3, Lightbulb } from "lucide-react"
 
-export default function DashboardHeader() {
+export default function DashboardHeader({ dateRange, setDateRange }) {
   return (
     <div className="flex flex-col gap-4 mb-6 md:flex-row md:items-center md:justify-between">
       <div>
@@ -31,16 +31,13 @@ export default function DashboardHeader() {
         <div className="relative">
           <select 
             className="appearance-none bg-white border border-gray-200 text-gray-700 py-2.5 pl-10 pr-10 rounded-lg shadow-sm font-medium text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:bg-gray-50 cursor-pointer"
-            defaultValue="this-month"
+            value={dateRange || "30d"}
+            onChange={(e) => setDateRange && setDateRange(e.target.value)}
           >
-            <option value="today">Today</option>
-            <option value="last-7-days">Last 7 Days</option>
-            <option value="last-30-days">Last 30 Days</option>
-            <option value="this-month">This Month</option>
-            <option value="last-month">Last Month</option>
-            <option value="this-quarter">This Quarter</option>
-            <option value="this-year">This Year</option>
-            <option value="custom">Custom Range</option>
+            <option value="7d">Last 7 Days</option>
+            <option value="30d">Last 30 Days</option>
+            <option value="90d">Last 90 Days</option>
+            <option value="12m">Last 12 Months</option>
           </select>
           <Calendar className="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <ChevronLeft className="w-4 h-4 text-gray-500 absolute right-3.5 top-1/2 -translate-y-1/2 -rotate-90 pointer-events-none" />

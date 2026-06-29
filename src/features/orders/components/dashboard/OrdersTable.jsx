@@ -1,5 +1,5 @@
 'use client'
-import { useOrders }            from '@/app/orders/hooks/useOrders'
+import { useOrders }            from '@/app/(dashboard)/orders/hooks/useOrders'
 import OrdersTableControls      from './OrdersTableControls'
 import OrderRow                 from './OrderRow'
 import SkeletonRow              from './SkeletonRow'
