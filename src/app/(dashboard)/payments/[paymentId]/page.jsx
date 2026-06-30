@@ -161,6 +161,27 @@ export default function PaymentDetailPage() {
       </div>
 
       <RefundHistory refunds={payment.refunds || []} />
+
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden mt-6">
+        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50/50">
+          <h3 className="text-sm font-semibold text-gray-900">Payment Timeline</h3>
+        </div>
+        <div className="divide-y divide-gray-100">
+          {(payment.statusHistory || []).length === 0 ? (
+            <div className="px-6 py-4 text-sm text-gray-500">No payment status history available.</div>
+          ) : (
+            payment.statusHistory.map((entry, index) => (
+              <div key={`${entry.status}-${entry.updatedAt}-${index}`} className="px-6 py-4 flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">{entry.status}</p>
+                  {entry.note && <p className="text-sm text-gray-500 mt-1">{entry.note}</p>}
+                </div>
+                <p className="text-xs text-gray-500 whitespace-nowrap">{formatDate(entry.updatedAt)}</p>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
     </div>
   )
 }
