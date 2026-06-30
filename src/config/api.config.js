@@ -27,6 +27,8 @@ export const API_CONFIG = {
     payments: '/api/payments',
     paymentStats: '/api/payments/stats',
     paymentById: (id) => `/api/payments/${id}`,
+    paymentHistoryByOrder: (orderId) => `/api/payments/history/order/${orderId}`,
+    paymentHistoryByUser: (userId) => `/api/payments/history/user/${userId}`,
     createRazorpayOrder: '/api/payments/create-order',
     verifyRazorpayPayment: '/api/payments/verify',
     paymentAnalytics: '/api/payments/analytics',

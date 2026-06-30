@@ -4,6 +4,13 @@ import { API_CONFIG } from '@/config/api.config';
 const normalizePayment = (payment = {}) => {
   const customer = payment.customer || {};
   const paymentId = payment.paymentId || payment.transactionId || payment.razorpayPaymentId || payment.id || payment.orderId;
+  const refunds = payment.refunds || (payment.refund ? [{
+    refundId: payment.refund.razorpayRefundId || payment.paymentId,
+    amount: payment.refund.amount,
+    status: payment.status,
+    reason: payment.refund.reason,
+    createdAt: payment.refund.initiatedAt || payment.refund.completedAt,
+  }] : []);
 
   return {
     ...payment,
@@ -17,7 +24,8 @@ const normalizePayment = (payment = {}) => {
     paymentMethod: payment.method || payment.paymentMethod || 'Razorpay',
     status: payment.status || 'Pending',
     linkedOrders: payment.linkedOrders || (payment.orderId ? [payment.orderId] : []),
-    refunds: payment.refunds || [],
+    refunds,
+    statusHistory: payment.statusHistory || [],
   };
 };
 
@@ -76,7 +84,10 @@ export const paymentService = {
   },
 
 
-  refundPayment: async () => {
-    throw new Error('Refund automation is not implemented yet.');
+  refundPayment: async (id, payload = {}) => {
+    return apiFetch(API_CONFIG.endpoints.refundPayment(id), {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
   },
 };
