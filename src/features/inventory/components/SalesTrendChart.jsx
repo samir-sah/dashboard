@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-  AreaChart,
-  Area,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Cell,
 } from 'recharts';
 import { Info } from 'lucide-react';
 import {
@@ -29,12 +30,15 @@ export default function SalesTrendChart({ data, daysRemaining, period, setPeriod
   // Format date for display
   const formattedData = data.map(item => {
     const d = new Date(item.date);
-    // If it's over a year, maybe format differently, but DD MMM is fine.
     return {
       ...item,
       displayDate: `${d.getDate()} ${d.toLocaleString('en-GB', { month: 'short' })}`
     };
   });
+
+  // Compute a sensible y-axis max — at least 3 so single-unit bars don't look exaggerated
+  const maxUnits = Math.max(...data.map(d => d.unitsSold), 0);
+  const yMax = Math.max(maxUnits + 1, 3);
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] flex flex-col h-full overflow-hidden p-6">
@@ -62,14 +66,14 @@ export default function SalesTrendChart({ data, daysRemaining, period, setPeriod
 
       <div className="flex-1 w-full min-h-[300px] h-full min-w-0">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
+          <BarChart
             data={formattedData}
             margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
           >
             <defs>
-              <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#5048e5" stopOpacity={0.4}/>
-                <stop offset="95%" stopColor="#5048e5" stopOpacity={0}/>
+              <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#5048e5" stopOpacity={0.9}/>
+                <stop offset="100%" stopColor="#7c6cf0" stopOpacity={0.7}/>
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="#f1f5f9" />
@@ -86,24 +90,29 @@ export default function SalesTrendChart({ data, daysRemaining, period, setPeriod
               tickLine={false}
               tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 500 }}
               dx={-10}
+              allowDecimals={false}
+              domain={[0, yMax]}
             />
             <Tooltip
               contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 25px -5px rgb(0 0 0 / 0.1)' }}
-              cursor={{ stroke: '#cbd5e1', strokeWidth: 1, strokeDasharray: '4 4' }}
+              cursor={{ fill: '#f1f5f9', radius: 4 }}
             />
-            <Area
-              type="monotone"
+            <Bar
               dataKey="unitsSold"
               name="Units Sold"
-              stroke="#5048e5"
-              strokeWidth={2}
-              fillOpacity={1}
-              fill="url(#colorSales)"
-              activeDot={{ r: 5, fill: '#5048e5', stroke: '#fff', strokeWidth: 2 }}
-              dot={false}
-              animationDuration={1500}
-            />
-          </AreaChart>
+              fill="url(#barGradient)"
+              radius={[4, 4, 0, 0]}
+              maxBarSize={32}
+              animationDuration={1200}
+            >
+              {formattedData.map((entry, index) => (
+                <Cell 
+                  key={`cell-${index}`} 
+                  fill={entry.unitsSold === 0 ? 'transparent' : 'url(#barGradient)'}
+                />
+              ))}
+            </Bar>
+          </BarChart>
         </ResponsiveContainer>
       </div>
 
