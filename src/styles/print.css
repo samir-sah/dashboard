@@ -55,8 +55,10 @@
      STEP 2 — FLATTEN LAYOUT CONTAINERS
      ══════════════════════════════════════════════════════════
      The root layout uses:
-       div.flex.h-screen.overflow-hidden > aside + div > header + main
-     We need to flatten this so content flows naturally.
+       body > #__next > div.flex.h-screen.overflow-hidden > div > main
+     We use structural (DOM-path) selectors instead of Tailwind
+     class names because Tailwind v4's PostCSS rewrites utility
+     class selectors within imported CSS files.
   */
 
   body {
@@ -69,33 +71,32 @@
     print-color-adjust: exact;
   }
 
-  /* Root flex container — flatten */
+  /* Flatten ALL layout wrappers from body down to main */
   body > div,
   body > div > div,
-  .flex.h-screen,
-  .flex.h-screen.overflow-hidden {
+  body > div > div > div,
+  body > div > div > div > div,
+  body > div > div > div > main {
     display: block !important;
     height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
     width: 100% !important;
     overflow: visible !important;
-    min-height: 0 !important;
-  }
-
-  /* Main content area — remove padding, allow overflow */
-  main,
-  main.flex-1,
-  .flex-1.overflow-y-auto {
-    padding: 0 !important;
-    margin: 0 !important;
-    overflow: visible !important;
-    height: auto !important;
     flex: none !important;
   }
 
-  /* Inner wrapper — remove padding */
-  .flex.flex-col.flex-1 {
+  /* Main content area — remove padding */
+  body > div > div > div > main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Inner wrapper — ensure no flex constraints */
+  main > div {
     display: block !important;
     overflow: visible !important;
+    padding: 0 !important;
   }
 
   /* Remove shadows globally in print */
@@ -156,6 +157,133 @@
     max-width: none !important;
     margin: 0 !important;
     padding: 0 !important;
+  }
+
+  /* ── Remove WRAPPER padding that inflates print layout ── */
+
+  /* The print-preview-container > div.py-8 wrapper */
+  body.print-tax-invoice .print-preview-container > div {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* The print-preview-card p-10 wrapper */
+  body.print-tax-invoice .print-preview-card {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+
+  /* ── Gentle compaction — keep look close to screen ────── */
+
+  /* Header: slightly reduce py-5 → py-3 */
+  body.print-tax-invoice .inv-header {
+    padding-top: 0.6rem !important;
+    padding-bottom: 0.6rem !important;
+  }
+
+  /* Invoice/Order metadata: py-3.5 → py-2.5 */
+  body.print-tax-invoice .inv-meta {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  /* Bill-to / Ship-to: py-3.5 → py-2.5 */
+  body.print-tax-invoice .inv-addresses {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  /* ── Reduce horizontal padding so table fits A4 width ── */
+  body.print-tax-invoice .inv-header,
+  body.print-tax-invoice .inv-meta,
+  body.print-tax-invoice .inv-addresses,
+  body.print-tax-invoice .inv-summary,
+  body.print-tax-invoice .inv-words,
+  body.print-tax-invoice .inv-footer,
+  body.print-tax-invoice .inv-declaration {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* Ensure the table cannot overflow the page */
+  body.print-tax-invoice .inv-table {
+    overflow: hidden !important;
+    width: 100% !important;
+  }
+
+  body.print-tax-invoice .inv-table table {
+    table-layout: fixed !important;
+    width: 100% !important;
+  }
+
+  body.print-tax-invoice .inv-table th,
+  body.print-tax-invoice .inv-table td {
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
+    padding-top: 0.3rem !important;
+    padding-bottom: 0.3rem !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    word-break: break-word !important;
+  }
+
+  /* Summary totals: py-4 → py-3 */
+  body.print-tax-invoice .inv-summary {
+    padding-top: 0.6rem !important;
+    padding-bottom: 0.6rem !important;
+  }
+
+  /* Amount in words: keep py-2.5 → py-2 */
+  body.print-tax-invoice .inv-words {
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+  }
+
+  /* Terms & Signature: py-5 → py-3 */
+  body.print-tax-invoice .inv-footer {
+    padding-top: 0.6rem !important;
+    padding-bottom: 0.6rem !important;
+  }
+
+  /* Declaration: keep compact */
+  body.print-tax-invoice .inv-declaration {
+    padding-top: 0.3rem !important;
+    padding-bottom: 0.3rem !important;
+  }
+
+  /* ── Page-break safety ─────────────────────────────────── */
+
+  /* Keep summary/totals block from splitting */
+  body.print-tax-invoice .inv-summary {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Keep terms/signature from splitting */
+  body.print-tax-invoice .inv-footer {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Keep declaration from splitting */
+  body.print-tax-invoice .inv-declaration {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Prevent page break between summary → words → footer → declaration */
+  body.print-tax-invoice .inv-words,
+  body.print-tax-invoice .inv-footer,
+  body.print-tax-invoice .inv-declaration {
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+  }
+
+  /* The entire invoice frame should try to stay on one page */
+  body.print-tax-invoice .inv-frame {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 }
 

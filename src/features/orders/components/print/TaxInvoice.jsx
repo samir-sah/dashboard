@@ -58,10 +58,10 @@ const TaxInvoice = forwardRef(function TaxInvoice({ order, className }, ref) {
       style={{ maxWidth: '210mm' }}
     >
       {/* ═══ INVOICE OUTER BORDER ═══════════════════ */}
-      <div className="border-2 border-neutral-900">
+      <div className="inv-frame border-2 border-neutral-900">
 
         {/* ── HEADER ─────────────────────────────── */}
-        <div className="px-6 py-5 border-b-2 border-neutral-900 flex justify-between items-start">
+        <div className="inv-header px-6 py-5 border-b-2 border-neutral-900 flex justify-between items-start">
           <div>
             <h1 className="text-[22px] font-black tracking-tight mb-0.5">
               {COMPANY_INFO.name}
@@ -93,7 +93,7 @@ const TaxInvoice = forwardRef(function TaxInvoice({ order, className }, ref) {
         </div>
 
         {/* ── INVOICE + ORDER DETAILS ────────────── */}
-        <div className="px-6 py-3.5 border-b border-neutral-200 grid grid-cols-2 gap-3">
+        <div className="inv-meta px-6 py-3.5 border-b border-neutral-200 grid grid-cols-2 gap-3">
           <div>
             {[
               ['Invoice No.', invoiceNo],
@@ -121,7 +121,7 @@ const TaxInvoice = forwardRef(function TaxInvoice({ order, className }, ref) {
         </div>
 
         {/* ── BUYER / SHIPPING INFO ──────────────── */}
-        <div className="px-6 py-3.5 border-b border-neutral-200 grid grid-cols-2 gap-6">
+        <div className="inv-addresses px-6 py-3.5 border-b border-neutral-200 grid grid-cols-2 gap-6">
           {/* Bill To */}
           <div>
             <div className={sectionLabel}>Bill To</div>
@@ -143,7 +143,7 @@ const TaxInvoice = forwardRef(function TaxInvoice({ order, className }, ref) {
         </div>
 
         {/* ── PRODUCT TABLE ──────────────────────── */}
-        <div>
+        <div className="inv-table">
           <table className="w-full border-collapse text-[11px]">
             <thead>
               <tr className="bg-neutral-100 border-b-2 border-neutral-900 border-t">
@@ -190,7 +190,7 @@ const TaxInvoice = forwardRef(function TaxInvoice({ order, className }, ref) {
         </div>
 
         {/* ── INVOICE SUMMARY ────────────────────── */}
-        <div className="border-t-2 border-neutral-900 px-6 py-4 flex justify-end">
+        <div className="inv-summary border-t-2 border-neutral-900 px-6 py-4 flex justify-end">
           <div className="min-w-[280px]">
             {[
               ['Subtotal', money(subtotal)],
@@ -218,7 +218,7 @@ const TaxInvoice = forwardRef(function TaxInvoice({ order, className }, ref) {
         </div>
 
         {/* ── AMOUNT IN WORDS ────────────────────── */}
-        <div className="border-t border-neutral-200 px-6 py-2.5 text-[11px]">
+        <div className="inv-words border-t border-neutral-200 px-6 py-2.5 text-[11px]">
           <span className="font-bold text-neutral-500">Amount in words: </span>
           <span className="font-semibold italic">
             Rupees {numberToWords(Math.round(grandTotal))} Only
@@ -226,7 +226,7 @@ const TaxInvoice = forwardRef(function TaxInvoice({ order, className }, ref) {
         </div>
 
         {/* ── FOOTER: TERMS + SIGNATURE ──────────── */}
-        <div className="border-t-2 border-neutral-900 px-6 py-5 grid grid-cols-2 gap-6">
+        <div className="inv-footer border-t-2 border-neutral-900 px-6 py-5 grid grid-cols-2 gap-6">
           {/* Terms */}
           <div>
             <div className={sectionLabel}>Terms & Conditions</div>
@@ -245,7 +245,7 @@ const TaxInvoice = forwardRef(function TaxInvoice({ order, className }, ref) {
         </div>
 
         {/* ── DECLARATION ────────────────────────── */}
-        <div className="border-t border-neutral-200 px-6 py-2.5 text-center text-[10px] text-neutral-400 leading-relaxed">
+        <div className="inv-declaration border-t border-neutral-200 px-6 py-2.5 text-center text-[10px] text-neutral-400 leading-relaxed">
           <p className="mb-1">
             This invoice is electronically generated and does not require a physical signature.
           </p>
