@@ -93,7 +93,7 @@ export default function PrintCenterPage() {
   // ── Loading State ───────────────────────────────────
   if (loading) {
     return (
-      <div>
+      <div className="rounded-2xl border border-neutral-200 bg-white overflow-hidden shadow-sm">
         <div className="print-hide border-b border-neutral-200 bg-white">
           <div className="px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -121,7 +121,6 @@ export default function PrintCenterPage() {
           </div>
         </div>
         <div className="px-6 py-6">
-          <Skeleton className="w-full h-8 rounded-lg mb-5" />
           <div className="flex justify-center py-8">
             <div className="bg-white rounded-xl border border-neutral-200 p-10">
               <div className="flex flex-col items-center gap-3 w-80">
@@ -174,7 +173,7 @@ export default function PrintCenterPage() {
 
   // ── Main Render ─────────────────────────────────────
   return (
-    <div>
+    <div className="rounded-2xl border border-neutral-200 bg-white overflow-hidden shadow-sm">
       <PrintHeader
         orderId={orderId}
         customerName={customerName || 'Customer'}

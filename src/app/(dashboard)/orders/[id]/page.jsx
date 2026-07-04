@@ -152,7 +152,7 @@ function DeliveryInfo({ order, onEdit }) {
       <CardContent>
 
         <div className="flex flex-col gap-3">
-          {[['Shipping Address', order?.customer?.shippingAddress], ['Billing Address', order?.customer?.billingAddress]].map(([label, addr]) => (
+          {[['Shipping Address at time of order', order?.customer?.shippingAddress], ['Billing Address at time of order', order?.customer?.billingAddress]].map(([label, addr]) => (
             <div key={label} className="p-4 rounded-xl border border-muted bg-muted/30">
               <div className="flex items-center gap-1.5 mb-2">
                 <MapPin size={13} className="text-muted-foreground" />
@@ -471,3 +471,4 @@ export default function OrderDetailPage() {
     </div>
   )
 }
+

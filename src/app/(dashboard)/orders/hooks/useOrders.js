@@ -49,8 +49,11 @@ export function useOrders() {
 
       const raw = Array.isArray(data) ? data : data.orders ?? []
       setOrders(raw.map(o => {
-        const latestStatus = o.statusHistory?.length
-          ? normalizeOrderStatus(o.statusHistory[o.statusHistory.length - 1].status) : 'Confirmed'
+        const latestStatus = o.isInCart
+          ? 'In Cart'
+          : (o.statusHistory?.length
+            ? normalizeOrderStatus(o.statusHistory[o.statusHistory.length - 1].status)
+            : 'Confirmed')
         const user = o.userId
         const customerName = user && typeof user === 'object'
           ? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || 'Unknown'
@@ -80,3 +83,4 @@ export function useOrders() {
     handleSearchChange, handleSortChange, handleStatusChange,
   }
 }
+
