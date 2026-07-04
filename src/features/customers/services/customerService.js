@@ -3,6 +3,54 @@ import apiFetch from '@/services/api/api.service';
 import { API_CONFIG } from '@/config/api.config';
 
 // API Functions
+const normalizeAddressType = (type) => {
+  if (type === "shippingAddress" || type === "shipping") return "Shipping";
+  if (type === "billingAddress" || type === "billing") return "Billing";
+  return type || "Address";
+};
+
+const getAddressList = (addresses = []) => {
+  if (Array.isArray(addresses)) return addresses;
+  return Object.entries(addresses || {})
+    .filter(([, addr]) => addr)
+    .map(([type, addr]) => ({ ...addr, type }));
+};
+
+const hasAddressContent = (addr = {}) => Boolean(
+  addr.addressLine1 || addr.street || addr.city || addr.state || addr.pincode || addr.country
+);
+
+const mapAddress = (addr, index) => ({
+  id: addr._id || `${addr.type || 'address'}-${index}`,
+  type: normalizeAddressType(addr.type),
+  line1: addr.addressLine1 || '',
+  street: addr.street || '',
+  city: addr.city || '',
+  state: addr.state || '',
+  pincode: addr.pincode || '',
+  country: addr.country || '',
+  isDefault: addr.isDefault || false
+});
+
+const getOrderAddressList = (orders = []) => {
+  const latestOrderWithAddress = [...orders]
+    .sort((a, b) => new Date(b.orderDate || b.createdAt) - new Date(a.orderDate || a.createdAt))
+    .find((order) => hasAddressContent(order.customer?.shippingAddress) || hasAddressContent(order.customer?.billingAddress));
+
+  if (!latestOrderWithAddress) return [];
+
+  return [
+    latestOrderWithAddress.customer?.shippingAddress && { ...latestOrderWithAddress.customer.shippingAddress, type: 'shipping' },
+    latestOrderWithAddress.customer?.billingAddress && { ...latestOrderWithAddress.customer.billingAddress, type: 'billing' },
+  ].filter(hasAddressContent);
+};
+
+const getPreferredAddress = (addresses, type) => (
+  addresses.find((addr) => addr.type === type && addr.isDefault) ||
+  addresses.find((addr) => addr.type === type) ||
+  addresses[0] ||
+  null
+);
 const formatGender = (gender) => {
   const labels = {
     male: "Male",
@@ -33,7 +81,7 @@ export const getCustomers = async (params = {}) => {
     email: user.email || 'N/A',
     phone: user.phone || 'N/A',
     status: user.isActive ? 'Active' : 'Inactive',
-    city: user.addresses?.shippingAddress?.city || 'N/A',
+    city: getPreferredAddress(getAddressList(user.addresses), 'shipping')?.city || 'N/A',
     gender: formatGender(user.gender),
     joinedDate: user.createdAt,
     totalOrders: user.totalOrders || 0,
@@ -61,18 +109,8 @@ export const getCustomerById = async (id) => {
     ? order.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate))[0].orderDate 
     : null;
 
-  const addresses = Object.entries(user.addresses || {})
-    .filter(([, addr]) => addr)
-    .map(([type, addr], index) => ({
-      id: addr._id || index,
-      type: type === "shippingAddress" ? "Shipping" : "Billing",
-      line1: addr.addressLine1 || '',
-      street: addr.street || '',
-      city: addr.city || '',
-      state: addr.state || '',
-      pincode: addr.pincode || '',
-      isDefault: addr.isDefault || false
-    }));
+  const savedAddresses = getAddressList(user.addresses).filter(hasAddressContent);
+  const addresses = (savedAddresses.length ? savedAddresses : getOrderAddressList(order)).map(mapAddress);
 
   return {
     id: user._id,
@@ -91,13 +129,6 @@ export const getCustomerById = async (id) => {
   };
 };
 
-export const updateCustomerGender = async (id, gender) => {
-  const response = await apiFetch(API_CONFIG.endpoints.updateUser(id), {
-    method: 'PATCH',
-    body: JSON.stringify({ gender }),
-  });
-  return response.data;
-};
 
 export const getCustomerOrders = async (id) => {
   // The userById endpoint returns orders along with the user.
@@ -113,9 +144,11 @@ export const getCustomerOrders = async (id) => {
     date: o.orderDate || o.createdAt,
     amount: o.totalAmount || 0,
     // Safely get the latest status
-    status: o.statusHistory && o.statusHistory.length > 0 
-      ? o.statusHistory[o.statusHistory.length - 1].status 
-      : 'Unknown'
+    status: o.isInCart
+      ? 'In Cart'
+      : (o.statusHistory && o.statusHistory.length > 0
+        ? o.statusHistory[o.statusHistory.length - 1].status
+        : 'Unknown')
   })).sort((a, b) => new Date(b.date) - new Date(a.date));
 };
 
@@ -129,7 +162,7 @@ export const getCustomerStats = async () => {
 
   const totalCustomers = totalRes.total || 0;
   const activeCustomers = activeRes.total || 0;
-  const newCustomers = null; // We can't trivially query "New" without a date filter
+  const newCustomers = totalRes.newCustomers || 0;
   
   // Replace totalRevenue with totalUnitsSold
   const totalUnitsSold = orderStatsRes.totalUnitsSold || 0;
@@ -141,3 +174,5 @@ export const getCustomerStats = async () => {
     totalUnitsSold
   };
 };
+
+

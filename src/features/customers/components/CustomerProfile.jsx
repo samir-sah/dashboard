@@ -6,15 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/Badge"
 import CustomerOrders from "./CustomerOrders"
 
-const genderOptions = [
-  { value: "", label: "Not specified" },
-  { value: "male", label: "Male" },
-  { value: "female", label: "Female" },
-  { value: "other", label: "Other" },
-  { value: "prefer_not_to_say", label: "Prefer not to say" },
-]
 
-export default function CustomerProfile({ customer, orders, loadingOrders, onGenderChange, savingGender }) {
+export default function CustomerProfile({ customer, orders, loadingOrders }) {
   if (!customer) return null;
 
   const formatDate = (dateString) => {
@@ -79,16 +72,7 @@ export default function CustomerProfile({ customer, orders, loadingOrders, onGen
               </div>
               <div className="flex flex-col gap-1.5 text-left">
                 <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Gender</span>
-                <select
-                  value={customer.gender || ""}
-                  disabled={savingGender}
-                  onChange={(event) => onGenderChange?.(event.target.value)}
-                  className="h-9 rounded-lg border border-border bg-background px-3 text-sm font-medium text-foreground outline-none focus:border-indigo-400 focus:ring-3 focus:ring-indigo-500/10 disabled:opacity-60"
-                >
-                  {genderOptions.map((option) => (
-                    <option key={option.value} value={option.value}>{option.label}</option>
-                  ))}
-                </select>
+                <span className="text-sm font-medium text-foreground">{customer.genderLabel || "Not Specified"}</span>
               </div>
             </div>
           </CardContent>
@@ -116,12 +100,12 @@ export default function CustomerProfile({ customer, orders, loadingOrders, onGen
                           <MapPin className="size-4 text-muted-foreground" />
                         </div>
                         <div>
-                          <div className="font-medium text-foreground text-sm mb-1">{addr.type} Address</div>
+                          <div className="font-medium text-foreground text-sm mb-1">{addr.type === "Address" ? "Address" : `${addr.type} Address`}</div>
                           <div className="text-sm text-muted-foreground space-y-0.5">
-                            <p>{addr.line1}</p>
-                            <p>{addr.street}</p>
-                            <p>{addr.city}, {addr.state}</p>
-                            <p>PIN: {addr.pincode}</p>
+                            {addr.line1 && <p>{addr.line1}</p>}
+                            {addr.street && <p>{addr.street}</p>}
+                            {(addr.city || addr.state) && <p>{[addr.city, addr.state].filter(Boolean).join(', ')}</p>}
+                            {addr.pincode && <p>PIN: {addr.pincode}</p>}
                           </div>
                         </div>
                       </div>
@@ -184,3 +168,4 @@ export default function CustomerProfile({ customer, orders, loadingOrders, onGen
     </div>
   )
 }
+
