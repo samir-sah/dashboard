@@ -71,23 +71,7 @@ const ShippingLabel = forwardRef(function ShippingLabel({ order, className }, re
 
   const shippingDate = raw?.shippingDate ? fmtDate(raw.shippingDate) : fmtDate(d.orderDate)
 
-  const printCSS = `
-    @media print {
-      @page { size: 4in 6in; margin: 0; }
-      html, body { margin: 0 !important; padding: 0 !important; }
-      body > *:not(.sl-root) { display: none !important; }
-      .sl-root {
-        position: fixed !important;
-        inset: 0 !important;
-        width: 4in !important;
-        height: 6in !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        page-break-after: avoid;
-        page-break-before: avoid;
-      }
-    }
-  `
+  // Print CSS is handled globally by src/styles/print.css — no inline overrides needed
 
   const BORDER_WIDTH = '3px'
   const BORDER_COLOR = '#000'
@@ -95,12 +79,9 @@ const ShippingLabel = forwardRef(function ShippingLabel({ order, className }, re
   const THIN_BORDER = `1px solid ${BORDER_COLOR}`
 
   return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: printCSS }} />
-
       <div
         ref={ref}
-        className={cn('sl-root', className)}
+        className={cn('shipping-label-content', className)}
         style={{
           width: '4in',
           height: '6in',
@@ -217,7 +198,6 @@ const ShippingLabel = forwardRef(function ShippingLabel({ order, className }, re
         </div>
 
       </div>
-    </>
   )
 })
 

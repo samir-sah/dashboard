@@ -17,21 +17,7 @@ export default function PrintTabs({ order, activeTab, onPrint }) {
 
   return (
     <div>
-      {/* ── Format Info Bar ─────────────────────────── */}
-      <div className="print-hide flex items-center justify-between px-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-lg mb-5" data-print="hide">
-        <div className="flex items-center gap-2">
-          <div className={`w-1.5 h-1.5 rounded-full ${isLabel ? 'bg-emerald-500' : 'bg-indigo-500'}`} />
-          <span className="text-xs font-medium text-neutral-500">
-            {isLabel
-              ? '4×6 in · Thermal Label · Zebra / TSC / XPrinter compatible'
-              : 'A4 · GST-Compliant Tax Invoice · Standard printer'
-            }
-          </span>
-        </div>
-        <span className="text-[10px] text-neutral-400 font-medium">
-          Preview
-        </span>
-      </div>
+
 
       {/* ── Document Preview Container ──────────────── */}
       <div className="print-preview-container">

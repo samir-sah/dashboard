@@ -78,9 +78,9 @@ export default function PrintHeader({ orderId, customerName, status, activeTab, 
       <div className="border-b border-neutral-200 bg-white">
         <div className="px-6 flex gap-0">
           {[
-            { key: 'label', label: 'Shipping Label', icon: Tag, desc: '4×6 in · Thermal' },
-            { key: 'invoice', label: 'Tax Invoice', icon: FileText, desc: 'A4 · GST' },
-          ].map(({ key, label, icon: Icon, desc }) => {
+            { key: 'label', label: 'Shipping Label', icon: Tag },
+            { key: 'invoice', label: 'Tax Invoice', icon: FileText },
+          ].map(({ key, label, icon: Icon }) => {
             const active = activeTab === key
             return (
               <button
@@ -97,9 +97,6 @@ export default function PrintHeader({ orderId, customerName, status, activeTab, 
               >
                 <Icon size={14} className={active ? 'text-neutral-700' : 'text-neutral-400'} />
                 <span>{label}</span>
-                <span className={`text-[10px] font-normal ${active ? 'text-neutral-500' : 'text-neutral-400'}`}>
-                  {desc}
-                </span>
               </button>
             )
           })}
