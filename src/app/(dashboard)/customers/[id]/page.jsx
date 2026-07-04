@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { getCustomerById, getCustomerOrders, updateCustomerGender } from "@/features/customers/services/customerService"
+import { getCustomerById, getCustomerOrders } from "@/features/customers/services/customerService"
 import { Button } from '@/components/ui/Button'
 import { ArrowLeft } from 'lucide-react'
 import CustomerProfile from "@/features/customers/components/CustomerProfile"
@@ -16,7 +16,6 @@ export default function CustomerProfilePage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingOrders, setLoadingOrders] = useState(true);
-  const [savingGender, setSavingGender] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -87,17 +86,7 @@ export default function CustomerProfilePage() {
       <CustomerProfile 
         customer={customer} 
         orders={orders} 
-        loadingOrders={loadingOrders} 
-        savingGender={savingGender}
-        onGenderChange={async (gender) => {
-          try {
-            setSavingGender(true);
-            await updateCustomerGender(customerId, gender || "");
-            setCustomer((current) => ({ ...current, gender: gender || null }));
-          } finally {
-            setSavingGender(false);
-          }
-        }}
+        loadingOrders={loadingOrders}
       />
     </div>
   )
