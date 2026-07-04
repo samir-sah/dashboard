@@ -3,6 +3,7 @@
 const statusStyles = {
   // ✅ exact backend values
   Pending:    { bg: '#f3f4f6', color: '#6b7280',  border: '#e5e7eb' },
+  'In Cart':  { bg: '#f4f4f5', color: '#52525b',  border: '#d4d4d8' },
   Confirmed:  { bg: '#f1f5f9', color: '#334155',  border: '#e2e8f0' },
   Processing: { bg: '#e0e7ff', color: '#4338ca',  border: '#c7d2fe' },
   Shipped:    { bg: '#fef3c7', color: '#b45309',  border: '#fde68a' },
