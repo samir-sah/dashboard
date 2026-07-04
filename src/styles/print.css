@@ -92,11 +92,14 @@
     margin: 0 !important;
   }
 
-  /* Inner wrapper — ensure no flex constraints */
-  main > div {
+  /* Inner wrappers — strip padding/flex all the way down to print content */
+  main > div,
+  main > div > div,
+  main > div > div > div {
     display: block !important;
     overflow: visible !important;
     padding: 0 !important;
+    margin: 0 !important;
   }
 
   /* Remove shadows globally in print */
@@ -128,20 +131,45 @@
 
   /* ══════════════════════════════════════════════════════════
      SHIPPING LABEL — 4×6 inch thermal
+     ══════════════════════════════════════════════════════════
+     Strategy: position:fixed pulls the label out of normal
+     flow so no ancestor padding can inflate the layout.
+     Everything else is force-hidden.
      ══════════════════════════════════════════════════════════ */
+
+  /* Hide all non-label content when printing shipping label */
   body.print-shipping-label .tax-invoice-content {
     display: none !important;
   }
 
+  /* The label itself — fixed + centered on the 4×6 page */
   body.print-shipping-label .shipping-label-content {
-    display: block !important;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    display: flex !important;
+    flex-direction: column !important;
     width: 4in !important;
     height: 6in !important;
     margin: 0 !important;
     padding: 0 !important;
     overflow: hidden !important;
-    page-break-after: always;
-    border: none !important;
+    border: 3px solid #000 !important;
+    box-sizing: border-box !important;
+    background: #fff !important;
+    z-index: 999999 !important;
+  }
+
+  /* Collapse ALL ancestors so they generate no extra pages */
+  body.print-shipping-label .print-preview-container,
+  body.print-shipping-label .print-preview-container > div,
+  body.print-shipping-label .print-preview-card {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
   }
 
   /* ══════════════════════════════════════════════════════════
@@ -156,7 +184,8 @@
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 10mm !important;
+    box-sizing: border-box !important;
   }
 
   /* ── Remove WRAPPER padding that inflates print layout ── */
@@ -304,7 +333,7 @@ body.print-shipping-label {
 /* Tax Invoice: A4 */
 @page tax-invoice {
   size: A4;
-  margin: 12mm 10mm;
+  margin: 0;
 }
 
 body.print-tax-invoice {
