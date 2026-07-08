@@ -1,208 +1,74 @@
-<div align="center">
-
 # HealthyBit Admin Dashboard
 
 **Internal business operations console for Mavoix Solutions**
 
-Order fulfillment, customer support, inventory, payments, and reporting — in one portal.
-
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38B2AC?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![TanStack Query](https://img.shields.io/badge/TanStack%20Query-v5-FF4154?logo=reactquery&logoColor=white)](https://tanstack.com/query/latest)
-[![Status](https://img.shields.io/badge/status-active%20development-yellow)]()
-[![License](https://img.shields.io/badge/license-Proprietary-red)]()
-
-</div>
+A comprehensive admin dashboard to manage order fulfillment, customer support, inventory, payments, and reporting.
 
 ---
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Architecture](#architecture)
-- [Authentication & Authorization](#authentication--authorization)
-- [Getting Started](#getting-started)
-- [Environment Variables](#environment-variables)
-- [Available Scripts](#available-scripts)
-- [Coding Conventions](#coding-conventions)
-- [Testing](#testing)
-- [Integration Gotchas](#integration-gotchas)
-- [Contributing](#contributing)
-- [Team](#team)
-- [License](#license)
-
----
-
-## Overview
-
-The HealthyBit Admin Dashboard is the internal control plane for Mavoix's device order and support operations. Business Development Managers, support agents, and admins use it to manage customers, track orders end-to-end, monitor inventory and payments, and resolve support tickets against SLA.
-
-The frontend is a standalone Next.js application that talks exclusively to the [`sbx-hbt-api`](https://github.com/<org>/sbx-hbt-api) backend over a versioned REST API (`/api/v1`). It holds no business logic of its own beyond presentation, optimistic UI, and client-side validation — source of truth always lives server-side.
-
-**Current focus:** Orders module is fully wired end-to-end. Customer Support module (ticketing, SLA timelines, assignment workflow) is in active integration against a newly finalized state-machine API.
 
 ## Features
 
-| Module | What it does |
-|---|---|
-| 📊 **Dashboard** | Executive KPIs — order volume, revenue, open tickets, fulfillment SLA breaches |
-| 👥 **Customers** | CRM profiles, interaction history, linked devices and order history |
-| 📦 **Inventory** | Stock levels, warehouse allocation, low-stock alerts |
-| 🛒 **Orders** | Full order lifecycle: creation → fulfillment → delivery, with status-driven state transitions |
-| 💳 **Payments** | Transaction status, Razorpay reconciliation, revenue breakdowns |
-| 🎧 **Support** | Ticketing with explicit status timeline, agent assignment, and a strict state machine (no skipping stages, no invalid transitions) |
-| 📈 **Reports** | Cross-module aggregation and exportable reports |
+- 📊 **Dashboard**: Executive KPIs and metrics.
+- 👥 **Customers**: Manage CRM profiles and linked devices.
+- 📦 **Inventory**: Track stock levels and low-stock alerts.
+- 🛒 **Orders**: Full order lifecycle management.
+- 💳 **Payments**: Monitor transactions and revenue.
+- 🎧 **Support**: Ticketing system and agent assignments.
+- 📈 **Reports**: View and export business reports.
 
 ## Tech Stack
 
-### Core
-- **Framework:** [Next.js 16](https://nextjs.org/) — App Router
-- **Library:** [React 19](https://react.dev/)
-- **Language:** JavaScript (ES6+) / JSX
-
-### State & Data
-- **Server state:** [@tanstack/react-query v5](https://tanstack.com/query/latest) — caching, background refetch, optimistic updates
-- **Client state:** React Context + native hooks
-- **HTTP client:** Axios, instantiated once in `lib/axios.js` with interceptors for auth headers and 401 handling
-
-### Styling & UI
-- **CSS:** [Tailwind CSS v4](https://tailwindcss.com/)
-- **Components:** [Shadcn UI](https://ui.shadcn.com/)
-- **Icons:** [Lucide React](https://lucide.dev/)
-- **Charts:** [Recharts](https://recharts.org/)
-- **Class utilities:** `clsx`, `tailwind-merge`, `class-variance-authority`
-
-### Tooling
-- **Linting:** ESLint (Next.js config)
-- **Formatting:** Prettier — run on save and in CI
-- **Pre-commit hooks:** Husky + lint-staged *(recommended if not already configured — blocks unformatted/lint-failing commits)*
-
-## Architecture
-
-Feature-driven, not type-driven. Each business domain owns its full vertical slice.
-
-```text
-src/
-├── app/                    # Next.js App Router — routes, layouts, route handlers
-├── components/             # Shared/global UI only (buttons, modals, shells)
-├── config/                 # Env + global config constants
-├── contexts/               # Global providers (Auth, Theme)
-├── features/
-│   ├── orders/
-│   │   ├── components/     # OrdersTable, OrderDetailCard, StatusBadge...
-│   │   ├── hooks/          # useOrders, useOrderMutations
-│   │   ├── services/       # orders.service.js — all axios calls for this feature
-│   │   └── utils/          # Feature-local formatters/helpers
-│   ├── support/             # Same internal shape
-│   ├── customers/
-│   ├── inventory/
-│   ├── payments/
-│   ├── reports/
-│   └── dashboard/
-├── lib/                    # Cross-feature utilities, axios instance, auth helpers
-├── services/               # Global/shared API services
-└── styles/                 # globals.css, print.css
-```
-
-**Rule of thumb:** if logic is used by exactly one feature, it lives inside that feature folder. The moment a second feature needs it, promote it to `lib/` or top-level `services/`.
-
-## Authentication & Authorization
-
-- Auth is JWT-based, issued by `sbx-hbt-api`. The token is held in the `AuthContext` and attached to every request via an Axios request interceptor.
-- A response interceptor catches `401`s globally and redirects to `/login`, so individual screens never need to handle expired sessions themselves.
-- Role-based access control (RBAC) gates both **routes** (via a `<RequireRole>` wrapper around protected layouts) and **UI elements** (e.g. a "Delete Order" button only renders for `admin`/`bdm` roles, not `support_agent`).
-- Login supports both email + password and phone-based OTP verification, for both customer-facing and staff/admin accounts. Implementation specifics (code lifetime, retry/rate-limit behavior, delivery provider) are intentionally not documented here — check with the backend lead directly if you need them for a specific task.
+- **Framework:** Next.js 16 (App Router)
+- **Library:** React 19
+- **Styling:** Tailwind CSS v4, Shadcn UI
+- **State Management:** TanStack React Query v5
+- **HTTP Client:** Axios
 
 ## Getting Started
 
 ### Prerequisites
+
 - **Node.js** v18.17.0+
-- **npm** v9+ (or your team's chosen package manager — keep it consistent across the repo)
-- Access to a running `sbx-hbt-api` instance (local or staging)
+- **npm** v9+ 
+- Access to the `sbx-hbt-api` backend
 
 ### Installation
 
-```bash
-git clone <repository-url>
-cd mavoix-production-frontend
-npm install
-cp .env.example .env.local   # then fill in values — see table below
-npm run dev
-```
+1. Clone the repository and install dependencies:
+   ```bash
+   git clone <repository-url>
+   cd mavoix-production-frontend
+   npm install
+   ```
+2. Set up environment variables:
+   ```bash
+   cp .env.example .env.local
+   ```
+   *Fill in the required variables in `.env.local`.*
 
-App runs at [http://localhost:3000](http://localhost:3000) with hot reload enabled.
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+   The app will run at [http://localhost:3000](http://localhost:3000).
 
 ## Environment Variables
 
-| Variable | Required | Description | Example |
-|---|---|---|---|
-| `NEXT_PUBLIC_API_URL` | ✅ | Base URL of the `sbx-hbt-api` backend | `http://localhost:5000/api/v1` |
-| `NEXT_PUBLIC_APP_ENV` | ✅ | Current environment label, used for logging/error tagging | `development` |
-| `NEXT_PUBLIC_RAZORPAY_KEY_ID` | Only if Payments module is active locally | Public Razorpay key for client-side checkout widgets | `rzp_test_xxxxxxxx` |
-| `NEXT_PUBLIC_SENTRY_DSN` | Optional | Error tracking endpoint | — |
-
-> Never commit `.env.local`. Keep `.env.example` updated whenever a new variable is introduced — it's the only contract a new teammate has.
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_API_URL` | Base URL of the backend API |
+| `NEXT_PUBLIC_APP_ENV` | Current environment label (`development`, `production`) |
+| `NEXT_PUBLIC_RAZORPAY_KEY_ID` | Public Razorpay key (if payments are active locally) |
 
 ## Available Scripts
 
-| Script | Purpose |
+| Script | Description |
 |---|---|
-| `npm run dev` | Start the dev server with hot reload |
-| `npm run build` | Production build |
-| `npm run start` | Serve a production build (run `build` first) |
-| `npm run lint` | ESLint check |
-| `npm run format` | Prettier — auto-fix formatting *(add if not present)* |
-
-## Coding Conventions
-
-- **Components:** PascalCase (`OrderDetailCard.jsx`)
-- **Hooks:** camelCase, prefixed `use` (`useOrderMutations.js`)
-- **Services:** `<feature>.service.js`, one per feature
-- **Branches:** `feature/<short-description>`, `bugfix/<short-description>`, `hotfix/<short-description>`
-- **Commits:** [Conventional Commits](https://www.conventionalcommits.org/) — `feat:`, `fix:`, `refactor:`, `chore:`
-- **No raw `fetch`/`axios` in components** — route everything through a feature's `services/` layer
-- **No business logic in `app/` route files** — they compose feature components, nothing more
-
-## Testing
-
-No automated tests are wired up yet — verification before merge is manual QA against staging. That's a normal place to be at this stage; the failure mode this section is avoiding is a README that claims a test suite exists when `npm test` would just fail or 404.
-
-When the team is ready to add a baseline:
-- **Unit/component:** Vitest + React Testing Library
-- **E2E:** Playwright against a seeded staging API
-- Apply it going forward (new hooks/services) rather than a backfill sprint — coverage builds up on its own
-
-*(If something is already running that this doesn't reflect, update this section to match — don't leave the gap.)*
-
-## Integration Gotchas
-
-Real issues this codebase has hit, written down so the next person doesn't lose an afternoon to them:
-
-- **Customer/user name shows up blank in a populated record:** check that the Mongoose `ref` string on the backend schema matches the actual model name exactly — a silent mismatch returns `null` instead of an error.
-- **A user lookup that works in Mongo Compass returns nothing from the API:** check whether the ID is being compared as an `ObjectId` vs. a `String` — these don't coerce automatically in query filters.
-- **A new Express route "doesn't exist" (404) despite being defined:** check route registration order — a more general route (e.g. `/orders/:id`) defined above a specific one (e.g. `/orders/export`) will swallow it.
-
-## Contributing
-
-1. Branch off `develop`, following the naming convention above.
-2. Keep PRs scoped to one feature/fix — large multi-feature PRs slow down review and hide regressions.
-3. Run `npm run lint` and `npm run format` before opening a PR.
-4. PR description should state: what changed, why, and how it was tested (manual steps are fine if automated tests don't cover it yet).
-5. At least one approval required before merge to `develop`; two for `main`.
-
-## Team
-
-| Role | Contact |
-|---|---|
-| Tech Lead | `<Vaibhav>` |
-| Backend | `<Samir + Gauri>` |
-| Frontend | `<Samir>` |
-
-For onboarding questions, start with your Team Lead. Most answers are already documented above.
+| `npm run dev` | Start the dev server |
+| `npm run build` | Create a production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | Run ESLint |
 
 ## License
 
-Proprietary — © Mavoix Solutions. Internal use only. Not for external distribution.
+Proprietary — © Mavoix Solutions. Internal use only.
