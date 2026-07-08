@@ -2,19 +2,21 @@
 
 **Internal business operations console for Mavoix Solutions**
 
-A comprehensive admin dashboard to manage order fulfillment, customer support, inventory, payments, and reporting.
+The HealthyBit Admin Dashboard is an internal tool built for Mavoix Solutions. It serves as a central hub for the company's staff (like support agents, managers, and admins) to monitor and control the day-to-day operations of the business. It allows the team to handle everything from processing customer orders to providing support and managing warehouse stock in a single, unified web portal.
 
 ---
 
-## Features
+## What Each Section Does
 
-- 📊 **Dashboard**: Executive KPIs and metrics.
-- 👥 **Customers**: Manage CRM profiles and linked devices.
-- 📦 **Inventory**: Track stock levels and low-stock alerts.
-- 🛒 **Orders**: Full order lifecycle management.
-- 💳 **Payments**: Monitor transactions and revenue.
-- 🎧 **Support**: Ticketing system and agent assignments.
-- 📈 **Reports**: View and export business reports.
+- 📊 **Dashboard**: A high-level overview of the business, showing key performance metrics (KPIs) like total sales, active orders, and pending support tickets at a glance.
+- 👥 **Customers**: A CRM (Customer Relationship Management) section where staff can view detailed customer profiles, their purchase history, and their linked devices.
+- 📦 **Inventory**: Allows warehouse staff and managers to monitor current product stock levels in real-time, view where items are allocated, and receive alerts when stock is running low.
+- 🛒 **Orders**: Tracks the entire lifecycle of a customer's order, from the moment it is created to fulfillment, shipping, and final delivery.
+- 💳 **Payments**: Displays all financial transactions, tracks payment statuses (e.g., successful, failed, refunded), and helps reconcile revenue.
+- 🎧 **Support**: A complete ticketing system for customer service, allowing support agents to receive customer issues, assign them to team members, track them through a clear timeline, and resolve them efficiently.
+- 📈 **Reports**: Provides detailed, exportable data and analytics across all the different modules for business reporting and auditing.
+
+---
 
 ## Tech Stack
 
