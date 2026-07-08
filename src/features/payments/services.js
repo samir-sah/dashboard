@@ -21,7 +21,7 @@ const normalizePayment = (payment = {}) => {
     customerEmail: customer.email || payment.customerEmail || '',
     customerPhone: customer.phone || payment.customerPhone || '',
     amount: Number(payment.amount || 0),
-    paymentMethod: payment.method || payment.paymentMethod || 'Razorpay',
+    paymentMethod: payment.method || payment.paymentMethod || 'Unknown',
     status: payment.status || 'Pending',
     linkedOrders: payment.linkedOrders || (payment.orderId ? [payment.orderId] : []),
     refunds,
