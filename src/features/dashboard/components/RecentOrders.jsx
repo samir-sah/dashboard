@@ -1,6 +1,7 @@
 'use client'
 
 import { FileText } from "lucide-react"
+import Link from "next/link"
 import { Button } from "@/components/ui/Button"
 import { useDashboardRecentOrders } from "../hooks/useDashboard"
 
@@ -34,8 +35,8 @@ export default function RecentOrders() {
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm w-full overflow-hidden h-full">
       <div className="flex items-center justify-between p-4 border-b border-gray-100">
         <h3 className="text-lg font-bold text-gray-900">Recent Orders</h3>
-        <Button variant="outline" size="sm" className="text-xs font-semibold bg-white text-gray-700 border-gray-200 hover:bg-gray-50 hover:text-gray-900">
-          View All
+        <Button asChild variant="outline" size="sm" className="text-xs font-semibold bg-white text-gray-700 border-gray-200 hover:bg-gray-50 hover:text-gray-900">
+          <Link href="/orders">View All</Link>
         </Button>
       </div>
 
