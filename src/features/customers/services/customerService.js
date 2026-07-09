@@ -103,8 +103,10 @@ export const getCustomerById = async (id) => {
   
   if (!user) throw new Error("Customer not found");
 
-  const totalOrders = order ? order.length : 0;
-  const totalSpend = order ? order.reduce((sum, o) => sum + (o.totalAmount || 0), 0) : 0;
+  const totalOrders = user.totalOrders ?? (order ? order.length : 0);
+  // totalSpend from backend only counts paid orders (payment.status === 'Completed')
+  // matching dashboard revenue logic — don't recompute client-side
+  const totalSpend = user.totalSpend || 0;
   const lastOrderDate = order && order.length > 0 
     ? order.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate))[0].orderDate 
     : null;
