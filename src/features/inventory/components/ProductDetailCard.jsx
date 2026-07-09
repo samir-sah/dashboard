@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Activity, PackageCheck, RotateCcw, Truck } from 'lucide-react'
+import { Activity, RotateCcw } from 'lucide-react'
 import ReorderStatusBadge from './ReorderStatusBadge'
 
 export default function ProductDetailCard({ product }) {
@@ -24,8 +24,6 @@ export default function ProductDetailCard({ product }) {
   const planningStats = [
     { label: 'Reorder Point', value: `${product.reorderPoint} Units`, icon: RotateCcw },
     { label: 'Low Stock Threshold', value: `${product.lowStockThreshold} Units`, icon: Activity },
-    { label: 'Last Restocked', value: formatDate(product.lastRestockedAt), icon: PackageCheck },
-    { label: 'Next Restock', value: formatDate(product.nextRestockDate), icon: Truck },
   ]
 
   const fields = [
