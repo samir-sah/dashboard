@@ -36,11 +36,15 @@ export default function PrintCenterPage() {
   const userId = order?.userId && typeof order.userId === 'object' ? order.userId._id : order?.userId
   const { customer } = useCustomerById(userId)
 
-  const customerName = customer
-    ? `${customer.firstName ?? ''} ${customer.lastName ?? ''}`.trim()
-    : order?.userId && typeof order.userId === 'object'
-      ? `${order.userId.firstName ?? ''} ${order.userId.lastName ?? ''}`.trim()
-      : null
+  const customerName = customer?.displayName
+    || (customer?.firstName || customer?.lastName
+          ? `${customer.firstName ?? ''} ${customer.lastName ?? ''}`.trim()
+          : null)
+    || order?.userId?.displayName
+    || (order?.userId?.firstName || order?.userId?.lastName
+          ? `${order.userId.firstName ?? ''} ${order.userId.lastName ?? ''}`.trim()
+          : null)
+    || null
 
   const status = normalizeOrderStatus(order?.statusHistory?.at(-1)?.status)
   const orderId = order?.orderId ?? id

@@ -55,9 +55,11 @@ export function useOrders() {
             ? normalizeOrderStatus(o.statusHistory[o.statusHistory.length - 1].status)
             : 'Confirmed')
         const user = o.userId
-        const customerName = user && typeof user === 'object'
-          ? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || 'Unknown'
-          : 'Unknown'
+        const customerName = user?.displayName 
+          || (user?.firstName || user?.lastName 
+                ? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() 
+                : null)
+          || 'Unknown'
         const date = o.orderDate
           ? new Date(o.orderDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
           : '—'

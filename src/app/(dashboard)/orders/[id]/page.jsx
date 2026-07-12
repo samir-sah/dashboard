@@ -206,7 +206,11 @@ function PaymentInfoCard({ order }) {
 
 function CustomerInfo({ order, onEdit }) {
   const { customer, loading, error } = useCustomerById(order?.userId)
-  const fullName = customer ? `${customer.firstName ?? ''} ${customer.lastName ?? ''}`.trim() : '—'
+  const fullName = customer?.displayName 
+    || (customer?.firstName || customer?.lastName 
+          ? `${customer.firstName ?? ''} ${customer.lastName ?? ''}`.trim() 
+          : null)
+    || '—'
   const initials = customer ? `${customer.firstName?.[0] ?? ''}${customer.lastName?.[0] ?? ''}`.toUpperCase() : '?'
 
   if (loading) return (
