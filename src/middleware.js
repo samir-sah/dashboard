@@ -7,7 +7,7 @@ export function middleware(request) {
   if (
     pathname === '/login' ||
     pathname.startsWith('/_next/') ||
-    pathname === '/favicon.ico'
+    pathname === '/favicon.ico' || pathname.endsWith('.png') || pathname.endsWith('.jpg') || pathname.endsWith('.svg')
   ) {
     return NextResponse.next()
   }
