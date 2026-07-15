@@ -40,39 +40,14 @@ export default function DashboardKPICard({ kpi }) {
   const colors = colorMap[kpi.id] || { bg: "bg-gray-100 text-gray-600", stroke: "#4b5563" };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-3">
-          <div className={`p-3 rounded-xl ${colors.bg}`}>
-            <Icon className="w-5 h-5" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-medium text-gray-500">{kpi.label}</span>
-            <div className="flex items-baseline gap-2 mt-0.5">
-              <span className="text-2xl font-bold text-gray-900 leading-none">{kpi.value}</span>
-            </div>
-          </div>
+    <div className="bg-white rounded-xl border border-gray-200 p-5 flex items-center shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group min-h-[96px]">
+      <div className="flex items-center gap-4 w-full">
+        <div className={`p-3 rounded-xl ${colors.bg}`}>
+          <Icon className="w-5 h-5" />
         </div>
-      </div>
-      
-      <div className="flex items-end justify-between mt-2 z-10 min-h-[24px]">
-        <div className="flex flex-col">
-           {kpi.isAlert ? (
-             <div className="flex items-center gap-1 mt-1">
-               <span className="text-sm font-medium text-red-600">Critical</span>
-               <span className="text-sm text-gray-500">{kpi.alertText}</span>
-             </div>
-           ) : (
-             <div className="flex items-center gap-1.5 mt-1">
-               {kpi.trend && (
-                 <span className={`text-sm font-semibold flex items-center ${kpi.trendDirection === 'up' ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'} px-1.5 py-0.5 rounded-md`}>
-                   {kpi.trendDirection === 'up' ? <TrendingUp className="w-3 h-3 mr-1" /> : <TrendingDown className="w-3 h-3 mr-1" />}
-                   {kpi.trend}
-                 </span>
-               )}
-               <span className="text-xs text-gray-400 font-medium">{kpi.comparisonText}</span>
-             </div>
-           )}
+        <div className="flex flex-col gap-0.5">
+          <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">{kpi.label}</span>
+          <span className="text-2xl font-bold text-gray-900 leading-none">{kpi.value}</span>
         </div>
       </div>
     </div>
