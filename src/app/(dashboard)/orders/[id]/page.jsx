@@ -36,7 +36,7 @@ function OrderStepper({ status, order }) {
   const done = STEP_MAP[activeStatus] ?? 1
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 h-full">
       {isCancelled && (
         <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-xl">
           <div className="flex items-center gap-2 mb-2">
@@ -48,7 +48,7 @@ function OrderStepper({ status, order }) {
           </p>
         </div>
       )}
-      <Card className="sticky top-6">
+      <Card className="sticky top-6 h-full">
         <CardHeader className="pb-2">
           <CardTitle className="text-base">Order Processing</CardTitle>
           <p className="text-xs text-muted-foreground">{done} of {STEPS.length} steps completed</p>
@@ -79,7 +79,7 @@ function OrderItemsCard({ order }) {
   const ship  = order?.shippingCharges ?? 0
   const sub   = total - ship
   return (
-    <Card className="mb-5">
+    <Card className="h-full">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <div>
@@ -95,8 +95,8 @@ function OrderItemsCard({ order }) {
             ? <p className="text-center text-muted-foreground text-sm py-6">No items found</p>
             : items.map((item, i) => (
               <div key={i} className="flex gap-4 p-4 rounded-xl border border-muted bg-muted/30">
-                <div className="w-18 h-18 rounded-xl shrink-0 bg-indigo-50 border border-indigo-100 flex items-center justify-center">
-                  <Package size={28} className="text-indigo-600" />
+                <div className="w-14 h-14 rounded-xl shrink-0 bg-indigo-50 border border-indigo-100 flex items-center justify-center">
+                  <Package size={24} className="text-indigo-600" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold mb-1">{item.productName ?? 'Product'}</p>
@@ -113,7 +113,7 @@ function OrderItemsCard({ order }) {
             ))
           }
         </div>
-        <Separator className="my-5" />
+        <Separator className="my-4" />
         {(() => {
           const taxRate = items[0]?.taxRate ?? 0
           const taxAmt = Math.round(sub * (taxRate / 100))
@@ -122,7 +122,7 @@ function OrderItemsCard({ order }) {
             [`GST (${taxRate}%)`, `₹${taxAmt.toLocaleString('en-IN')}`,               false],
             ['Shipping',  ship === 0 ? 'FREE' : `₹${ship.toLocaleString('en-IN')}`,  ship === 0],
           ].map(([label, val, green]) => (
-            <div key={label} className="flex justify-between py-1.5 text-[13.5px]">
+            <div key={label} className="flex justify-between py-1 text-[13.5px]">
               <span className="text-muted-foreground">{label}</span>
               <span className={cn('font-medium', green && 'text-green-600')}>{val}</span>
             </div>
@@ -140,7 +140,7 @@ function OrderItemsCard({ order }) {
 
 function DeliveryInfo({ order, onEdit }) {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="text-[15px]">Delivery Information</CardTitle>
@@ -150,7 +150,6 @@ function DeliveryInfo({ order, onEdit }) {
         </div>
       </CardHeader>
       <CardContent>
-
         <div className="flex flex-col gap-3">
           {[['Shipping Address at time of order', order?.customer?.shippingAddress], ['Billing Address at time of order', order?.customer?.billingAddress]].map(([label, addr]) => (
             <div key={label} className="p-4 rounded-xl border border-muted bg-muted/30">
@@ -180,7 +179,7 @@ function PaymentInfoCard({ order }) {
   ]
 
   return (
-    <Card className="mb-5">
+    <Card className="h-full">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -193,9 +192,9 @@ function PaymentInfoCard({ order }) {
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {rows.map(([label, value]) => (
-            <div key={label} className="p-3.5 rounded-xl border border-muted bg-muted/30 min-w-0">
+            <div key={label} className="p-3 rounded-xl border border-muted bg-muted/30 min-w-0">
               <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide mb-1">{label}</p>
-              <p className="text-[13.5px] font-semibold text-foreground/80 wrap-break-word">{value}</p>
+              <p className="text-[13px] font-semibold text-foreground/80 wrap-break-word">{value}</p>
             </div>
           ))}
         </div>
@@ -336,28 +335,28 @@ export default function OrderDetailPage() {
   }
 
   return (
-    <div className="max-w-325">
+    <div className="max-w-[1400px]">
       <nav className="flex items-center gap-2 mb-5 text-[13px]">
         <span onClick={() => router.push('/orders')} className="text-indigo-600 cursor-pointer font-medium hover:text-indigo-700">Orders</span>
         <span className="text-muted-foreground">›</span>
         <span className="font-medium">{orderId}</span>
       </nav>
 
+      {/* Compact Header */}
       <Card className="mb-5">
-        <CardContent className="py-5 px-7 flex justify-between items-center">
-          <div>
-            <div className="flex items-center gap-2.5 mb-1.5">
-              <Button variant="ghost" size="icon" onClick={() => router.push('/orders')} className="h-8 w-8 text-muted-foreground">
-                <ArrowLeft size={18} />
-              </Button>
-              {loading ? <Skeleton className="w-50 h-7" /> : <h1 className="text-[22px] font-bold">Order {orderId}</h1>}
-            </div>
-            <div className="flex items-center gap-2.5 pl-7">
-              {loading
-                ? <Skeleton className="w-65 h-4" />
-                : <><span className="text-[13px] text-muted-foreground">{formatDate(order?.orderDate)}</span><span className="text-muted-foreground/50">·</span><StatusBadge status={status} /></>
-              }
-            </div>
+        <CardContent className="py-4 px-6 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="icon" onClick={() => router.push('/orders')} className="h-8 w-8 text-muted-foreground">
+              <ArrowLeft size={18} />
+            </Button>
+            {loading ? <Skeleton className="w-50 h-7" /> : <h1 className="text-xl font-bold">Order {orderId}</h1>}
+            {!loading && (
+              <>
+                <span className="text-muted-foreground/40">·</span>
+                <span className="text-[13px] text-muted-foreground">{formatDate(order?.orderDate)}</span>
+                <StatusBadge status={status} />
+              </>
+            )}
           </div>
           <div className="flex items-center gap-2.5">
             {(status === 'Confirmed' || status === 'Processing') && (
@@ -393,35 +392,33 @@ export default function OrderDetailPage() {
         </div>
         <Separator className="mb-5" />
 
-        <div className="flex gap-5 items-start">
-          <div className="flex-1 min-w-0">
-            {loading
-              ? <Card><CardContent className="pt-6 flex flex-col gap-4">
-                  <Skeleton className="w-2/5 h-5" />
-                  {[1,2].map(i => (
-                    <div key={i} className="flex gap-4 p-4 rounded-xl border border-muted">
-                      <Skeleton className="w-18 h-18 rounded-xl shrink-0" />
-                      <div className="flex-1 flex flex-col gap-2"><Skeleton className="w-3/5 h-4" /><Skeleton className="w-2/5 h-3" /></div>
-                      <Skeleton className="w-20 h-5 shrink-0" />
-                    </div>
-                  ))}
-                </CardContent></Card>
-              : <>
-                  <TabsContent value="order" className="mt-0"><OrderItemsCard order={order} /><PaymentInfoCard order={order} /><DeliveryInfo order={order} onEdit={goToEdit} /></TabsContent>
-                  <TabsContent value="customer" className="mt-0"><CustomerInfo order={order} onEdit={goToEdit} /></TabsContent>
-                </>
-            }
-          </div>
-          <div className="w-75 shrink-0">
-            {loading
-              ? <Card><CardContent className="pt-6 flex flex-col gap-3">
-                  <Skeleton className="w-3/5 h-5" /><Skeleton className="w-2/5 h-3" /><Skeleton className="w-full h-2 rounded-full" />
-                  {STEPS.map((_,i) => <Skeleton key={i} className="w-full h-12 rounded-xl" />)}
-                </CardContent></Card>
-              : <OrderStepper status={status} order={order} />
-            }
-          </div>
-        </div>
+        {loading
+          ? <Card><CardContent className="pt-6 flex flex-col gap-4">
+              <Skeleton className="w-2/5 h-5" />
+              {[1,2].map(i => (
+                <div key={i} className="flex gap-4 p-4 rounded-xl border border-muted">
+                  <Skeleton className="w-18 h-18 rounded-xl shrink-0" />
+                  <div className="flex-1 flex flex-col gap-2"><Skeleton className="w-3/5 h-4" /><Skeleton className="w-2/5 h-3" /></div>
+                  <Skeleton className="w-20 h-5 shrink-0" />
+                </div>
+              ))}
+            </CardContent></Card>
+          : <>
+              <TabsContent value="order" className="mt-0">
+                {/* Row 1: Order Items + Stepper side by side */}
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-5 mb-5">
+                  <OrderItemsCard order={order} />
+                  <OrderStepper status={status} order={order} />
+                </div>
+                {/* Row 2: Payment + Delivery side by side */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                  <PaymentInfoCard order={order} />
+                  <DeliveryInfo order={order} onEdit={goToEdit} />
+                </div>
+              </TabsContent>
+              <TabsContent value="customer" className="mt-0"><CustomerInfo order={order} onEdit={goToEdit} /></TabsContent>
+            </>
+        }
       </Tabs>
 
       {cancelModalOpen && (
@@ -475,4 +472,3 @@ export default function OrderDetailPage() {
     </div>
   )
 }
-

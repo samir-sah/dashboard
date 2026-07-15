@@ -114,40 +114,40 @@ export default function EditOrderPage() {
     if (sameAsShipping) void Promise.resolve().then(() => setBilling({ ...shipping }))
   }, [sameAsShipping, shipping])
 
-    const handleSave = async () => {
-      setSaving(true); setSaveError(null); setSaved(false)
-      try {
-        const headers = {
-          'Content-Type': 'application/json',
-        }
-
-        // Call 1 — update order: status + addresses (all live on the order document)
-        const orderRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderId}`, {
-          method: 'PATCH',
-          credentials: 'include',
-          headers,
-          body: JSON.stringify({
-            status,
-            shippingAddress: shipping,
-            billingAddress:  sameAsShipping ? shipping : billing,
-          }),
-        })
-        if (!orderRes.ok) {
-          const err = await orderRes.json().catch(() => ({}))
-          throw new Error(err.message || `Failed (${orderRes.status})`)
-        }
-        
-        setSaved(true)
-        setTimeout(() => router.push(`/orders/${orderId}`), 1200)
-      } catch (err) {
-        setSaveError(err.message)
-      } finally {
-        setSaving(false)
+  const handleSave = async () => {
+    setSaving(true); setSaveError(null); setSaved(false)
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
       }
+
+      // Call 1 — update order: status + addresses (all live on the order document)
+      const orderRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderId}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers,
+        body: JSON.stringify({
+          status,
+          shippingAddress: shipping,
+          billingAddress:  sameAsShipping ? shipping : billing,
+        }),
+      })
+      if (!orderRes.ok) {
+        const err = await orderRes.json().catch(() => ({}))
+        throw new Error(err.message || `Failed (${orderRes.status})`)
+      }
+      
+      setSaved(true)
+      setTimeout(() => router.push(`/orders/${orderId}`), 1200)
+    } catch (err) {
+      setSaveError(err.message)
+    } finally {
+      setSaving(false)
     }
+  }
 
   return (
-    <div className="max-w-325">
+    <div className="max-w-[1400px]">
 
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 mb-5 text-[13px]">
@@ -183,92 +183,86 @@ export default function EditOrderPage() {
         </CardContent>
       </Card>
 
-      {/* Body */}
-      <div className="flex gap-5 items-start">
+      {/* Row 1: Customer Info + Order Status side by side */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-5 mb-5">
+        {/* Customer Information — read only */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">Customer Information</CardTitle>
+            <p className="text-xs text-gray-400">Managed by the customer</p>
+          </CardHeader>
+          <Separator />
+          <CardContent className="pt-5 grid grid-cols-3 gap-4">
+            <Field label="First Name" id="firstName">
+              <Input id="firstName" value={firstName} disabled className="text-[13.5px] bg-gray-50 text-gray-400 cursor-not-allowed" />
+            </Field>
+            <Field label="Last Name" id="lastName">
+              <Input id="lastName" value={lastName} disabled className="text-[13.5px] bg-gray-50 text-gray-400 cursor-not-allowed" />
+            </Field>
+            <Field label="Phone" id="phone">
+              <Input id="phone" value={phone} disabled className="text-[13.5px] bg-gray-50 text-gray-400 cursor-not-allowed" />
+            </Field>
+          </CardContent>
+        </Card>
 
-        {/* Left */}
-        <div className="flex-1 min-w-0 flex flex-col gap-5">
-
-          {/* Customer Info */}
-          {/* Customer Information — read only, admin cannot edit */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm">Customer Information</CardTitle>
-                <p className="text-xs text-gray-400">Managed by the customer</p>
-              </CardHeader>
-              <Separator />
-              <CardContent className="pt-5 grid grid-cols-2 gap-4">
-                <Field label="First Name" id="firstName">
-                  <Input id="firstName" value={firstName} disabled className="text-[13.5px] bg-gray-50 text-gray-400 cursor-not-allowed" />
-                </Field>
-                <Field label="Last Name" id="lastName">
-                  <Input id="lastName" value={lastName} disabled className="text-[13.5px] bg-gray-50 text-gray-400 cursor-not-allowed" />
-                </Field>
-                <div className="col-span-2">
-                  <Field label="Phone" id="phone">
-                    <Input id="phone" value={phone} disabled className="text-[13.5px] bg-gray-50 text-gray-400 cursor-not-allowed" />
-                  </Field>
-                </div>
-              </CardContent>
-            </Card>
-          {/* Shipping Address */}
-          <Card>
-            <CardHeader><CardTitle className="text-sm">Shipping Address</CardTitle></CardHeader>
-            <Separator />
-            <CardContent className="pt-5">
-              <AddressFields values={shipping} onChange={(f, v) => setShipping(p => ({ ...p, [f]: v }))} disabled={isLoading} />
-            </CardContent>
-          </Card>
-
-          {/* Billing Address */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-sm">Billing Address</CardTitle>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={sameAsShipping} onChange={e => setSameAsShipping(e.target.checked)} className="w-4 h-4 accent-indigo-600" />
-                  <span className="text-[13px] text-gray-500">Same as shipping</span>
-                </label>
+        {/* Order Status */}
+        <Card className="sticky top-6 h-fit">
+          <CardHeader>
+            <CardTitle className="text-sm">Order Status</CardTitle>
+            <p className="text-xs text-gray-400">Select the current status</p>
+          </CardHeader>
+          <Separator />
+          <CardContent className="pt-5 flex flex-col gap-2">
+            {STATUS_OPTIONS.map(s => {
+              const active = status === s
+              return (
+                <button key={s} onClick={() => setStatus(s)} disabled={isLoading}
+                  className={`w-full px-4 py-2.5 rounded-xl text-[13px] font-semibold text-left flex items-center justify-between border-[1.5px] transition-all cursor-pointer
+                    ${active ? statusStyles[s] : 'bg-gray-50 text-gray-400 border-gray-100 hover:bg-gray-100'}`}>
+                  {s}
+                  {active && <span>✓</span>}
+                </button>
+              )
+            })}
+            {saved && (
+              <div className="mt-2 px-3 py-2.5 bg-green-50 border border-green-200 rounded-lg text-green-700 text-[13px]">
+                ✓ Saved — redirecting...
               </div>
-            </CardHeader>
-            <Separator />
-            <CardContent className="pt-5">
-              {sameAsShipping
-                ? <p className="text-[13px] text-gray-400 text-center py-2">Billing address matches shipping address.</p>
-                : <AddressFields values={billing} onChange={(f, v) => setBilling(p => ({ ...p, [f]: v }))} disabled={isLoading} />
-              }
-            </CardContent>
-          </Card>
-        </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
 
-        {/* Right — Status */}
-        <div className="w-75 min-w-75">
-          <Card className="sticky top-6">
-            <CardHeader>
-              <CardTitle className="text-sm">Order Status</CardTitle>
-              <p className="text-xs text-gray-400">Select the current status</p>
-            </CardHeader>
-            <Separator />
-            <CardContent className="pt-5 flex flex-col gap-2">
-              {STATUS_OPTIONS.map(s => {
-                const active = status === s
-                return (
-                  <button key={s} onClick={() => setStatus(s)} disabled={isLoading}
-                    className={`w-full px-4 py-2.5 rounded-xl text-[13px] font-semibold text-left flex items-center justify-between border-[1.5px] transition-all cursor-pointer
-                      ${active ? statusStyles[s] : 'bg-gray-50 text-gray-400 border-gray-100 hover:bg-gray-100'}`}>
-                    {s}
-                    {active && <span>✓</span>}
-                  </button>
-                )
-              })}
-              {saved && (
-                <div className="mt-2 px-3 py-2.5 bg-green-50 border border-green-200 rounded-lg text-green-700 text-[13px]">
-                  ✓ Saved — redirecting...
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+      {/* Row 2: Shipping + Billing side by side */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {/* Shipping Address */}
+        <Card>
+          <CardHeader><CardTitle className="text-sm">Shipping Address</CardTitle></CardHeader>
+          <Separator />
+          <CardContent className="pt-5">
+            <AddressFields values={shipping} onChange={(f, v) => setShipping(p => ({ ...p, [f]: v }))} disabled={isLoading} />
+          </CardContent>
+        </Card>
+
+        {/* Billing Address */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm">Billing Address</CardTitle>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={sameAsShipping} onChange={e => setSameAsShipping(e.target.checked)} className="w-4 h-4 accent-indigo-600" />
+                <span className="text-[13px] text-gray-500">Same as shipping</span>
+              </label>
+            </div>
+          </CardHeader>
+          <Separator />
+          <CardContent className="pt-5">
+            {sameAsShipping
+              ? <p className="text-[13px] text-gray-400 text-center py-2">Billing address matches shipping address.</p>
+              : <AddressFields values={billing} onChange={(f, v) => setBilling(p => ({ ...p, [f]: v }))} disabled={isLoading} />
+            }
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
