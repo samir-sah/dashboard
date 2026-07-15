@@ -4,6 +4,8 @@ import React from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
+import { Separator } from "@/components/ui/separator";
 import TicketHeaderCard from "../components/TicketHeaderCard";
 import IssueDetailsCard from "../components/IssueDetailsCard";
 import CustomerInfoCard from "../components/CustomerInfoCard";
@@ -100,7 +102,7 @@ export default function TicketDetailsPage() {
     <div className="max-w-[1400px] w-full pb-10">
       <button 
         onClick={() => router.push('/support')}
-        className="flex items-center gap-2 text-[14px] text-indigo-600 font-medium hover:text-indigo-700 mb-6 transition-colors"
+        className="flex items-center gap-2 text-[14px] text-indigo-600 font-medium hover:text-indigo-700 mb-5 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to Tickets
@@ -108,35 +110,68 @@ export default function TicketDetailsPage() {
 
       <TicketHeaderCard ticket={ticket} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column (65% width approx) */}
-        <div className="lg:col-span-7 xl:col-span-8 flex flex-col">
-          <IssueDetailsCard ticket={ticket} />
-          <ActivityTimeline timeline={ticket.timeline} />
-        </div>
+      <Tabs defaultValue="issue">
+        {/* Tab bar + content in a 2-column grid: tabs on left, actions always visible on right */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-5 items-start">
+          
+          {/* Left: Tab bar + tab content */}
+          <div>
+            <div className="bg-background rounded-t-2xl border border-b-0 px-5">
+              <TabsList className="bg-transparent h-auto p-0 gap-0 rounded-none">
+                {[
+                  ['issue', 'Issue Details'],
+                  ['customer', 'Customer & Device'],
+                  ['timeline', 'Activity Timeline'],
+                ].map(([key, label]) => (
+                  <TabsTrigger
+                    key={key}
+                    value={key}
+                    className="px-5 py-3.5 text-sm bg-transparent shadow-none rounded-none border-b-2 -mb-px data-[state=active]:text-indigo-600 data-[state=active]:border-indigo-600 data-[state=active]:font-semibold data-[state=active]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=inactive]:border-transparent"
+                  >
+                    {label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </div>
+            <Separator className="mb-5" />
 
-        {/* Right Column (35% width approx) */}
-        <div className="lg:col-span-5 xl:col-span-4 flex flex-col">
-          <CustomerInfoCard customer={ticket.customer} />
-          <DeviceInfoCard device={ticket.device} />
-          <TicketActionsCard
-            ticket={ticket}
-            engineers={engineersQuery.data || []}
-            onAssign={(assignedTo) => assignMutation.mutateAsync(assignedTo)}
-            onMarkInProgress={() => statusMutation.mutateAsync({ status: "In Progress" })}
-            onAddNote={(description) => noteMutation.mutateAsync(description)}
-            onResolve={(resolutionNotes) => resolveMutation.mutateAsync(resolutionNotes)}
-            onClose={(payload) => statusMutation.mutateAsync({ status: "Closed", ...payload })}
-            isPending={
-              assignMutation.isPending ||
-              statusMutation.isPending ||
-              noteMutation.isPending ||
-              resolveMutation.isPending
-            }
-            error={actionError?.message}
-          />
+            <TabsContent value="issue" className="mt-0">
+              <IssueDetailsCard ticket={ticket} />
+            </TabsContent>
+
+            <TabsContent value="customer" className="mt-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <CustomerInfoCard customer={ticket.customer} />
+                <DeviceInfoCard device={ticket.device} />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="timeline" className="mt-0">
+              <ActivityTimeline timeline={ticket.timeline} />
+            </TabsContent>
+          </div>
+
+          {/* Right: Ticket Actions — always visible */}
+          <div className="sticky top-6">
+            <TicketActionsCard
+              ticket={ticket}
+              engineers={engineersQuery.data || []}
+              onAssign={(assignedTo) => assignMutation.mutateAsync(assignedTo)}
+              onMarkInProgress={() => statusMutation.mutateAsync({ status: "In Progress" })}
+              onAddNote={(description) => noteMutation.mutateAsync(description)}
+              onResolve={(resolutionNotes) => resolveMutation.mutateAsync(resolutionNotes)}
+              onClose={(payload) => statusMutation.mutateAsync({ status: "Closed", ...payload })}
+              isPending={
+                assignMutation.isPending ||
+                statusMutation.isPending ||
+                noteMutation.isPending ||
+                resolveMutation.isPending
+              }
+              error={actionError?.message}
+            />
+          </div>
         </div>
-      </div>
+      </Tabs>
     </div>
   );
 }

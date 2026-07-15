@@ -7,7 +7,7 @@ export default function DeviceInfoCard({ device }) {
   const isWarrantyActive = device.warrantyStatus?.toUpperCase() === "IN WARRANTY" || device.warrantyStatus?.toUpperCase() === "ACTIVE";
 
   return (
-    <Card className="mb-6 shadow-sm border border-gray-200">
+    <Card className="shadow-sm border border-gray-200">
       <CardHeader className="pb-4 pt-6 px-6">
         <CardTitle className="text-[17px] font-bold text-gray-900">Device Information</CardTitle>
       </CardHeader>

@@ -6,7 +6,7 @@ export default function IssueDetailsCard({ ticket }) {
   if (!ticket) return null;
 
   return (
-    <Card className="mb-6 shadow-sm border border-gray-200">
+    <Card className="shadow-sm border border-gray-200">
       <CardHeader className="pb-4 pt-6 px-6">
         <CardTitle className="text-[17px] font-bold text-gray-900">Issue Details</CardTitle>
       </CardHeader>
