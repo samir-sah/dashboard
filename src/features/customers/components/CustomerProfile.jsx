@@ -1,7 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { Mail, Phone, Calendar, MapPin, CheckCircle2 } from "lucide-react"
+import { Mail, Phone, Calendar, MapPin, CheckCircle2, ShoppingBag, IndianRupee, TrendingUp, User, ChevronLeft, ChevronRight } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card"
 import { Badge } from "@/components/ui/Badge"
 import CustomerOrders from "./CustomerOrders"
@@ -78,72 +79,32 @@ export default function CustomerProfile({ customer, orders, loadingOrders }) {
           </CardContent>
         </Card>
 
-        {/* Addresses Section */}
-        <Card className="border-border shadow-sm flex flex-col">
-          <CardHeader>
-            <CardTitle>Addresses</CardTitle>
-            <CardDescription>Saved shipping and billing locations.</CardDescription>
-          </CardHeader>
-          <CardContent className="flex-1 min-h-0">
-            {customer.addresses && customer.addresses.length > 0 ? (
-              <div className="flex flex-col gap-4 max-h-[400px] overflow-y-auto pr-2">
-                {customer.addresses.map((addr) => (
-                  <div key={addr.id} className="relative rounded-lg border border-border p-4 bg-muted/20">
-                     {addr.isDefault && (
-                        <div className="absolute top-0 right-0 bg-primary/10 text-primary px-2.5 py-1 text-xs font-semibold rounded-bl-lg rounded-tr-lg flex items-center gap-1">
-                          <CheckCircle2 className="size-3" />
-                          Default
-                        </div>
-                      )}
-                      <div className="flex items-start gap-3">
-                        <div className="p-2 bg-background border border-border shadow-sm rounded-full shrink-0">
-                          <MapPin className="size-4 text-muted-foreground" />
-                        </div>
-                        <div>
-                          <div className="font-medium text-foreground text-sm mb-1">{addr.type === "Address" ? "Address" : `${addr.type} Address`}</div>
-                          <div className="text-sm text-muted-foreground space-y-0.5">
-                            {addr.line1 && <p>{addr.line1}</p>}
-                            {addr.street && <p>{addr.street}</p>}
-                            {(addr.city || addr.state) && <p>{[addr.city, addr.state].filter(Boolean).join(', ')}</p>}
-                            {addr.pincode && <p>PIN: {addr.pincode}</p>}
-                          </div>
-                        </div>
-                      </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center p-8 text-muted-foreground border border-dashed border-border rounded-lg">
-                No addresses saved for this customer.
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        {/* Addresses Carousel */}
+        <AddressCarousel addresses={customer.addresses} />
       </div>
 
       {/* Right Column: KPIs & Recent Orders */}
       <div className="space-y-6 lg:col-span-2">
-        {/* Summary Cards */}
+        {/* Summary Cards — icon-left style matching dashboard */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="kpi-card bg-white rounded-xl border border-gray-200 p-5 flex flex-col gap-3 justify-center"
-            style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)', transition: 'box-shadow 0.2s ease, transform 0.2s ease' }}>
-            <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase">Total Orders</p>
-            <p className="text-3xl font-bold leading-none text-gray-900">{customer.totalOrders}</p>
-          </div>
-          
-          <div className="kpi-card bg-white rounded-xl border border-gray-200 p-5 flex flex-col gap-3 justify-center"
-            style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)', transition: 'box-shadow 0.2s ease, transform 0.2s ease' }}>
-            <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase">Total Spend</p>
-            <p className="text-3xl font-bold leading-none text-gray-900">₹{customer.totalSpend.toLocaleString()}</p>
-          </div>
-
-          <div className="kpi-card bg-white rounded-xl border border-gray-200 p-5 flex flex-col gap-3 justify-center"
-            style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)', transition: 'box-shadow 0.2s ease, transform 0.2s ease' }}>
-            <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase">Average Order Value</p>
-            <p className="text-3xl font-bold leading-none text-gray-900">
-              ₹{customer.totalOrders > 0 ? Math.round(customer.totalSpend / customer.totalOrders).toLocaleString() : 0}
-            </p>
-          </div>
+          {[
+            { label: 'Total Orders', value: customer.totalOrders, icon: ShoppingBag, iconColor: 'text-indigo-600', bg: 'bg-indigo-50' },
+            { label: 'Total Spend', value: `₹${customer.totalSpend.toLocaleString()}`, icon: IndianRupee, iconColor: 'text-emerald-600', bg: 'bg-emerald-50' },
+            { label: 'Avg Order Value', value: `₹${customer.totalOrders > 0 ? Math.round(customer.totalSpend / customer.totalOrders).toLocaleString() : 0}`, icon: TrendingUp, iconColor: 'text-amber-600', bg: 'bg-amber-50' },
+          ].map(item => {
+            const Icon = item.icon
+            return (
+              <div key={item.label} className="bg-white rounded-xl border border-gray-200 p-5 flex items-center gap-3 shadow-sm">
+                <div className={`p-2.5 rounded-xl ${item.bg} ${item.iconColor}`}>
+                  <Icon className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase">{item.label}</p>
+                  <p className="text-2xl font-bold leading-none text-gray-900">{item.value}</p>
+                </div>
+              </div>
+            )
+          })}
         </div>
 
         {/* Recent Orders Section */}
@@ -169,3 +130,86 @@ export default function CustomerProfile({ customer, orders, loadingOrders }) {
   )
 }
 
+function AddressCarousel({ addresses }) {
+  const [idx, setIdx] = useState(0)
+
+  if (!addresses || addresses.length === 0) {
+    return (
+      <Card className="border-border shadow-sm">
+        <CardHeader>
+          <CardTitle>Addresses</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center p-6 text-muted-foreground border border-dashed border-border rounded-lg">
+            No addresses saved.
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  const addr = addresses[idx]
+  const total = addresses.length
+  const prev = () => setIdx(i => (i - 1 + total) % total)
+  const next = () => setIdx(i => (i + 1) % total)
+
+  return (
+    <Card className="border-border shadow-sm">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="text-sm">Addresses</CardTitle>
+            <CardDescription className="text-xs">{idx + 1} of {total}</CardDescription>
+          </div>
+          {total > 1 && (
+            <div className="flex items-center gap-1">
+              <button onClick={prev} className="p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground">
+                <ChevronLeft className="size-4" />
+              </button>
+              <button onClick={next} className="p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground">
+                <ChevronRight className="size-4" />
+              </button>
+            </div>
+          )}
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="relative rounded-lg border border-border p-4 bg-muted/20">
+          {addr.isDefault && (
+            <div className="absolute top-0 right-0 bg-primary/10 text-primary px-2.5 py-1 text-xs font-semibold rounded-bl-lg rounded-tr-lg flex items-center gap-1">
+              <CheckCircle2 className="size-3" />
+              Default
+            </div>
+          )}
+          <div className="flex items-start gap-3">
+            <div className="p-2 bg-background border border-border shadow-sm rounded-full shrink-0">
+              <MapPin className="size-4 text-muted-foreground" />
+            </div>
+            <div>
+              <div className="font-medium text-foreground text-sm mb-1">{addr.type === "Address" ? "Address" : `${addr.type} Address`}</div>
+              <div className="text-sm text-muted-foreground space-y-0.5">
+                {addr.line1 && <p>{addr.line1}</p>}
+                {addr.street && <p>{addr.street}</p>}
+                {(addr.city || addr.state) && <p>{[addr.city, addr.state].filter(Boolean).join(', ')}</p>}
+                {addr.pincode && <p>PIN: {addr.pincode}</p>}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Dot indicators */}
+        {total > 1 && (
+          <div className="flex justify-center gap-1.5 mt-3">
+            {addresses.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setIdx(i)}
+                className={`w-1.5 h-1.5 rounded-full transition-all ${i === idx ? 'bg-indigo-500 w-4' : 'bg-gray-300 hover:bg-gray-400'}`}
+              />
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  )
+}

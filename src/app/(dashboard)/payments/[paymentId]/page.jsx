@@ -2,11 +2,13 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
-import { ArrowLeft, CreditCard, User, ShoppingBag, Receipt, AlertCircle } from 'lucide-react'
+import { ArrowLeft, CreditCard, User, ShoppingBag, Receipt, AlertCircle, Clock, ExternalLink } from 'lucide-react'
 import { paymentService } from '@/features/payments/services'
 import StatusBadge from '@/components/shared/StatusBadge'
 import RefundHistory from '@/features/payments/components/RefundHistory'
 import { getSimplifiedStatus } from '@/features/payments/utils'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { Separator } from '@/components/ui/separator'
 
 export default function PaymentDetailPage() {
   const params = useParams()
@@ -38,20 +40,18 @@ export default function PaymentDetailPage() {
 
   if (loading) {
     return (
-      <div className="max-w-4xl w-full pb-10 animate-pulse">
+      <div className="max-w-[1400px] w-full pb-10 animate-pulse">
         <div className="h-8 bg-gray-200 rounded w-48 mb-8"></div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="h-48 bg-gray-200 rounded-xl"></div>
-          <div className="h-48 bg-gray-200 rounded-xl"></div>
-        </div>
-        <div className="h-64 bg-gray-200 rounded-xl"></div>
+        <div className="h-24 bg-gray-200 rounded-xl mb-5"></div>
+        <div className="grid grid-cols-5 gap-4 mb-5">{[1,2,3,4,5].map(i => <div key={i} className="h-20 bg-gray-200 rounded-xl" />)}</div>
+        <div className="h-40 bg-gray-200 rounded-xl"></div>
       </div>
     )
   }
 
   if (error || !payment) {
     return (
-      <div className="max-w-4xl w-full pb-10">
+      <div className="max-w-[1400px] w-full pb-10">
         <button onClick={() => router.back()} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 mb-6 transition-colors">
           <ArrowLeft size={16} /> Back to Payments
         </button>
@@ -69,119 +69,117 @@ export default function PaymentDetailPage() {
   }) : '-'
 
   return (
-    <div className="max-w-[1000px] w-full pb-10">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <button onClick={() => router.back()} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 mb-4 transition-colors text-sm font-medium">
-            <ArrowLeft size={16} /> Back to Payments
-          </button>
-          <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold text-gray-900">{payment.paymentId || payment.orderId}</h1>
+    <div className="max-w-[1400px] w-full pb-10">
+      {/* Back button */}
+      <button onClick={() => router.back()} className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700 mb-5 transition-colors text-sm font-medium">
+        <ArrowLeft size={16} /> Back to Payments
+      </button>
+
+      {/* Header */}
+      <Card className="mb-5">
+        <CardContent className="py-4 px-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <ArrowLeft size={18} className="text-muted-foreground cursor-pointer hover:text-gray-900" onClick={() => router.back()} />
+            <h1 className="text-xl font-bold text-gray-900">{payment.paymentId || payment.orderId}</h1>
             <StatusBadge status={getSimplifiedStatus(payment.status)} />
+            <span className="text-muted-foreground/40">·</span>
+            <span className="text-sm text-gray-500">{formatDate(payment.createdAt)}</span>
           </div>
-          <p className="text-gray-500 text-sm mt-1">Created on {formatDate(payment.createdAt)}</p>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-          <div className="flex items-center gap-2 mb-4 text-indigo-600">
-            <CreditCard size={20} />
-            <h2 className="font-semibold text-gray-900">Payment Information</h2>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <p className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Amount</p>
-              <p className="text-xl font-bold text-gray-900">{formatCurrency(payment.amount)}</p>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Method</p>
-                <p className="text-sm font-medium text-gray-900">{payment.paymentMethod}</p>
+      {/* KPI Strip — all key info at a glance */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-5">
+        {[
+          { label: 'Amount', value: formatCurrency(payment.amount), icon: CreditCard, iconColor: 'text-indigo-600', bg: 'bg-indigo-50' },
+          { label: 'Method', value: payment.paymentMethod || '-', icon: Receipt, iconColor: 'text-purple-600', bg: 'bg-purple-50' },
+          { label: 'Paid At', value: payment.paidAt ? new Date(payment.paidAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '-', icon: Clock, iconColor: 'text-amber-600', bg: 'bg-amber-50' },
+          { label: 'Customer', value: payment.customerName || '-', icon: User, iconColor: 'text-emerald-600', bg: 'bg-emerald-50', link: payment.customerId ? `/customers/${payment.customerId}` : null },
+          { label: 'Order', value: payment.orderId || '-', icon: ShoppingBag, iconColor: 'text-blue-600', bg: 'bg-blue-50', link: payment.orderId ? `/orders/${payment.orderId}` : null },
+        ].map(item => {
+          const Icon = item.icon
+          const content = (
+            <div className="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow min-h-[80px]">
+              <div className={`p-2.5 rounded-xl ${item.bg} ${item.iconColor}`}>
+                <Icon className="w-4 h-4" />
               </div>
-              <div>
-                <p className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Paid At</p>
-                <p className="text-sm font-medium text-gray-900">{formatDate(payment.paidAt)}</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">{item.label}</p>
+                <p className="text-sm font-bold text-gray-900 truncate">{item.value}</p>
+                {item.link && (
+                  <span className="text-[11px] text-indigo-600 font-medium flex items-center gap-0.5 mt-0.5">
+                    View <ExternalLink className="w-3 h-3" />
+                  </span>
+                )}
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-            <div className="flex items-center gap-2 mb-4 text-emerald-600">
-              <User size={20} />
-              <h2 className="font-semibold text-gray-900">Customer</h2>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-900">{payment.customerName}</p>
-              <p className="text-sm text-gray-500 mt-1">ID: {payment.customerId || '-'}</p>
-              {payment.customerId && (
-                <Link href={`/customers/${payment.customerId}`} className="text-indigo-600 hover:text-indigo-800 text-sm font-medium mt-2 inline-block">
-                  View Customer Profile -&gt;
-                </Link>
-              )}
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col max-h-[300px]">
-            <div className="flex items-center gap-2 mb-4 text-blue-600 shrink-0">
-              <ShoppingBag size={20} />
-              <h2 className="font-semibold text-gray-900">Linked Order</h2>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-900">{payment.orderId}</p>
-              <Link href={`/orders/${payment.orderId}`} className="text-indigo-600 hover:text-indigo-800 text-sm font-medium mt-2 inline-block">
-                View Order Details -&gt;
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mb-6">
-        <div className="flex items-center gap-2 mb-4 text-gray-700">
-          <Receipt size={20} />
-          <h2 className="font-semibold text-gray-900">Gateway Information</h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div>
-            <p className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Razorpay Order ID</p>
-            <p className="text-sm font-mono text-gray-900 bg-gray-50 p-2 rounded border border-gray-100 break-all">{payment.razorpayOrderId || '-'}</p>
-          </div>
-          <div>
-            <p className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Razorpay Payment ID</p>
-            <p className="text-sm font-mono text-gray-900 bg-gray-50 p-2 rounded border border-gray-100 break-all">{payment.razorpayPaymentId || '-'}</p>
-          </div>
-          <div>
-            <p className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Transaction ID</p>
-            <p className="text-sm font-mono text-gray-900 bg-gray-50 p-2 rounded border border-gray-100 break-all">{payment.transactionId || '-'}</p>
-          </div>
-        </div>
-      </div>
-
-      <RefundHistory refunds={payment.refunds || []} />
-
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden mt-6">
-        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50/50">
-          <h3 className="text-sm font-semibold text-gray-900">Payment Timeline</h3>
-        </div>
-        <div className="divide-y divide-gray-100">
-          {(payment.statusHistory || []).length === 0 ? (
-            <div className="px-6 py-4 text-sm text-gray-500">No payment status history available.</div>
+          )
+          return item.link ? (
+            <Link key={item.label} href={item.link} className="block">
+              {content}
+            </Link>
           ) : (
-            payment.statusHistory.map((entry, index) => (
-              <div key={`${entry.status}-${entry.updatedAt}-${index}`} className="px-6 py-4 flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">{entry.status}</p>
-                  {entry.note && <p className="text-sm text-gray-500 mt-1">{entry.note}</p>}
-                </div>
-                <p className="text-xs text-gray-500 whitespace-nowrap">{formatDate(entry.updatedAt)}</p>
-              </div>
-            ))
-          )}
-        </div>
+            <div key={item.label}>{content}</div>
+          )
+        })}
       </div>
+
+      {/* Gateway + Timeline side by side */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+        {/* Gateway Information */}
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <Receipt size={16} className="text-gray-600" />
+              <CardTitle className="text-[15px]">Gateway Information</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {[
+                ['Razorpay Order ID', payment.razorpayOrderId],
+                ['Razorpay Payment ID', payment.razorpayPaymentId],
+                ['Transaction ID', payment.transactionId],
+              ].map(([label, value]) => (
+                <div key={label} className="p-3 rounded-xl border border-gray-100 bg-gray-50/60">
+                  <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-1.5">{label}</p>
+                  <p className="text-[13px] font-mono font-medium text-gray-900 break-all">{value || '-'}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Payment Timeline */}
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <Clock size={16} className="text-gray-600" />
+              <CardTitle className="text-[15px]">Payment Timeline</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {(payment.statusHistory || []).length === 0 ? (
+              <p className="text-sm text-gray-500 text-center py-4">No payment status history available.</p>
+            ) : (
+              <div className="divide-y divide-gray-100">
+                {payment.statusHistory.map((entry, index) => (
+                  <div key={`${entry.status}-${entry.updatedAt}-${index}`} className="py-3 flex items-start justify-between gap-4 first:pt-0 last:pb-0">
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">{entry.status}</p>
+                      {entry.note && <p className="text-xs text-gray-500 mt-0.5">{entry.note}</p>}
+                    </div>
+                    <p className="text-xs text-gray-400 whitespace-nowrap">{formatDate(entry.updatedAt)}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Refund History */}
+      <RefundHistory refunds={payment.refunds || []} />
     </div>
   )
 }
