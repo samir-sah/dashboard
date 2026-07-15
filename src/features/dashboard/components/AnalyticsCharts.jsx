@@ -15,27 +15,15 @@ import {
 } from "recharts"
 import { MoreVertical, TrendingUp, TrendingDown } from "lucide-react"
 import {
-  useDashboardCustomerGrowth,
   useDashboardOrderStatus,
   useDashboardOrdersVsUnits,
   useDashboardRevenueForecast,
 } from "../hooks/useDashboard"
+import GenderOrders from "./GenderOrders"
 
-const ChartHeader = ({ title, metric, growth, isPositive }) => (
-  <div className="flex flex-col mb-6">
-    <div className="flex items-center justify-between mb-2">
-      <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">{title}</h3>
-    </div>
-    <div className="flex items-end gap-3 mb-2">
-      <span className="text-3xl font-bold text-gray-900 leading-none">{metric}</span>
-      {growth && (
-        <span className={`text-sm font-semibold flex items-center ${isPositive ? 'text-green-600' : isPositive === false ? 'text-red-600' : 'text-blue-600'}`}>
-          {isPositive === true && <TrendingUp className="w-4 h-4 mr-1" />}
-          {isPositive === false && <TrendingDown className="w-4 h-4 mr-1" />}
-          {growth}
-        </span>
-      )}
-    </div>
+const ChartHeader = ({ title }) => (
+  <div className="flex items-center justify-between mb-2">
+    <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">{title}</h3>
   </div>
 )
 
@@ -94,12 +82,10 @@ const OrderStatusTooltip = ({ active, payload }) => {
 export default function AnalyticsCharts({ params }) {
   const orderStatus = useDashboardOrderStatus(params)
   const ordersVsUnits = useDashboardOrdersVsUnits(params)
-  const customerGrowth = useDashboardCustomerGrowth(params)
   const revenueForecast = useDashboardRevenueForecast({ ...params, forecastMonths: 3 })
 
   const orderStatusData = orderStatus.data?.data || []
   const ordersVsUnitsData = ordersVsUnits.data?.data || []
-  const customerGrowthData = customerGrowth.data?.data || []
   const expectedGrowthData = revenueForecast.data?.data || []
 
   return (
@@ -107,7 +93,7 @@ export default function AnalyticsCharts({ params }) {
       <div className="bg-white rounded-xl border border-gray-200 p-8 flex flex-col shadow-sm hover:shadow-md transition-shadow group">
         <ChartHeader title="Order Status" metric={orderStatus.data?.metric || "Current Distribution"} />
         <ChartState query={orderStatus}>
-          <div className="h-64 w-full mt-4 min-h-[256px] min-w-0">
+          <div className="h-64 w-full min-h-[256px] min-w-0">
             <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <BarChart layout="vertical" data={orderStatusData} margin={{ top: 0, right: 30, left: 40, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f3f4f6" />
@@ -126,7 +112,7 @@ export default function AnalyticsCharts({ params }) {
       <div className="bg-white rounded-xl border border-gray-200 p-8 flex flex-col shadow-sm hover:shadow-md transition-shadow group">
         <ChartHeader title="Orders vs Units Sold" metric={ordersVsUnits.data?.metric || "0 Units / 0 Orders"} growth={ordersVsUnits.data?.growth || "Avg 0.0 Units/Order"} />
         <ChartState query={ordersVsUnits}>
-          <div className="h-64 w-full mt-4 min-h-[256px] min-w-0">
+          <div className="h-64 w-full min-h-[256px] min-w-0">
             <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <LineChart data={ordersVsUnitsData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
@@ -143,28 +129,13 @@ export default function AnalyticsCharts({ params }) {
         </ChartState>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-8 flex flex-col shadow-sm hover:shadow-md transition-shadow group">
-        <ChartHeader title="New Customers Acquired" metric={customerGrowth.data?.metric || "0 New Customers"} growth={customerGrowth.data?.growth || "+0.0%"} isPositive={customerGrowth.data?.isPositive ?? true} />
-        <ChartState query={customerGrowth}>
-          <div className="h-64 w-full mt-4 min-h-[256px] min-w-0">
-            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-              <BarChart data={customerGrowthData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
-                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 12 }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 12 }} />
-                <RechartsTooltip cursor={{ fill: '#f0fdf4' }} contentStyle={{ borderRadius: '8px', border: '1px solid #e5e7eb', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', fontWeight: 'bold' }} />
-                <Bar dataKey="newCustomers" name="New Customers" fill="#10b981" barSize={32} radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </ChartState>
-      </div>
+      <GenderOrders params={params} />
 
       <div className="bg-white rounded-xl border border-gray-200 p-8 flex flex-col shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-3xl opacity-50 pointer-events-none -translate-y-1/2 translate-x-1/2" />
         <ChartHeader title="Monthly Revenue & Forecast" metric={revenueForecast.data?.metric || "₹0 Current"} growth={revenueForecast.data?.growth || "Projected ₹0"} />
         <ChartState query={revenueForecast}>
-          <div className="h-64 w-full mt-4 z-10 min-h-[256px] min-w-0">
+          <div className="h-64 w-full z-10 min-h-[256px] min-w-0">
             <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <LineChart data={expectedGrowthData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />

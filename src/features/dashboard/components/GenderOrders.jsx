@@ -10,9 +10,9 @@ export default function GenderOrders({ params }) {
   const total = genderOrdersData.reduce((acc, curr) => acc + curr.value, 0)
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm flex flex-col h-full w-full">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-bold text-gray-900">Gender Based Orders</h3>
+    <div className="bg-white rounded-xl border border-gray-200 p-8 flex flex-col shadow-sm hover:shadow-md transition-shadow group h-full w-full">
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Gender Based Orders</h3>
       </div>
 
       {query.isLoading ? (

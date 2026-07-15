@@ -1,6 +1,6 @@
 'use client'
 
-import GenderOrders from "./GenderOrders"
+import NewCustomersChart from "./NewCustomersChart"
 import RecentOrders from "./RecentOrders"
 
 export default function InsightsGrid({ params }) {
@@ -9,7 +9,7 @@ export default function InsightsGrid({ params }) {
       {/* Row 1: Gender Orders & Recent Orders */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1">
-          <GenderOrders params={params} />
+          <NewCustomersChart params={params} />
         </div>
         <div className="lg:col-span-2">
           <RecentOrders />

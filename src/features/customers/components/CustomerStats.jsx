@@ -18,18 +18,15 @@ export default function CustomerStats({ stats }) {
       {items.map((item, index) => {
         const Icon = item.icon;
         return (
-          <div key={index} className="kpi-card bg-white rounded-xl border border-gray-200 p-5 flex items-center justify-between"
-            style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)', transition: 'box-shadow 0.2s ease, transform 0.2s ease' }}>
-            <div className="flex flex-col gap-3">
-              <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase">
-                {item.title}
-              </p>
-              <p className="text-3xl font-bold leading-none text-gray-900">
-                {item.value}
-              </p>
-            </div>
-            <div className={`flex items-center justify-center w-12 h-12 rounded-xl ${item.bg}`}>
-              <Icon size={24} className={item.color} />
+          <div key={index} className="bg-white rounded-xl border border-gray-200 p-5 flex items-center shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group min-h-[96px]">
+            <div className="flex items-center gap-4 w-full">
+              <div className={`p-3 rounded-xl ${item.bg} ${item.color}`}>
+                <Icon className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">{item.title}</span>
+                <span className="text-2xl font-bold text-gray-900 leading-none">{item.value}</span>
+              </div>
             </div>
           </div>
         );
