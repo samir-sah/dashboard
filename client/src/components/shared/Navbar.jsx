@@ -37,7 +37,7 @@ export default function Navbar({ onMenuClick }) {
   return (
     <header className="sticky top-0 z-30 flex h-[72px] shrink-0 items-center justify-between border-b border-border bg-background/92 px-5 backdrop-blur lg:px-7">
       <div className="min-w-0">
-        <p className="text-xs font-semibold uppercase text-muted-foreground">Flowboard</p>
+        <p className="text-xs font-semibold uppercase text-muted-foreground">Synera</p>
         <h1 className="truncate text-xl font-semibold text-ink">{pageTitle}</h1>
       </div>
 

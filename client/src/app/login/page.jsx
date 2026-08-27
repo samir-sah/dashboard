@@ -1,11 +1,11 @@
+import Image from 'next/image'
 import { ShieldCheck } from 'lucide-react'
 
-import { HealthyBitLogo, HealthyBitMark } from '@/components/healthy-bit-logo'
 import { LoginForm } from '@/components/login-form'
 
 export const metadata = {
-  title: 'Healthy Bit — Admin Login',
-  description: 'Sign in to the Healthy Bit admin dashboard',
+  title: 'Synera — Admin Login',
+  description: 'Sign in to the Synera admin dashboard',
 }
 
 export default function LoginPage() {
@@ -36,7 +36,15 @@ export default function LoginPage() {
         />
 
         <div className="relative z-10 flex w-full flex-col justify-between p-10 xl:p-16">
-          <HealthyBitLogo light markClassName="h-9 w-9 text-accent" />
+          <Image
+            src="/synera-logo.png"
+            alt="Synera"
+            width={180}
+            height={48}
+            style={{ objectFit: 'contain', objectPosition: 'left' }}
+            priority
+            className="brightness-0 invert"
+          />
 
           <div className="max-w-xl">
             <p className="mb-4 inline-flex items-center text-xs font-semibold uppercase tracking-[0.2em] text-accent">
@@ -59,7 +67,7 @@ export default function LoginPage() {
 
           <div className="flex items-center gap-3 text-sm text-primary-foreground/60">
             <span className="h-px w-10 bg-accent/60" />
-            Healthy Bit · Admin Console
+            Synera · Admin Console
           </div>
         </div>
       </section>
@@ -89,15 +97,14 @@ export default function LoginPage() {
         <div className="relative z-10 w-full max-w-sm">
           {/* Mobile-only logo */}
           <div className="mb-8 flex items-center gap-2.5 lg:hidden">
-            <HealthyBitMark className="h-9 w-9 text-primary" />
-            <div className="leading-none">
-              <span className="block text-xl font-bold tracking-tight text-foreground">
-                Healthy Bit
-              </span>
-              <span className="block text-[11px] font-medium tracking-wide text-muted-foreground">
-                Precision in Every Beat
-              </span>
-            </div>
+            <Image
+              src="/synera-logo.png"
+              alt="Synera"
+              width={160}
+              height={42}
+              style={{ objectFit: 'contain' }}
+              priority
+            />
           </div>
 
           {/* Card */}

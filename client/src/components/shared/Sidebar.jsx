@@ -22,13 +22,13 @@ export default function Sidebar() {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(() => (
     typeof window !== 'undefined' &&
-    window.localStorage.getItem('flowboard-sidebar-collapsed') === 'true'
+    window.localStorage.getItem('synera-sidebar-collapsed') === 'true'
   ))
 
   const toggleCollapsed = () => {
     setCollapsed((current) => {
       const next = !current
-      window.localStorage.setItem('flowboard-sidebar-collapsed', String(next))
+      window.localStorage.setItem('synera-sidebar-collapsed', String(next))
       return next
     })
   }
@@ -44,10 +44,10 @@ export default function Sidebar() {
       <div className={`flex h-[72px] shrink-0 items-center border-b border-sidebar-border ${collapsed ? 'justify-center px-3' : 'justify-between px-5'}`}>
         {!collapsed && (
           <Image
-            src="/LOGO-H.png"
-            alt="Mavoix"
-            width={120}
-            height={32}
+            src="/synera-logo.png"
+            alt="Synera"
+            width={140}
+            height={36}
             style={{ objectFit: 'contain', objectPosition: 'left', width: 'auto' }}
             priority
           />

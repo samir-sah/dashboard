@@ -1,7 +1,7 @@
 import SupportPage from "@/features/support/pages/SupportPage";
 
 export const metadata = {
-  title: "Support | Mavoix Dashboard",
+  title: "Support | Synera Dashboard",
   description: "Manage customer support tickets and device-related issues",
 };
 

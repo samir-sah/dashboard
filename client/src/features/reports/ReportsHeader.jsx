@@ -99,7 +99,7 @@ export default function ReportsHeader({
       const combined = `ORDER REPORTS\n${orderCSV}\n\nREVENUE REPORTS\n${revenueCSV}`;
 
       const blob = new Blob([combined], { type: 'text/csv;charset=utf-8;' });
-      downloadBlob(blob, `HealthyBit_Reports_${timestamp}.csv`);
+      downloadBlob(blob, `Synera_Reports_${timestamp}.csv`);
     }
 
     if (format === 'excel') {
@@ -124,7 +124,7 @@ export default function ReportsHeader({
 
       const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
       const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      downloadBlob(blob, `HealthyBit_Reports_${timestamp}.xlsx`);
+      downloadBlob(blob, `Synera_Reports_${timestamp}.xlsx`);
     }
   };
 

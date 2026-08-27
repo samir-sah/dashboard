@@ -3,8 +3,8 @@
  * Update these values with your actual business details.
  */
 export const COMPANY_INFO = {
-  name: 'HealthyBit',
-  legalName: 'Mavoix Private Limited',
+  name: 'Synera',
+  legalName: 'Synera Private Limited',
   address: {
     street: 'Mr Classic, HSR Layout',
     city: 'Bengaluru',
@@ -15,10 +15,10 @@ export const COMPANY_INFO = {
   gstin: '09AAACM1234A1Z5',
   pan: 'AAACM1234A',
   cin: 'U74999UP2024PTC123456',
-  email: 'billing@mavoix.com',
+  email: 'billing@synera.com',
   phone: '+91 98765 43210',
-  website: 'www.mavoix.com',
-  logo: '/LOGO-H.png',
+  website: 'www.synera.com',
+  logo: '/synera-logo.png',
   bankDetails: {
     bankName: 'HDFC Bank',
     accountNumber: '50100XXXXXXXXX',

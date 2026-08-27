@@ -67,7 +67,7 @@ export default function RazorpayCheckout({ orderId, customer, onSuccess, onError
         key: paymentOrder.keyId,
         amount: paymentOrder.amount,
         currency: paymentOrder.currency,
-        name: 'Mavoix',
+        name: 'Synera',
         description: `Order ${paymentOrder.orderId}`,
         order_id: paymentOrder.razorpayOrderId,
         prefill: {

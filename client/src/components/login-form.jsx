@@ -129,6 +129,24 @@ export function LoginForm() {
     }
   }
 
+  async function handleDemoLogin() {
+    setLoading(true)
+    try {
+      const res = await fetch(`${API_CONFIG.baseURL}/api/auth-dashboard/demo-login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      })
+      await readApiResponse(res)
+      toast.success('Demo login successful! Redirecting...')
+      router.push('/dashboard')
+    } catch (error) {
+      toast.error(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="w-full">
       <div className="mb-8">
@@ -140,7 +158,7 @@ export function LoginForm() {
         </h1>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           {step === 'phone'
-            ? 'Sign in to your Healthy Bit admin dashboard with your registered mobile number.'
+            ? 'Sign in to your Synera admin dashboard with your registered mobile number.'
             : `Enter the 6-digit code we sent to +91 ${cleanPhone}.`}
         </p>
       </div>
@@ -184,6 +202,32 @@ export function LoginForm() {
               </>
             ) : (
               'Send OTP'
+            )}
+          </Button>
+
+          <div className="relative my-1">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-input" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">or</span>
+            </div>
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            disabled={loading}
+            onClick={handleDemoLogin}
+            className="h-11 w-full text-sm font-semibold"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Signing in...
+              </>
+            ) : (
+              'Demo Login (No OTP)'
             )}
           </Button>
         </form>
@@ -247,7 +291,7 @@ export function LoginForm() {
       )}
 
       <p className="mt-8 text-center text-xs leading-relaxed text-muted-foreground">
-        By continuing you agree to Healthy Bit&apos;s{' '}
+        By continuing you agree to Synera&apos;s{' '}
         <a href="#" className="font-medium text-foreground underline-offset-2 hover:underline">
           Terms
         </a>{' '}

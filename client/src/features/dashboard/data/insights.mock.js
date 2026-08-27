@@ -25,21 +25,21 @@ export const businessGrowthData = {
 export const lowStockData = [
   {
     id: 1,
-    name: "HealthyBit CGM Lite",
+    name: "Synera CGM Lite",
     remaining: 15,
     total: 200,
     status: "critical"
   },
   {
     id: 2,
-    name: "HealthyBit Sensor",
+    name: "Synera Sensor",
     remaining: 8,
     total: 150,
     status: "critical"
   },
   {
     id: 3,
-    name: "HealthyBit Test Strips",
+    name: "Synera Test Strips",
     remaining: 12,
     total: 300,
     status: "critical"
