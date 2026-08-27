@@ -16,7 +16,7 @@ export default function OrdersPagination({ currentPage, totalPages, totalOrders,
         </button>
         {pageNumbers.map(page => (
           <button key={page} onClick={() => onPageChange(page)}
-            style={{ width: '32px', height: '32px', border: page === currentPage ? '1px solid #4f46e5' : '1px solid #e5e7eb', borderRadius: '8px', backgroundColor: page === currentPage ? '#4f46e5' : '#ffffff', color: page === currentPage ? '#ffffff' : '#374151', fontSize: '13px', fontWeight: page === currentPage ? '600' : '400', cursor: 'pointer', fontFamily: 'inherit', transition: 'all 0.15s' }}>
+            style={{ width: '32px', height: '32px', border: page === currentPage ? '1px solid #2f8159' : '1px solid #e5e7eb', borderRadius: '8px', backgroundColor: page === currentPage ? '#2f8159' : '#ffffff', color: page === currentPage ? '#ffffff' : '#374151', fontSize: '13px', fontWeight: page === currentPage ? '600' : '400', cursor: 'pointer', fontFamily: 'inherit', transition: 'all 0.15s' }}>
             {page}
           </button>
         ))}

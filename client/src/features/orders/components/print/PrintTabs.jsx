@@ -25,7 +25,7 @@ export default function PrintTabs({ order, activeTab, onPrint }) {
         {/* Shipping Label */}
         {isLabel && (
           <div className="flex justify-center py-8 print:py-0 print:block">
-            <div className="print-preview-card bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.08),0_8px_32px_rgba(0,0,0,0.06)] border border-neutral-200/80 p-10 print:shadow-none print:border-0 print:p-0 print:rounded-none print:bg-transparent">
+            <div className="print-preview-card bg-card rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.08),0_8px_32px_rgba(0,0,0,0.06)] border border-neutral-200/80 p-10 print:shadow-none print:border-0 print:p-0 print:rounded-none print:bg-transparent">
               <ShippingLabel order={order} />
             </div>
           </div>
@@ -34,7 +34,7 @@ export default function PrintTabs({ order, activeTab, onPrint }) {
         {/* Tax Invoice */}
         {!isLabel && (
           <div className="py-8 print:py-0">
-            <div className="print-preview-card bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.08),0_8px_32px_rgba(0,0,0,0.06)] border border-neutral-200/80 p-10 print:shadow-none print:border-0 print:p-0 print:rounded-none print:bg-transparent max-w-[210mm] mx-auto">
+            <div className="print-preview-card bg-card rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.08),0_8px_32px_rgba(0,0,0,0.06)] border border-neutral-200/80 p-10 print:shadow-none print:border-0 print:p-0 print:rounded-none print:bg-transparent max-w-[210mm] mx-auto">
               <TaxInvoice order={order} />
             </div>
           </div>

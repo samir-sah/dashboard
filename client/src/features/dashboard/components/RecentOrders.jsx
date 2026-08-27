@@ -32,52 +32,52 @@ export default function RecentOrders() {
   })
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm w-full overflow-hidden h-full">
-      <div className="flex items-center justify-between p-4 border-b border-gray-100">
-        <h3 className="text-lg font-bold text-gray-900">Recent Orders</h3>
-        <Button asChild variant="outline" size="sm" className="text-xs font-semibold bg-white text-gray-700 border-gray-200 hover:bg-gray-50 hover:text-gray-900">
+    <div className="h-full w-full overflow-hidden rounded-[1.1rem] border border-border bg-card shadow-[var(--shadow-soft)]">
+      <div className="flex items-center justify-between border-b border-border p-4">
+        <h3 className="text-lg font-semibold text-ink">Recent Orders</h3>
+        <Button asChild variant="outline" size="sm" className="text-xs font-semibold">
           <Link href="/orders">View All</Link>
         </Button>
       </div>
 
       {query.isLoading ? (
-        <div className="p-4 space-y-3">{Array.from({ length: 5 }).map((_, index) => <div key={index} className="h-9 bg-muted animate-pulse rounded" />)}</div>
+        <div className="space-y-3 p-4">{Array.from({ length: 5 }).map((_, index) => <div key={index} className="h-9 animate-pulse rounded-full bg-surface-elevated" />)}</div>
       ) : query.error ? (
-        <div className="m-4 rounded-lg border border-red-100 bg-red-50 p-4 text-sm text-red-700">{query.error.message}</div>
+        <div className="m-4 rounded-[1.1rem] border border-red-100 bg-red-50 p-4 text-sm text-red-700">{query.error.message}</div>
       ) : (
         <div className="w-full">
           <table className="w-full text-left text-xs">
-            <thead className="text-xs text-gray-500 uppercase bg-gray-50/80 border-b border-gray-100">
+            <thead className="border-b border-border bg-surface-2/80 text-xs uppercase text-muted-foreground">
               <tr>
-                <th className="px-4 py-3 font-bold tracking-wider">Order ID</th>
-                <th className="px-4 py-3 font-bold tracking-wider">Customer</th>
-                <th className="px-4 py-3 font-bold tracking-wider">Date</th>
-                <th className="px-4 py-3 font-bold tracking-wider text-right">Amount</th>
-                <th className="px-4 py-3 font-bold tracking-wider text-right">Status</th>
+                <th className="px-4 py-3 font-semibold">Order ID</th>
+                <th className="px-4 py-3 font-semibold">Customer</th>
+                <th className="px-4 py-3 font-semibold">Date</th>
+                <th className="px-4 py-3 text-right font-semibold">Amount</th>
+                <th className="px-4 py-3 text-right font-semibold">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-border">
               {displayOrders.map((order) => {
-                let statusStyle = "bg-gray-100 text-gray-600 border-gray-200"
-                if (order.status === "Delivered") statusStyle = "bg-green-50 text-green-700 border-green-200"
-                else if (order.status === "Processing") statusStyle = "bg-blue-50 text-blue-700 border-blue-200"
+                let statusStyle = "bg-surface-2 text-muted-foreground border-border"
+                if (order.status === "Delivered") statusStyle = "bg-brand-100 text-brand-900 border-brand-300"
+                else if (order.status === "Processing") statusStyle = "bg-brand-50 text-brand-800 border-brand-100"
                 else if (order.status === "Shipped") statusStyle = "bg-orange-50 text-orange-700 border-orange-200"
                 else if (order.status === "Cancelled") statusStyle = "bg-red-50 text-red-700 border-red-200"
-                else if (order.status === "Confirmed") statusStyle = "bg-purple-50 text-purple-700 border-purple-200"
+                else if (order.status === "Confirmed") statusStyle = "bg-brand-50 text-brand-700 border-brand-100"
 
                 return (
-                  <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
+                  <tr key={order.id} className="transition-colors hover:bg-brand-50/60">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <div className="p-1.5 bg-gray-100 rounded-md text-gray-500"><FileText className="w-3 h-3" /></div>
-                        <span className="font-bold text-gray-900">{order.id}</span>
+                        <div className="rounded-full bg-brand-50 p-1.5 text-brand-800"><FileText className="w-3 h-3" /></div>
+                        <span className="font-semibold text-ink">{order.id}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 font-medium text-gray-700">{order.customer}</td>
-                    <td className="px-4 py-3 text-gray-500">{order.date}</td>
-                    <td className="px-4 py-3 font-bold text-gray-900 text-right">{order.amount}</td>
+                    <td className="px-4 py-3 font-medium text-foreground">{order.customer}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{order.date}</td>
+                    <td className="px-4 py-3 text-right font-semibold text-ink">{order.amount}</td>
                     <td className="px-4 py-3 text-right">
-                      <span className={`inline-flex items-center justify-center px-2 py-0.5 text-[10px] font-bold rounded-full border ${statusStyle}`}>
+                      <span className={`inline-flex items-center justify-center rounded-full border px-2 py-0.5 text-[10px] font-semibold ${statusStyle}`}>
                         {order.status}
                       </span>
                     </td>

@@ -1,6 +1,6 @@
 'use client'
-import { LogOut } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { LogOut, Search } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { API_CONFIG } from '@/config/api.config'
 import {
@@ -13,6 +13,9 @@ import {
 
 export default function Navbar({ onMenuClick }) {
   const router = useRouter()
+  const pathname = usePathname()
+  const title = pathname.split('/').filter(Boolean).at(0) || 'dashboard'
+  const pageTitle = title.charAt(0).toUpperCase() + title.slice(1)
 
   const handleSignOut = async () => {
     try {
@@ -32,28 +35,37 @@ export default function Navbar({ onMenuClick }) {
   }
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-end px-6 shrink-0">
-      <div className="flex items-center gap-2">
+    <header className="sticky top-0 z-30 flex h-[72px] shrink-0 items-center justify-between border-b border-border bg-background/92 px-5 backdrop-blur lg:px-7">
+      <div className="min-w-0">
+        <p className="text-xs font-semibold uppercase text-muted-foreground">Flowboard</p>
+        <h1 className="truncate text-xl font-semibold text-ink">{pageTitle}</h1>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <div className="hidden h-10 min-w-[260px] items-center gap-2 rounded-full border border-border bg-surface-2 px-3 text-sm text-muted-foreground lg:flex">
+          <Search size={16} className="text-faint" />
+          <span className="truncate">Search workspace</span>
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className="w-9 h-9 mr-4 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-semibold hover:ring-2 hover:ring-ring hover:ring-offset-2 transition-all outline-none"
+              className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--gradient-start)] via-[var(--gradient-mid)] to-[var(--gradient-end)] text-sm font-semibold text-white shadow-[var(--shadow-lift)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
               aria-label="User account"
             >
               SG
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" sideOffset={8} className="w-56 mt-1 rounded-xl shadow-md border border-gray-100 p-1">
+          <DropdownMenuContent align="end" sideOffset={10} className="mt-1 w-56 rounded-[1.1rem] border border-border p-1 shadow-[var(--shadow-soft)]">
             <div className="px-3 py-2.5 flex flex-col">
-              <span className="text-sm font-semibold text-gray-900 truncate">Suprokash Goswami</span>
-              <span className="text-xs text-slate-500 truncate mt-0.5">Admin</span>
+              <span className="truncate text-sm font-semibold text-ink">Suprokash Goswami</span>
+              <span className="mt-0.5 truncate text-xs text-muted-foreground">Admin</span>
             </div>
-            <DropdownMenuSeparator className="bg-gray-100" />
+            <DropdownMenuSeparator />
             <DropdownMenuItem 
               onClick={handleSignOut} 
-              className="text-slate-500 group focus:bg-red-50 focus:text-red-600 cursor-pointer flex items-center gap-2 p-2 rounded-md transition-colors"
+              className="group flex cursor-pointer items-center gap-2 rounded-xl p-2 text-muted-foreground transition-colors focus:bg-red-50 focus:text-red-600"
             >
-              <LogOut size={16} className="text-slate-400 group-focus:text-red-600 transition-colors" />
+              <LogOut size={16} className="text-faint transition-colors group-focus:text-red-600" />
               <span className="font-medium">Sign out</span>
             </DropdownMenuItem>
           </DropdownMenuContent>

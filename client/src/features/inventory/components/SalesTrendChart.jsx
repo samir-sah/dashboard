@@ -21,8 +21,8 @@ import {
 export default function SalesTrendChart({ data, daysRemaining, period, setPeriod }) {
   if (!data || data.length === 0) {
     return (
-      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] flex items-center justify-center h-full min-h-[400px]">
-        <p className="text-gray-500">No sales data available</p>
+      <div className="bg-card p-6 rounded-2xl border border-border shadow-[0_2px_10px_rgb(0,0,0,0.02)] flex items-center justify-center h-full min-h-[400px]">
+        <p className="text-muted-foreground">No sales data available</p>
       </div>
     );
   }
@@ -41,12 +41,12 @@ export default function SalesTrendChart({ data, daysRemaining, period, setPeriod
   const yMax = Math.max(maxUnits + 1, 3);
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] flex flex-col h-full overflow-hidden p-6">
+    <div className="bg-card rounded-2xl border border-border shadow-[0_2px_10px_rgb(0,0,0,0.02)] flex flex-col h-full overflow-hidden p-6">
       
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-lg font-bold text-gray-900">Sales Trend</h3>
+        <h3 className="text-lg font-bold text-ink">Sales Trend</h3>
         <div className="relative min-w-[140px]">
-          <span className="absolute -top-1.5 left-3 px-1 bg-white text-[9px] font-bold uppercase tracking-wider text-muted-foreground z-10 pointer-events-none">
+          <span className="absolute -top-1.5 left-3 px-1 bg-card text-[9px] font-bold uppercase  text-muted-foreground z-10 pointer-events-none">
             Period
           </span>
           <Select value={period.toString()} onValueChange={(val) => setPeriod(Number(val))}>
@@ -72,7 +72,7 @@ export default function SalesTrendChart({ data, daysRemaining, period, setPeriod
           >
             <defs>
               <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#5048e5" stopOpacity={0.9}/>
+                <stop offset="0%" stopColor="#2f8159" stopOpacity={0.9}/>
                 <stop offset="100%" stopColor="#7c6cf0" stopOpacity={0.7}/>
               </linearGradient>
             </defs>
@@ -116,9 +116,9 @@ export default function SalesTrendChart({ data, daysRemaining, period, setPeriod
         </ResponsiveContainer>
       </div>
 
-      <div className="mt-6 pt-4 border-t border-gray-50 flex items-center gap-2 text-[13px] text-gray-600 bg-[#f8fafc] -mx-6 -mb-6 p-4 px-6 rounded-b-2xl">
-        <Info size={16} className="text-[#5048e5]" />
-        <span>At the current sales rate, the available stock will last for approximately <span className="font-bold text-gray-900">{daysRemaining === 999 ? '> 99' : daysRemaining} days</span>.</span>
+      <div className="mt-6 pt-4 border-t border-border flex items-center gap-2 text-[13px] text-muted-foreground bg-[#f8fafc] -mx-6 -mb-6 p-4 px-6 rounded-b-2xl">
+        <Info size={16} className="text-[#2f8159]" />
+        <span>At the current sales rate, the available stock will last for approximately <span className="font-bold text-ink">{daysRemaining === 999 ? '> 99' : daysRemaining} days</span>.</span>
       </div>
     </div>
   );

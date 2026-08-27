@@ -41,7 +41,7 @@ const TaxInvoice = forwardRef(function TaxInvoice({ order, className }, ref) {
     : 'Not provided'
 
   /* ── Reusable classnames ────────────────────────────── */
-  const sectionLabel = 'text-[9px] font-extrabold tracking-widest text-neutral-500 mb-1.5 uppercase'
+  const sectionLabel = 'text-[9px] font-extrabold  text-neutral-500 mb-1.5 uppercase'
   const metaLabel = 'font-bold text-neutral-500 min-w-[90px] text-[11px]'
   const metaValue = 'font-semibold text-xs'
   const leftAlignTh = 'text-left'
@@ -52,7 +52,7 @@ const TaxInvoice = forwardRef(function TaxInvoice({ order, className }, ref) {
       ref={ref}
       className={cn(
         'tax-invoice-content',
-        'mx-auto bg-white text-neutral-900 text-xs leading-relaxed font-sans',
+        'mx-auto bg-card text-neutral-900 text-xs leading-relaxed font-sans',
         className
       )}
       style={{ maxWidth: '210mm' }}
@@ -153,7 +153,7 @@ const TaxInvoice = forwardRef(function TaxInvoice({ order, className }, ref) {
                     <th
                       key={col}
                       className={cn(
-                        'px-3 py-2.5 font-extrabold text-[9px] tracking-wider uppercase text-neutral-500 whitespace-nowrap',
+                        'px-3 py-2.5 font-extrabold text-[9px]  uppercase text-neutral-500 whitespace-nowrap',
                         isRight ? rightAlignTh : leftAlignTh
                       )}
                     >
@@ -204,7 +204,7 @@ const TaxInvoice = forwardRef(function TaxInvoice({ order, className }, ref) {
                 <span className="text-neutral-500">{label}</span>
                 <span className={cn(
                   'font-semibold font-mono',
-                  label === 'Shipping Charges' && d.summary.shipCost === 0 && 'text-emerald-600'
+                  label === 'Shipping Charges' && d.summary.shipCost === 0 && 'text-brand-700'
                 )}>
                   {val}
                 </span>

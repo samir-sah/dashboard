@@ -9,8 +9,8 @@ export default function ReorderStatusBadge({ status, inventoryStatus }) {
       ? inventoryStatus
       : status;
 
-  let colorClass = 'bg-green-100 text-green-800 border-green-200';
-  let icon = <CheckCircle2 size={16} className="text-green-600" />;
+  let colorClass = 'bg-brand-100 text-brand-900 border-brand-100';
+  let icon = <CheckCircle2 size={16} className="text-brand-700" />;
 
   if (displayStatus === 'Out Of Stock') {
     colorClass = 'bg-red-100 text-red-800 border-red-200';

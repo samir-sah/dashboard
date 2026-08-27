@@ -24,9 +24,9 @@ const getStatusColor = (status) => {
   switch (status) {
     case 'In Cart': return 'bg-zinc-500'
     case 'Confirmed': return 'bg-slate-400'
-    case 'Processing': return 'bg-indigo-500'
+    case 'Processing': return 'bg-brand-500'
     case 'Shipped': return 'bg-amber-500'
-    case 'Delivered': return 'bg-emerald-500'
+    case 'Delivered': return 'bg-brand-500'
     case 'Cancelled': return 'bg-red-500'
     default: return 'bg-transparent'
   }
@@ -50,7 +50,7 @@ export default function OrdersTableControls({
           placeholder="Search by Order ID"
           className={cn(
             "h-10 w-full rounded-xl border border-border bg-background pl-9 pr-4 text-[13.5px] text-foreground shadow-xs transition-all",
-            "outline-none focus:border-indigo-400 focus:ring-3 focus:ring-indigo-500/10",
+            "outline-none focus:border-brand-300 focus:ring-3 focus:ring-ring/30",
             "placeholder:text-muted-foreground"
           )}
         />
@@ -58,7 +58,7 @@ export default function OrdersTableControls({
 
       {/* ── Sort By ── */}
       <div className="relative min-w-40">
-        <span className="absolute -top-1.5 left-3 px-1 bg-background text-[9px] font-bold uppercase tracking-wider text-muted-foreground z-10 pointer-events-none">
+        <span className="absolute -top-1.5 left-3 px-1 bg-background text-[9px] font-bold uppercase  text-muted-foreground z-10 pointer-events-none">
           Sort By
         </span>
         <Select value={sortBy} onValueChange={onSort}>
@@ -77,7 +77,7 @@ export default function OrdersTableControls({
 
       {/* ── Status Filter ── */}
       <div className="relative min-w-40">
-        <span className="absolute -top-1.5 left-3 px-1 bg-background text-[9px] font-bold uppercase tracking-wider text-muted-foreground z-10 pointer-events-none">
+        <span className="absolute -top-1.5 left-3 px-1 bg-background text-[9px] font-bold uppercase  text-muted-foreground z-10 pointer-events-none">
           Status
         </span>
         <Select value={statusFilter} onValueChange={onStatus}>

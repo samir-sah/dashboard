@@ -9,7 +9,7 @@ export default function ReportTabs({ tabs, defaultValue, onValueChange, classNam
           <TabsTrigger 
             key={tab.value} 
             value={tab.value}
-            className="rounded-sm px-3 py-1.5 text-sm font-medium transition-all data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+            className="rounded-sm px-3 py-1.5 text-sm font-medium transition-all data-[state=active]:bg-brand-700 data-[state=active]:text-white data-[state=active]:shadow-sm"
           >
             {tab.label}
           </TabsTrigger>

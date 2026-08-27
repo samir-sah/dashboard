@@ -1,6 +1,6 @@
 export const genderOrdersData = [
-  { name: "Male", value: 682, fill: "#3b82f6" },
-  { name: "Female", value: 563, fill: "#ec4899" },
+  { name: "Male", value: 682, fill: "#2f8159" },
+  { name: "Female", value: 563, fill: "#8bc4a4" },
 ];
 
 export const customerStatsData = {

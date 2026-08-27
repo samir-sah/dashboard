@@ -1,8 +1,8 @@
 export const orderStatusData = [
-  { name: "Delivered", value: 45, count: 560, fill: "#22c55e" }, // 45%
+  { name: "Delivered", value: 45, count: 560, fill: "#2f8159" }, // 45%
   { name: "Shipped", value: 25, count: 310, fill: "#f97316" }, // 25%
-  { name: "Processing", value: 15, count: 186, fill: "#a855f7" }, // 15%
-  { name: "Confirmed", value: 10, count: 124, fill: "#3b82f6" }, // 10%
+  { name: "Processing", value: 15, count: 186, fill: "#57a47b" }, // 15%
+  { name: "Confirmed", value: 10, count: 124, fill: "#8bc4a4" }, // 10%
   { name: "Cancelled", value: 5, count: 62, fill: "#ef4444" },  // 5%
 ];
 

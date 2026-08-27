@@ -2,22 +2,22 @@
 
 const statusStyles = {
   // ✅ exact backend values
-  Pending:    { bg: '#f3f4f6', color: '#6b7280',  border: '#e5e7eb' },
-  'In Cart':  { bg: '#f4f4f5', color: '#52525b',  border: '#d4d4d8' },
-  Confirmed:  { bg: '#f1f5f9', color: '#334155',  border: '#e2e8f0' },
-  Processing: { bg: '#e0e7ff', color: '#4338ca',  border: '#c7d2fe' },
+  Pending:    { bg: '#f1f0f9', color: '#5d5d6e',  border: '#e9e8f3' },
+  'In Cart':  { bg: '#f1f0f9', color: '#5d5d6e',  border: '#e9e8f3' },
+  Confirmed:  { bg: '#ebf6ef', color: '#246646',  border: '#d2e9db' },
+  Processing: { bg: '#ebf6ef', color: '#2f8159',  border: '#8bc4a4' },
   Shipped:    { bg: '#fef3c7', color: '#b45309',  border: '#fde68a' },
-  Delivered:  { bg: '#dcfce7', color: '#15803d',  border: '#bbf7d0' },
+  Delivered:  { bg: '#d2e9db', color: '#1d5038',  border: '#8bc4a4' },
   Cancelled:  { bg: '#fee2e2', color: '#dc2626',  border: '#fecaca' },
 
   // payment statuses
-  Paid:       { bg: '#dcfce7', color: '#15803d',  border: '#bbf7d0' },
-  Completed:  { bg: '#dcfce7', color: '#15803d',  border: '#bbf7d0' },
+  Paid:       { bg: '#d2e9db', color: '#1d5038',  border: '#8bc4a4' },
+  Completed:  { bg: '#d2e9db', color: '#1d5038',  border: '#8bc4a4' },
   Refunded:   { bg: '#ffedd5', color: '#c2410c',  border: '#fed7aa' },
   Failed:     { bg: '#fee2e2', color: '#dc2626',  border: '#fecaca' },
-  created:    { bg: '#f3f4f6', color: '#6b7280',  border: '#e5e7eb' },
-  authorized: { bg: '#dbeafe', color: '#1d4ed8',  border: '#bfdbfe' },
-  captured:   { bg: '#dcfce7', color: '#15803d',  border: '#bbf7d0' },
+  created:    { bg: '#f1f0f9', color: '#5d5d6e',  border: '#e9e8f3' },
+  authorized: { bg: '#dbeafe', color: '#1d4ed8',  border: '#ebf6ef' },
+  captured:   { bg: '#d2e9db', color: '#1d5038',  border: '#8bc4a4' },
   failed:     { bg: '#fee2e2', color: '#dc2626',  border: '#fecaca' },
   refunded:   { bg: '#ffedd5', color: '#c2410c',  border: '#fed7aa' },
   partially_refunded: { bg: '#fef9c3', color: '#a16207', border: '#fde68a' },
@@ -25,7 +25,7 @@ const statusStyles = {
 }
 
 export default function StatusBadge({ status }) {
-  const s = statusStyles[status] ?? { bg: '#f3f4f6', color: '#6b7280', border: '#e5e7eb' }
+  const s = statusStyles[status] ?? { bg: '#f1f0f9', color: '#5d5d6e', border: '#e9e8f3' }
   return (
     <span style={{
       display: 'inline-block',

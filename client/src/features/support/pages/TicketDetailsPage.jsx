@@ -79,7 +79,7 @@ export default function TicketDetailsPage() {
         <p className="mt-2 text-muted-foreground text-sm">{ticketQuery.error.message}</p>
         <button
           onClick={() => router.push('/support')}
-          className="mt-4 text-indigo-600 font-medium hover:text-indigo-700 text-sm"
+          className="mt-4 text-brand-700 font-medium hover:text-brand-800 text-sm"
         >
           ← Back to Tickets
         </button>
@@ -90,7 +90,7 @@ export default function TicketDetailsPage() {
   if (ticketQuery.isLoading || !ticketQuery.data) {
     return (
       <div className="flex flex-col items-center justify-center h-96">
-        <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-brand-700 border-t-transparent rounded-full animate-spin"></div>
         <p className="mt-4 text-muted-foreground">Loading ticket details...</p>
       </div>
     );
@@ -102,7 +102,7 @@ export default function TicketDetailsPage() {
     <div className="max-w-[1400px] w-full pb-10">
       <button 
         onClick={() => router.push('/support')}
-        className="flex items-center gap-2 text-[14px] text-indigo-600 font-medium hover:text-indigo-700 mb-5 transition-colors"
+        className="flex items-center gap-2 text-[14px] text-brand-700 font-medium hover:text-brand-800 mb-5 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to Tickets
@@ -126,7 +126,7 @@ export default function TicketDetailsPage() {
                   <TabsTrigger
                     key={key}
                     value={key}
-                    className="px-5 py-3.5 text-sm bg-transparent shadow-none rounded-none border-b-2 -mb-px data-[state=active]:text-indigo-600 data-[state=active]:border-indigo-600 data-[state=active]:font-semibold data-[state=active]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=inactive]:border-transparent"
+                    className="px-5 py-3.5 text-sm bg-transparent shadow-none rounded-none border-b-2 -mb-px data-[state=active]:text-brand-700 data-[state=active]:border-brand-700 data-[state=active]:font-semibold data-[state=active]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=inactive]:border-transparent"
                   >
                     {label}
                   </TabsTrigger>

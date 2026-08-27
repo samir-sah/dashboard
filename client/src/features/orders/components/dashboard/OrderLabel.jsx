@@ -18,9 +18,9 @@ const money   = n => `₹${(n ?? 0).toLocaleString('en-IN', { minimumFractionDig
 
 const STATUS_STYLE = {
   Confirmed:    'bg-slate-100 text-slate-700',
-  Processing:   'bg-indigo-50 text-indigo-700',
+  Processing:   'bg-brand-50 text-brand-800',
   Shipped:      'bg-amber-50 text-amber-700',
-  Delivered:    'bg-emerald-50 text-emerald-700',
+  Delivered:    'bg-brand-50 text-brand-800',
   Cancelled:    'bg-red-50 text-red-600',
 }
 
@@ -99,7 +99,7 @@ export function extractOrderData(order) {
 
 /* ─── Tiny reusable label ─────────────────────────────── */
 const Label = ({ children }) => (
-  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-0.5">{children}</p>
+  <p className="text-[10px] font-semibold uppercase  text-muted-foreground mb-0.5">{children}</p>
 )
 const Val = ({ children, className }) => (
   <p className={cn('text-[13px] font-medium text-foreground leading-snug', className)}>{children}</p>
@@ -126,7 +126,7 @@ const OrderLabel = forwardRef(function OrderLabel({ order, className }, ref) {
         <CardContent className="py-4 px-5">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="size-10 rounded-lg bg-muted flex items-center justify-center shrink-0 print:bg-white print:border print:border-black">
+              <div className="size-10 rounded-lg bg-muted flex items-center justify-center shrink-0 print:bg-card print:border print:border-black">
                 <Package size={20} className="text-muted-foreground print:text-black" />
               </div>
               <div>
@@ -135,7 +135,7 @@ const OrderLabel = forwardRef(function OrderLabel({ order, className }, ref) {
               </div>
             </div>
             <div className="text-right flex flex-col items-end gap-1 shrink-0">
-              <Badge className={cn('text-[11px] font-bold print:bg-white print:text-black print:border-black', STATUS_STYLE[d.status] ?? STATUS_STYLE.Confirmed)}>
+              <Badge className={cn('text-[11px] font-bold print:bg-card print:text-black print:border-black', STATUS_STYLE[d.status] ?? STATUS_STYLE.Confirmed)}>
                 {d.status}
               </Badge>
               <p className="text-[11px] text-muted-foreground"><span className="font-semibold text-foreground/70">Date:</span> {fmt(d.orderDate)}</p>
@@ -173,7 +173,7 @@ const OrderLabel = forwardRef(function OrderLabel({ order, className }, ref) {
               ['Payment',     d.summary.paymentMethod],
               ['Pay Status',  d.summary.paymentStatus],
             ].map(([l, v]) => (
-              <div key={l} className="bg-muted/50 rounded-md px-3 py-2 print:bg-white print:border print:border-black/20">
+              <div key={l} className="bg-muted/50 rounded-md px-3 py-2 print:bg-card print:border print:border-black/20">
                 <Label>{l}</Label>
                 <p className="text-sm font-bold">{v}</p>
               </div>
@@ -188,7 +188,7 @@ const OrderLabel = forwardRef(function OrderLabel({ order, className }, ref) {
             ].map(([l, v]) => (
               <div key={l} className="flex justify-between">
                 <span className="text-muted-foreground">{l}</span>
-                <span className={cn('font-semibold', (l === 'Shipping Charges' && d.summary.shipCost === 0) && 'text-emerald-600 print:text-black')}>{v}</span>
+                <span className={cn('font-semibold', (l === 'Shipping Charges' && d.summary.shipCost === 0) && 'text-brand-700 print:text-black')}>{v}</span>
               </div>
             ))}
           </div>
@@ -209,13 +209,13 @@ const OrderLabel = forwardRef(function OrderLabel({ order, className }, ref) {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/40 hover:bg-muted/40 print:bg-muted">
-                <TableHead className="w-10 pl-5 text-[10px] font-bold uppercase tracking-wider">#</TableHead>
-                <TableHead className="text-[10px] font-bold uppercase tracking-wider">Product</TableHead>
-                <TableHead className="text-[10px] font-bold uppercase tracking-wider">SKU</TableHead>
-                <TableHead className="text-[10px] font-bold uppercase tracking-wider">Variant</TableHead>
-                <TableHead className="text-[10px] font-bold uppercase tracking-wider text-center">Qty</TableHead>
-                <TableHead className="text-[10px] font-bold uppercase tracking-wider text-right">Price</TableHead>
-                <TableHead className="text-[10px] font-bold uppercase tracking-wider text-right pr-5">Total</TableHead>
+                <TableHead className="w-10 pl-5 text-[10px] font-bold uppercase ">#</TableHead>
+                <TableHead className="text-[10px] font-bold uppercase ">Product</TableHead>
+                <TableHead className="text-[10px] font-bold uppercase ">SKU</TableHead>
+                <TableHead className="text-[10px] font-bold uppercase ">Variant</TableHead>
+                <TableHead className="text-[10px] font-bold uppercase  text-center">Qty</TableHead>
+                <TableHead className="text-[10px] font-bold uppercase  text-right">Price</TableHead>
+                <TableHead className="text-[10px] font-bold uppercase  text-right pr-5">Total</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -273,9 +273,9 @@ const OrderLabel = forwardRef(function OrderLabel({ order, className }, ref) {
           </CardHeader>
           <CardContent className="space-y-2">
             {[
-              ['Customer Notes',      d.notes.customer, 'bg-amber-50 border-amber-100 print:bg-white'],
-              ['Admin Notes',         d.notes.admin,    'bg-blue-50 border-blue-100 print:bg-white'],
-              ['Special Instructions', d.notes.special, 'bg-violet-50 border-violet-100 print:bg-white'],
+              ['Customer Notes',      d.notes.customer, 'bg-amber-50 border-amber-100 print:bg-card'],
+              ['Admin Notes',         d.notes.admin,    'bg-brand-50 border-brand-100 print:bg-card'],
+              ['Special Instructions', d.notes.special, 'bg-brand-50 border-brand-100 print:bg-card'],
             ].map(([label, val, cls]) => val && (
               <div key={label} className={cn('rounded-md border px-3 py-2 print:border-black/20', cls)}>
                 <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground mb-0.5 print:text-black">{label}</p>
@@ -297,11 +297,11 @@ const OrderLabel = forwardRef(function OrderLabel({ order, className }, ref) {
             <div className="space-y-3">
               <div>
                 <div className="border-b border-muted-foreground/30 h-7 print:border-black" />
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mt-0.5">Warehouse Staff Signature</p>
+                <p className="text-[10px] font-semibold uppercase  text-muted-foreground mt-0.5">Warehouse Staff Signature</p>
               </div>
               <div>
                 <div className="border-b border-muted-foreground/30 h-7 print:border-black" />
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mt-0.5">Supervisor Signature</p>
+                <p className="text-[10px] font-semibold uppercase  text-muted-foreground mt-0.5">Supervisor Signature</p>
               </div>
             </div>
           </div>

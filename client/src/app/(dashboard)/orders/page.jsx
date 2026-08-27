@@ -5,9 +5,9 @@ import StatCard from "@/features/orders/components/dashboard/StatCard"
 import OrdersTable from "@/features/orders/components/dashboard/OrdersTable"
 
 const defaultStats = [
-  { label: 'TOTAL ORDERS', value: '—', icon: ShoppingBag,  iconColor: 'text-blue-600',    iconBg: 'bg-blue-100' },
+  { label: 'TOTAL ORDERS', value: '—', icon: ShoppingBag,  iconColor: 'text-brand-700',    iconBg: 'bg-brand-100' },
   { label: 'SHIPPED',      value: '—', icon: Truck,        iconColor: 'text-amber-600',    iconBg: 'bg-amber-100' },
-  { label: 'DELIVERED',    value: '—', icon: PackageCheck,  iconColor: 'text-emerald-600',  iconBg: 'bg-emerald-100' },
+  { label: 'DELIVERED',    value: '—', icon: PackageCheck,  iconColor: 'text-brand-700',  iconBg: 'bg-brand-100' },
   { label: 'CANCELLED',    value: '—', icon: XCircle,      iconColor: 'text-red-600',      iconBg: 'bg-red-100' },
 ]
 
@@ -24,9 +24,9 @@ export default function OrdersPage() {
       .then(r => r.json())
       .then(data => {
         setStats([
-          { label: 'TOTAL ORDERS', value: data.total?.toLocaleString('en-IN')      ?? '—', icon: ShoppingBag,  iconColor: 'text-blue-600',    iconBg: 'bg-blue-100' },
+          { label: 'TOTAL ORDERS', value: data.total?.toLocaleString('en-IN')      ?? '—', icon: ShoppingBag,  iconColor: 'text-brand-700',    iconBg: 'bg-brand-100' },
           { label: 'SHIPPED',      value: data.shipped?.toLocaleString('en-IN')    ?? '—', icon: Truck,        iconColor: 'text-amber-600',    iconBg: 'bg-amber-100' },
-          { label: 'DELIVERED',    value: data.delivered?.toLocaleString('en-IN')  ?? '—', icon: PackageCheck,  iconColor: 'text-emerald-600',  iconBg: 'bg-emerald-100' },
+          { label: 'DELIVERED',    value: data.delivered?.toLocaleString('en-IN')  ?? '—', icon: PackageCheck,  iconColor: 'text-brand-700',  iconBg: 'bg-brand-100' },
           { label: 'CANCELLED',    value: data.cancelled?.toLocaleString('en-IN')  ?? '—', icon: XCircle,      iconColor: 'text-red-600',      iconBg: 'bg-red-100' },
         ])
       })

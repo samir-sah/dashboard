@@ -55,15 +55,15 @@ function OrderStepper({ status, order }) {
         </CardHeader>
         <CardContent>
           <div className="h-1.5 bg-muted rounded-full mb-5 overflow-hidden">
-            <div className="h-full bg-indigo-600 rounded-full transition-all" style={{ width: `${(done / STEPS.length) * 100}%` }} />
+            <div className="h-full bg-brand-700 rounded-full transition-all" style={{ width: `${(done / STEPS.length) * 100}%` }} />
           </div>
           <div className="flex flex-col gap-2">
             {STEPS.map((step, i) => (
-              <div key={step} className={cn('flex items-center gap-3 px-3.5 py-3 rounded-xl border', i < done ? 'bg-green-50 border-green-200' : 'bg-muted/40 border-muted')}>
-                <div className={cn('w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-[11px] font-black', i < done ? 'bg-green-600 text-white' : 'bg-muted')}>
+              <div key={step} className={cn('flex items-center gap-3 px-3.5 py-3 rounded-xl border', i < done ? 'bg-brand-50 border-brand-100' : 'bg-muted/40 border-muted')}>
+                <div className={cn('w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-[11px] font-black', i < done ? 'bg-brand-700 text-white' : 'bg-muted')}>
                   {i < done ? '✓' : ''}
                 </div>
-                <span className={cn('text-[13.5px] flex-1', i < done ? 'font-semibold text-green-700' : 'text-muted-foreground')}>{step}</span>
+                <span className={cn('text-[13.5px] flex-1', i < done ? 'font-semibold text-brand-800' : 'text-muted-foreground')}>{step}</span>
               </div>
             ))}
           </div>
@@ -95,8 +95,8 @@ function OrderItemsCard({ order }) {
             ? <p className="text-center text-muted-foreground text-sm py-6">No items found</p>
             : items.map((item, i) => (
               <div key={i} className="flex gap-4 p-4 rounded-xl border border-muted bg-muted/30">
-                <div className="w-14 h-14 rounded-xl shrink-0 bg-indigo-50 border border-indigo-100 flex items-center justify-center">
-                  <Package size={24} className="text-indigo-600" />
+                <div className="w-14 h-14 rounded-xl shrink-0 bg-brand-50 border border-brand-100 flex items-center justify-center">
+                  <Package size={24} className="text-brand-700" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold mb-1">{item.productName ?? 'Product'}</p>
@@ -124,14 +124,14 @@ function OrderItemsCard({ order }) {
           ].map(([label, val, green]) => (
             <div key={label} className="flex justify-between py-1 text-[13.5px]">
               <span className="text-muted-foreground">{label}</span>
-              <span className={cn('font-medium', green && 'text-green-600')}>{val}</span>
+              <span className={cn('font-medium', green && 'text-brand-700')}>{val}</span>
             </div>
           ))
         })()}
         <Separator className="my-2" />
         <div className="flex justify-between text-[15px] font-bold pt-1">
           <span>Total</span>
-          <span className="text-indigo-600">₹{total.toLocaleString('en-IN')}</span>
+          <span className="text-brand-700">₹{total.toLocaleString('en-IN')}</span>
         </div>
       </CardContent>
     </Card>
@@ -144,7 +144,7 @@ function DeliveryInfo({ order, onEdit }) {
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="text-[15px]">Delivery Information</CardTitle>
-          <Button variant="outline" size="sm" onClick={onEdit} className="h-8 text-xs gap-1.5 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50">
+          <Button variant="outline" size="sm" onClick={onEdit} className="h-8 text-xs gap-1.5 hover:text-brand-700 hover:border-brand-100 hover:bg-brand-50">
             <Pencil size={12} /> Edit
           </Button>
         </div>
@@ -183,7 +183,7 @@ function PaymentInfoCard({ order }) {
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <CreditCard size={16} className="text-indigo-600" />
+            <CreditCard size={16} className="text-brand-700" />
             <CardTitle className="text-[15px]">Payment Information</CardTitle>
           </div>
           <StatusBadge status={payment.status || 'Pending'} />
@@ -228,7 +228,7 @@ function CustomerInfo({ order, onEdit }) {
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
             <CardTitle className="text-[15px]">Customer Information</CardTitle>
-            <Button variant="outline" size="sm" onClick={onEdit} className="h-8 text-xs gap-1.5 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50">
+            <Button variant="outline" size="sm" onClick={onEdit} className="h-8 text-xs gap-1.5 hover:text-brand-700 hover:border-brand-100 hover:bg-brand-50">
               <Pencil size={12} /> Edit
             </Button>
           </div>
@@ -236,12 +236,12 @@ function CustomerInfo({ order, onEdit }) {
         <CardContent>
           {error && <div className="px-3.5 py-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm mb-4">⚠ {error}</div>}
           <div className="flex items-center gap-4 p-4 bg-muted/40 rounded-xl border border-muted mb-5">
-            <div className="w-13 h-13 rounded-full bg-indigo-50 flex items-center justify-center text-[18px] font-bold text-indigo-600 shrink-0">{initials}</div>
+            <div className="w-13 h-13 rounded-full bg-brand-50 flex items-center justify-center text-[18px] font-bold text-brand-700 shrink-0">{initials}</div>
             <div>
               <p className="text-base font-bold mb-0.5">{fullName}</p>
               <p className="text-xs text-muted-foreground">{customer?.customerId ?? '—'} · {customer?.role ?? '—'}</p>
             </div>
-            <Badge className={cn('ml-auto text-xs font-semibold border-0', customer?.isActive ? 'bg-green-100 text-green-700 hover:bg-green-100' : 'bg-red-100 text-red-600 hover:bg-red-100')}>
+            <Badge className={cn('ml-auto text-xs font-semibold border-0', customer?.isActive ? 'bg-brand-100 text-brand-800 hover:bg-brand-100' : 'bg-red-100 text-red-600 hover:bg-red-100')}>
               {customer?.isActive ? 'Active' : 'Inactive'}
             </Badge>
           </div>
@@ -267,13 +267,13 @@ function CustomerInfo({ order, onEdit }) {
             ? <p className="text-muted-foreground text-sm text-center py-5">No addresses saved</p>
             : <div className="flex flex-col gap-3">
                 {customer.addresses.map((addr, i) => (
-                  <div key={addr._id ?? i} className={cn('p-3.5 rounded-xl border', addr.isDefault ? 'bg-indigo-50/60 border-indigo-100' : 'bg-muted/30 border-muted')}>
+                  <div key={addr._id ?? i} className={cn('p-3.5 rounded-xl border', addr.isDefault ? 'bg-brand-50/60 border-brand-100' : 'bg-muted/30 border-muted')}>
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-1.5">
                         <MapPin size={13} className="text-muted-foreground" />
                         <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">Address {i + 1}</span>
                       </div>
-                      {addr.isDefault && <Badge className="text-[11px] bg-indigo-50 text-indigo-600 border-0 hover:bg-indigo-50">Default</Badge>}
+                      {addr.isDefault && <Badge className="text-[11px] bg-brand-50 text-brand-700 border-0 hover:bg-brand-50">Default</Badge>}
                     </div>
                     <p className="text-[13.5px] text-foreground/80 leading-relaxed">{formatAddr(addr)}</p>
                   </div>
@@ -337,7 +337,7 @@ export default function OrderDetailPage() {
   return (
     <div className="max-w-[1400px]">
       <nav className="flex items-center gap-2 mb-5 text-[13px]">
-        <span onClick={() => router.push('/orders')} className="text-indigo-600 cursor-pointer font-medium hover:text-indigo-700">Orders</span>
+        <span onClick={() => router.push('/orders')} className="text-brand-700 cursor-pointer font-medium hover:text-brand-800">Orders</span>
         <span className="text-muted-foreground">›</span>
         <span className="font-medium">{orderId}</span>
       </nav>
@@ -364,7 +364,7 @@ export default function OrderDetailPage() {
                 <X size={14} /> Cancel Order
               </Button>
             )}
-            <Button variant="outline" size="sm" onClick={goToEdit} className="gap-1.5 text-[13px] hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50">
+            <Button variant="outline" size="sm" onClick={goToEdit} className="gap-1.5 text-[13px] hover:text-brand-700 hover:border-brand-300 hover:bg-brand-50">
               <Pencil size={14} /> Edit Order
             </Button>
             <div className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-muted bg-muted/40 text-[13px] text-muted-foreground">
@@ -384,7 +384,7 @@ export default function OrderDetailPage() {
         <div className="bg-background rounded-t-2xl border border-b-0 px-6">
           <TabsList className="bg-transparent h-auto p-0 gap-0 rounded-none">
             {[['order','Order Details'],['customer','Customer Details']].map(([key, label]) => (
-              <TabsTrigger key={key} value={key} className="px-5 py-4 text-sm bg-transparent shadow-none rounded-none border-b-2 -mb-px data-[state=active]:text-indigo-600 data-[state=active]:border-indigo-600 data-[state=active]:font-semibold data-[state=active]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=inactive]:border-transparent">
+              <TabsTrigger key={key} value={key} className="px-5 py-4 text-sm bg-transparent shadow-none rounded-none border-b-2 -mb-px data-[state=active]:text-brand-700 data-[state=active]:border-brand-700 data-[state=active]:font-semibold data-[state=active]:bg-transparent data-[state=inactive]:text-muted-foreground data-[state=inactive]:border-transparent">
                 {label}
               </TabsTrigger>
             ))}
@@ -435,7 +435,7 @@ export default function OrderDetailPage() {
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">
-                <label className="text-[13px] font-semibold text-muted-foreground uppercase tracking-wider">Cancellation Reason <span className="text-red-500">*</span></label>
+                <label className="text-[13px] font-semibold text-muted-foreground uppercase ">Cancellation Reason <span className="text-red-500">*</span></label>
                 <select 
                   value={cancelReasonCategory} 
                   onChange={e => setCancelReasonCategory(e.target.value)} 

@@ -27,7 +27,7 @@ export default function TicketsTable({
   };
 
   return (
-    <div className="bg-white rounded-b-xl overflow-hidden flex flex-col">
+    <div className="bg-card rounded-b-xl overflow-hidden flex flex-col">
       <div className="overflow-x-auto">
         <Table>
           <TableHeader className="bg-muted/50">
@@ -61,7 +61,7 @@ export default function TicketsTable({
                   className="cursor-pointer group"
                   onClick={() => handleRowClick(ticket.id)}
                 >
-                  <TableCell className="p-4 pl-4 font-medium text-indigo-600">
+                  <TableCell className="p-4 pl-4 font-medium text-brand-700">
                     {ticket.id}
                   </TableCell>
                   <TableCell className="p-4 text-foreground max-w-[400px] truncate" title={ticket.subject}>
@@ -122,7 +122,7 @@ export default function TicketsTable({
                   key={pageNum}
                   variant={currentPage === pageNum ? "default" : "ghost"} 
                   size="icon" 
-                  className={`w-8 h-8 rounded-md ${currentPage === pageNum ? 'bg-indigo-600 text-white hover:bg-indigo-700' : ''}`}
+                  className={`w-8 h-8 rounded-md ${currentPage === pageNum ? 'bg-brand-700 text-white hover:bg-brand-800' : ''}`}
                   onClick={() => onPageChange(pageNum)}
                 >
                   {pageNum}

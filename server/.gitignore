@@ -1,0 +1,7 @@
+node_modules
+.env
+temp.js
+.serverless
+.aws-sam
+coverage
+npm-debug.log*

@@ -1,6 +1,6 @@
 'use client'
 
-import { TrendingUp, MoreVertical } from "lucide-react"
+import { TrendingUp } from "lucide-react"
 import { AreaChart, Area, ResponsiveContainer, XAxis, Tooltip as RechartsTooltip } from "recharts"
 import { useDashboardBusinessGrowth } from "../hooks/useDashboard"
 
@@ -9,42 +9,42 @@ export default function BusinessGrowthCard({ params }) {
   const businessGrowthData = query.data
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm h-full flex flex-col justify-between w-full">
+    <div className="flex h-full w-full flex-col justify-between rounded-[1.1rem] border border-border bg-card p-8 shadow-[var(--shadow-soft)]">
       <div className="flex items-center justify-between mb-6">
-         <h3 className="text-xl font-bold text-gray-900">Business Growth</h3>
+         <h3 className="text-xl font-semibold text-ink">Business Growth</h3>
       </div>
 
       {query.isLoading ? (
-        <div className="h-64 rounded-lg bg-muted animate-pulse" />
+        <div className="h-64 animate-pulse rounded-[1.1rem] bg-surface-elevated" />
       ) : query.error ? (
-        <div className="rounded-lg border border-red-100 bg-red-50 p-4 text-sm text-red-700">{query.error.message}</div>
+        <div className="rounded-[1.1rem] border border-red-100 bg-red-50 p-4 text-sm text-red-700">{query.error.message}</div>
       ) : (
         <>
-          <div className="flex flex-col md:flex-row items-center gap-8 mb-8">
+          <div className="mb-8 flex flex-col items-center gap-8 md:flex-row">
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-3">
-                <TrendingUp className="w-8 h-8 text-green-500" />
-                <span className="text-5xl font-extrabold text-gray-900">{businessGrowthData?.overallGrowth || "+0.0%"}</span>
+                <TrendingUp className="h-8 w-8 text-brand-700" />
+                <span className="text-5xl font-semibold text-ink">{businessGrowthData?.overallGrowth || "+0.0%"}</span>
               </div>
-              <span className="text-base text-gray-500 font-medium ml-11">Overall Growth</span>
+              <span className="ml-11 text-base font-medium text-muted-foreground">Overall Growth</span>
             </div>
-            <div className="flex flex-row gap-6 border-t md:border-t-0 md:border-l border-gray-100 pt-6 md:pt-0 md:pl-8">
+            <div className="flex flex-row gap-6 border-t border-border pt-6 md:border-l md:border-t-0 md:pl-8 md:pt-0">
               <div className="flex flex-col gap-1">
-                <span className="text-sm font-medium text-gray-500">Revenue</span>
-                <span className="text-2xl font-bold text-green-600">{businessGrowthData?.revenueGrowth || "+0.0%"}</span>
+                <span className="text-sm font-medium text-muted-foreground">Revenue</span>
+                <span className="text-2xl font-semibold text-brand-800">{businessGrowthData?.revenueGrowth || "+0.0%"}</span>
               </div>
               <div className="flex flex-col gap-1">
-                <span className="text-sm font-medium text-gray-500">Orders</span>
-                <span className="text-2xl font-bold text-blue-600">{businessGrowthData?.orderGrowth || "+0.0%"}</span>
+                <span className="text-sm font-medium text-muted-foreground">Orders</span>
+                <span className="text-2xl font-semibold text-brand-700">{businessGrowthData?.orderGrowth || "+0.0%"}</span>
               </div>
             </div>
           </div>
-          <div className="h-40 w-full mt-auto min-h-[160px] min-w-0">
+          <div className="mt-auto h-40 w-full min-h-[160px] min-w-0">
             <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <AreaChart data={businessGrowthData?.trendData || []}>
                 <XAxis dataKey="date" hide />
-                <RechartsTooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} />
-                <Area type="monotone" dataKey="value" stroke="#22c55e" strokeWidth={4} fillOpacity={0.2} fill="#22c55e" activeDot={{ r: 6, strokeWidth: 0, fill: '#22c55e' }} />
+                <RechartsTooltip contentStyle={{ borderRadius: '17.6px', border: '1px solid #e9e8f3', boxShadow: '0 14px 40px rgba(22, 22, 29, 0.07)' }} />
+                <Area type="monotone" dataKey="value" stroke="#2f8159" strokeWidth={4} fillOpacity={0.22} fill="#8bc4a4" activeDot={{ r: 6, strokeWidth: 0, fill: '#2f8159' }} />
               </AreaChart>
             </ResponsiveContainer>
           </div>

@@ -1,0 +1,72 @@
+service: healthybit-api
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ${opt:region, 'ap-south-1'}
+  stage: ${opt:stage, 'dev'}
+  memorySize: 512
+  timeout: 30
+  logRetentionInDays: 14
+  httpApi:
+    cors:
+      allowedOrigins:
+        - ${env:CLIENT_ORIGIN, 'http://localhost:3000'}
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+        - X-Requested-With
+        - X-Razorpay-Signature
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+        - OPTIONS
+      allowCredentials: true
+  environment:
+    NODE_ENV: ${env:NODE_ENV, 'production'}
+    LOG_LEVEL: ${env:LOG_LEVEL, 'info'}
+    MONGO_URI: ${env:MONGO_URI}
+    ACCESS_TOKEN_SECRET: ${env:ACCESS_TOKEN_SECRET}
+    REFRESH_TOKEN_SECRET: ${env:REFRESH_TOKEN_SECRET}
+    CORS_ORIGINS: ${env:CORS_ORIGINS, ''}
+    CLIENT_ORIGIN: ${env:CLIENT_ORIGIN, 'http://localhost:3000'}
+    FACTOR_API_KEY: ${env:FACTOR_API_KEY, ''}
+    SMTP_HOST: ${env:SMTP_HOST, ''}
+    SMTP_PORT: ${env:SMTP_PORT, ''}
+    SMTP_USER: ${env:SMTP_USER, ''}
+    SMTP_PASSWORD: ${env:SMTP_PASSWORD, ''}
+    RAZORPAY_KEY_ID: ${env:RAZORPAY_KEY_ID, ''}
+    RAZORPAY_KEY_SECRET: ${env:RAZORPAY_KEY_SECRET, ''}
+    RAZORPAY_WEBHOOK_SECRET: ${env:RAZORPAY_WEBHOOK_SECRET, ''}
+    RECAPTCHA_SECRET_KEY: ${env:RECAPTCHA_SECRET_KEY, ''}
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - httpApi:
+          path: /
+          method: ANY
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+
+  staleOrderSweep:
+    handler: src/jobs/staleOrderSweep.handler.staleOrderSweep
+    description: Auto-cancels stale unpaid orders and restores stock.
+    timeout: 60
+    events:
+      - eventBridge:
+          schedule: rate(5 minutes)
+          enabled: true
+
+package:
+  patterns:
+    - "!node_modules/.cache/**"
+    - "!coverage/**"
+    - "!temp.js"
+    - "!.env"

@@ -29,10 +29,10 @@ export default function CustomerProfile({ customer, orders, loadingOrders }) {
 
   const getCustomBadgeStyle = (status) => {
     switch (status) {
-      case "Active": return "bg-emerald-100 text-emerald-700 hover:bg-emerald-200 border-transparent";
+      case "Active": return "bg-brand-100 text-brand-800 hover:bg-brand-100 border-transparent";
       case "Inactive": return "bg-rose-100 text-rose-700 hover:bg-rose-200 border-transparent";
-      case "New": return "bg-purple-100 text-purple-700 hover:bg-purple-200 border-transparent";
-      default: return "bg-gray-100 text-gray-700 hover:bg-gray-200 border-transparent";
+      case "New": return "bg-brand-100 text-brand-800 hover:bg-brand-100 border-transparent";
+      default: return "bg-surface-elevated text-foreground hover:bg-surface-elevated border-transparent";
     }
   };
 
@@ -72,7 +72,7 @@ export default function CustomerProfile({ customer, orders, loadingOrders }) {
                 <span>Joined {formatDate(customer.joinedDate)}</span>
               </div>
               <div className="flex flex-col gap-1.5 text-left">
-                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Gender</span>
+                <span className="text-xs font-semibold uppercase  text-muted-foreground">Gender</span>
                 <span className="text-sm font-medium text-foreground">{customer.genderLabel || "Not Specified"}</span>
               </div>
             </div>
@@ -88,19 +88,19 @@ export default function CustomerProfile({ customer, orders, loadingOrders }) {
         {/* Summary Cards — icon-left style matching dashboard */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { label: 'Total Orders', value: customer.totalOrders, icon: ShoppingBag, iconColor: 'text-indigo-600', bg: 'bg-indigo-50' },
-            { label: 'Total Spend', value: `₹${customer.totalSpend.toLocaleString()}`, icon: IndianRupee, iconColor: 'text-emerald-600', bg: 'bg-emerald-50' },
+            { label: 'Total Orders', value: customer.totalOrders, icon: ShoppingBag, iconColor: 'text-brand-700', bg: 'bg-brand-50' },
+            { label: 'Total Spend', value: `₹${customer.totalSpend.toLocaleString()}`, icon: IndianRupee, iconColor: 'text-brand-700', bg: 'bg-brand-50' },
             { label: 'Avg Order Value', value: `₹${customer.totalOrders > 0 ? Math.round(customer.totalSpend / customer.totalOrders).toLocaleString() : 0}`, icon: TrendingUp, iconColor: 'text-amber-600', bg: 'bg-amber-50' },
           ].map(item => {
             const Icon = item.icon
             return (
-              <div key={item.label} className="bg-white rounded-xl border border-gray-200 p-5 flex items-center gap-3 shadow-sm">
+              <div key={item.label} className="bg-card rounded-xl border border-border p-5 flex items-center gap-3 shadow-sm">
                 <div className={`p-2.5 rounded-xl ${item.bg} ${item.iconColor}`}>
                   <Icon className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase">{item.label}</p>
-                  <p className="text-2xl font-bold leading-none text-gray-900">{item.value}</p>
+                  <p className="text-xs font-semibold text-faint  uppercase">{item.label}</p>
+                  <p className="text-2xl font-bold leading-none text-ink">{item.value}</p>
                 </div>
               </div>
             )
@@ -116,8 +116,8 @@ export default function CustomerProfile({ customer, orders, loadingOrders }) {
           <CardContent className="flex-1 flex flex-col">
             <CustomerOrders orders={orders ? orders.slice(0, 5) : []} loading={loadingOrders} />
             {orders && orders.length > 5 && (
-              <div className="mt-4 pt-2 text-center border-t border-gray-100">
-                <Link href={`/orders?customerId=${customer.id}`} className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+              <div className="mt-4 pt-2 text-center border-t border-border">
+                <Link href={`/orders?customerId=${customer.id}`} className="text-sm font-medium text-brand-700 hover:text-brand-900 transition-colors">
                   View All Orders &rarr;
                 </Link>
               </div>
@@ -204,7 +204,7 @@ function AddressCarousel({ addresses }) {
               <button
                 key={i}
                 onClick={() => setIdx(i)}
-                className={`w-1.5 h-1.5 rounded-full transition-all ${i === idx ? 'bg-indigo-500 w-4' : 'bg-gray-300 hover:bg-gray-400'}`}
+                className={`w-1.5 h-1.5 rounded-full transition-all ${i === idx ? 'bg-brand-500 w-4' : 'bg-surface-elevated hover:bg-brand-300'}`}
               />
             ))}
           </div>

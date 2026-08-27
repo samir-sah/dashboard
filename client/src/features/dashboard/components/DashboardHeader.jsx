@@ -1,35 +1,32 @@
 'use client'
 
 import { TabsList, TabsTrigger } from "@/components/ui/Tabs"
-import { Button } from "@/components/ui/Button"
-import { Calendar, ChevronLeft, ChevronRight, BarChart3, Lightbulb } from "lucide-react"
+import { Calendar, ChevronLeft, BarChart3, Lightbulb } from "lucide-react"
 
 export default function DashboardHeader({ dateRange, setDateRange }) {
   return (
-    <div className="flex flex-col gap-4 mb-6 md:flex-row md:items-center md:justify-between">
+    <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+        <h1 className="text-2xl font-semibold text-ink">Dashboard</h1>
       </div>
 
       <div className="flex flex-col gap-3 md:flex-row md:items-center">
-        {/* Toggle / Tabs List */}
-        <div className="flex items-center bg-white rounded-lg border border-gray-200 p-1 shadow-sm">
-           <TabsList className="bg-transparent border-none h-9 p-0 gap-1">
-             <TabsTrigger value="charts" className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:shadow-sm rounded-md px-5 py-2 text-sm font-semibold transition-all">
+        <div className="flex items-center rounded-full border border-border bg-background p-1 shadow-[var(--shadow-soft)]">
+           <TabsList className="h-9 gap-1 border-none bg-transparent p-0">
+             <TabsTrigger value="charts" className="rounded-full px-5 py-2 text-sm font-semibold transition-all data-[state=active]:bg-brand-50 data-[state=active]:text-brand-800 data-[state=active]:shadow-xs">
                <BarChart3 className="w-4 h-4 mr-2" />
                Charts
              </TabsTrigger>
-             <TabsTrigger value="insights" className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:shadow-sm rounded-md px-5 py-2 text-sm font-semibold transition-all">
+             <TabsTrigger value="insights" className="rounded-full px-5 py-2 text-sm font-semibold transition-all data-[state=active]:bg-brand-50 data-[state=active]:text-brand-800 data-[state=active]:shadow-xs">
                <Lightbulb className="w-4 h-4 mr-2" />
                Insights
              </TabsTrigger>
            </TabsList>
         </div>
 
-        {/* Premium Date Range Selector */}
         <div className="relative">
           <select 
-            className="appearance-none bg-white border border-gray-200 text-gray-700 py-2.5 pl-10 pr-10 rounded-lg shadow-sm font-medium text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:bg-gray-50 cursor-pointer"
+            className="cursor-pointer appearance-none rounded-full border border-border bg-background py-2.5 pl-10 pr-10 text-sm font-semibold text-foreground shadow-xs transition-all hover:border-brand-300 hover:bg-brand-50/40 focus:border-ring focus:outline-none focus:ring-3 focus:ring-ring/30"
             value={dateRange || "30d"}
             onChange={(e) => setDateRange && setDateRange(e.target.value)}
           >
@@ -38,8 +35,8 @@ export default function DashboardHeader({ dateRange, setDateRange }) {
             <option value="90d">Last 90 Days</option>
             <option value="12m">Last 12 Months</option>
           </select>
-          <Calendar className="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-          <ChevronLeft className="w-4 h-4 text-gray-500 absolute right-3.5 top-1/2 -translate-y-1/2 -rotate-90 pointer-events-none" />
+          <Calendar className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <ChevronLeft className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 -rotate-90 text-muted-foreground" />
         </div>
       </div>
     </div>

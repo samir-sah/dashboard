@@ -76,12 +76,12 @@ export default function SupportPage() {
     <div className="max-w-[1400px] w-full pb-10">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">Support</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-ink">Support</h1>
           <p className="text-muted-foreground mt-1 text-sm">
             Manage customer support tickets and device-related issues
           </p>
         </div>
-        <Button onClick={() => setCreateOpen(true)} className="bg-indigo-600 hover:bg-indigo-700 text-white gap-2">
+        <Button onClick={() => setCreateOpen(true)} className="bg-brand-700 hover:bg-brand-800 text-white gap-2">
           <Plus size={16} />
           Create Ticket
         </Button>
@@ -89,7 +89,7 @@ export default function SupportPage() {
 
       <SupportStats stats={stats} />
 
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden flex flex-col">
         <SupportFilters 
           searchQuery={searchQuery}
           onSearchChange={resetPage(setSearchQuery)}

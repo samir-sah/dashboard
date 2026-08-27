@@ -20,7 +20,7 @@ export default function SupportFilters({
   onSortChange,
 }) {
   return (
-    <div className="p-4 border-b border-border flex flex-wrap items-center gap-4 justify-between bg-white">
+    <div className="p-4 border-b border-border flex flex-wrap items-center gap-4 justify-between bg-card">
       <div className="relative flex-1 min-w-[200px] lg:max-w-md">
         <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
           <Search size={15} className="text-muted-foreground" />
@@ -32,7 +32,7 @@ export default function SupportFilters({
           placeholder="Search Ticket ID, Customer, Device..."
           className={cn(
             "h-10 w-full rounded-xl border border-border bg-background pl-9 pr-4 text-[13.5px] text-foreground shadow-xs transition-all",
-            "outline-none focus:border-indigo-400 focus:ring-3 focus:ring-indigo-500/10",
+            "outline-none focus:border-brand-300 focus:ring-3 focus:ring-ring/30",
             "placeholder:text-muted-foreground"
           )}
         />
@@ -40,7 +40,7 @@ export default function SupportFilters({
       
       <div className="flex items-center gap-3">
         <div className="relative min-w-[140px]">
-          <span className="absolute -top-1.5 left-3 px-1 bg-white text-[9px] font-bold uppercase tracking-wider text-muted-foreground z-10 pointer-events-none">
+          <span className="absolute -top-1.5 left-3 px-1 bg-card text-[9px] font-bold uppercase  text-muted-foreground z-10 pointer-events-none">
             Status
           </span>
           <Select value={statusFilter} onValueChange={onStatusChange}>
@@ -58,7 +58,7 @@ export default function SupportFilters({
         </div>
 
         <div className="relative min-w-[140px]">
-          <span className="absolute -top-1.5 left-3 px-1 bg-white text-[9px] font-bold uppercase tracking-wider text-muted-foreground z-10 pointer-events-none">
+          <span className="absolute -top-1.5 left-3 px-1 bg-card text-[9px] font-bold uppercase  text-muted-foreground z-10 pointer-events-none">
             Priority
           </span>
           <Select value={priorityFilter} onValueChange={onPriorityChange}>
@@ -75,7 +75,7 @@ export default function SupportFilters({
         </div>
         
         <div className="relative min-w-[160px]">
-          <span className="absolute -top-1.5 left-3 px-1 bg-white text-[9px] font-bold uppercase tracking-wider text-muted-foreground z-10 pointer-events-none">
+          <span className="absolute -top-1.5 left-3 px-1 bg-card text-[9px] font-bold uppercase  text-muted-foreground z-10 pointer-events-none">
             Sort
           </span>
           <Select value={sortBy} onValueChange={onSortChange}>

@@ -6,7 +6,7 @@ export default function PaymentKPIs({ stats }) {
   if (!stats) return null;
 
   const kpiData = [
-    { label: 'SUCCESSFUL', value: stats.successfulPayments?.toLocaleString('en-IN') ?? '0', icon: CircleCheckBig, iconColor: 'text-emerald-600', iconBg: 'bg-emerald-100' },
+    { label: 'SUCCESSFUL', value: stats.successfulPayments?.toLocaleString('en-IN') ?? '0', icon: CircleCheckBig, iconColor: 'text-brand-700', iconBg: 'bg-brand-100' },
     { label: 'FAILED',     value: stats.failedPayments?.toLocaleString('en-IN')     ?? '0', icon: CircleX,        iconColor: 'text-red-600',      iconBg: 'bg-red-100' },
     { label: 'PENDING',    value: stats.pendingPayments?.toLocaleString('en-IN')    ?? '0', icon: Clock,          iconColor: 'text-amber-600',    iconBg: 'bg-amber-100' },
     { label: 'REFUNDED',   value: stats.refundedPayments?.toLocaleString('en-IN')   ?? '0', icon: RotateCcw,      iconColor: 'text-orange-600',   iconBg: 'bg-orange-100' },

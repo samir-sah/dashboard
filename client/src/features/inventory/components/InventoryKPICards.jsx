@@ -11,22 +11,22 @@ export default function InventoryKPICards({ kpis }) {
       title: 'Current Stock',
       value: `${currentStock} Units`,
       icon: Package,
-      iconColor: 'text-blue-600',
-      bgColor: 'bg-blue-50',
+      iconColor: 'text-brand-700',
+      bgColor: 'bg-brand-50',
     },
     {
       title: 'Inventory Value',
       value: `₹${inventoryValue.toLocaleString('en-IN')}`,
       icon: IndianRupee,
-      iconColor: 'text-emerald-600',
-      bgColor: 'bg-emerald-50',
+      iconColor: 'text-brand-700',
+      bgColor: 'bg-brand-50',
     },
     {
       title: 'Avg. Daily Sales',
       value: `${averageDailySales} Units/Day`,
       icon: TrendingUp,
-      iconColor: 'text-purple-600',
-      bgColor: 'bg-purple-50',
+      iconColor: 'text-brand-700',
+      bgColor: 'bg-brand-50',
     },
     {
       title: 'Stock Will Last For',
@@ -40,14 +40,14 @@ export default function InventoryKPICards({ kpis }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       {cards.map((card, idx) => (
-        <div key={idx} className="bg-white rounded-xl border border-gray-200 p-5 flex items-center shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group min-h-[96px]">
+        <div key={idx} className="bg-card rounded-xl border border-border p-5 flex items-center shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group min-h-[96px]">
           <div className="flex items-center gap-4 w-full">
             <div className={`p-3 rounded-xl ${card.bgColor} ${card.iconColor}`}>
               <card.icon className="w-5 h-5" />
             </div>
             <div className="flex flex-col gap-0.5">
-              <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">{card.title}</span>
-              <span className="text-2xl font-bold text-gray-900 leading-none">{card.value}</span>
+              <span className="text-xs font-bold text-muted-foreground uppercase ">{card.title}</span>
+              <span className="text-2xl font-bold text-ink leading-none">{card.value}</span>
             </div>
           </div>
         </div>

@@ -8,9 +8,9 @@ export default function PaymentsPagination({ currentPage, totalPages, totalItems
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex items-center justify-between px-5 py-3 border-t border-gray-100 bg-gray-50/50">
-      <p className="text-sm text-gray-500 m-0">
-        Showing <strong className="text-gray-700 font-semibold">{(currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, totalItems)}</strong> of <strong className="text-gray-700 font-semibold">{totalItems}</strong> payments
+    <div className="flex items-center justify-between px-5 py-3 border-t border-border bg-surface-2/70">
+      <p className="text-sm text-muted-foreground m-0">
+        Showing <strong className="text-foreground font-semibold">{(currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, totalItems)}</strong> of <strong className="text-foreground font-semibold">{totalItems}</strong> payments
       </p>
       <div className="flex items-center gap-1.5">
         <button 
@@ -18,8 +18,8 @@ export default function PaymentsPagination({ currentPage, totalPages, totalItems
           disabled={currentPage === 1}
           className={`w-8 h-8 rounded-md flex items-center justify-center border transition-colors ${
             currentPage === 1 
-              ? 'bg-gray-50 border-gray-100 text-gray-300 cursor-not-allowed' 
-              : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 cursor-pointer'
+              ? 'bg-surface-2 border-border text-faint cursor-not-allowed' 
+              : 'bg-card border-border text-muted-foreground hover:bg-surface-2 cursor-pointer'
           }`}
         >
           <ChevronLeft size={16} />
@@ -31,8 +31,8 @@ export default function PaymentsPagination({ currentPage, totalPages, totalItems
             onClick={() => onPageChange(page)}
             className={`w-8 h-8 rounded-md text-sm font-medium transition-colors border ${
               page === currentPage 
-                ? 'bg-indigo-600 border-indigo-600 text-white' 
-                : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                ? 'bg-brand-700 border-brand-700 text-white' 
+                : 'bg-card border-border text-muted-foreground hover:bg-surface-2'
             }`}
           >
             {page}
@@ -44,8 +44,8 @@ export default function PaymentsPagination({ currentPage, totalPages, totalItems
           disabled={currentPage === totalPages}
           className={`w-8 h-8 rounded-md flex items-center justify-center border transition-colors ${
             currentPage === totalPages 
-              ? 'bg-gray-50 border-gray-100 text-gray-300 cursor-not-allowed' 
-              : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50 cursor-pointer'
+              ? 'bg-surface-2 border-border text-faint cursor-not-allowed' 
+              : 'bg-card border-border text-muted-foreground hover:bg-surface-2 cursor-pointer'
           }`}
         >
           <ChevronRight size={16} />

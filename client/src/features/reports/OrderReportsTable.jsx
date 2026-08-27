@@ -129,7 +129,7 @@ export default function OrderReportsTable({
                 onClick={() => onPageChange(page)}
                 className={`w-8 h-8 rounded-md text-sm font-medium transition-colors border ${
                   page === currentPage
-                    ? 'bg-indigo-600 border-indigo-600 text-white'
+                    ? 'bg-brand-700 border-brand-700 text-white'
                     : 'bg-background border-border text-foreground hover:bg-muted'
                 }`}
               >

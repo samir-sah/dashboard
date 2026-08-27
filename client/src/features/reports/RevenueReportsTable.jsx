@@ -87,7 +87,7 @@ export default function RevenueReportsTable({
           {data.map((row) => (
             <TableRow key={row.period}>
               <TableCell className="font-medium text-primary">{row.period}</TableCell>
-              <TableCell className="text-right text-green-600 dark:text-green-500 font-medium">
+              <TableCell className="text-right text-brand-700 dark:text-brand-700 font-medium">
                 {formatCurrency(row.revenue)}
               </TableCell>
               <TableCell className="text-right">{row.totalOrders.toLocaleString('en-IN')}</TableCell>
@@ -121,7 +121,7 @@ export default function RevenueReportsTable({
                 onClick={() => onPageChange(page)}
                 className={`w-8 h-8 rounded-md text-sm font-medium transition-colors border ${
                   page === currentPage
-                    ? 'bg-indigo-600 border-indigo-600 text-white'
+                    ? 'bg-brand-700 border-brand-700 text-white'
                     : 'bg-background border-border text-foreground hover:bg-muted'
                 }`}
               >

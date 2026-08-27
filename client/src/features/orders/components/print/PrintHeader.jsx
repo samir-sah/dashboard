@@ -18,7 +18,7 @@ export default function PrintHeader({ orderId, customerName, status, activeTab, 
   return (
     <div className="print-hide" data-print="hide">
       {/* ── Top Bar ──────────────────────────────────── */}
-      <div className="border-b border-neutral-200 bg-white">
+      <div className="border-b border-neutral-200 bg-card">
         <div className="px-6 py-4 flex items-center justify-between gap-4">
           {/* Left: Back + Title */}
           <div className="flex items-center gap-3 min-w-0">
@@ -38,7 +38,7 @@ export default function PrintHeader({ orderId, customerName, status, activeTab, 
                 <h1 className="text-[15px] font-semibold text-neutral-900 truncate">
                   Print Center
                 </h1>
-                <span className="text-xs font-mono font-semibold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">
+                <span className="text-xs font-mono font-semibold text-brand-700 bg-brand-50 px-1.5 py-0.5 rounded">
                   #{orderId}
                 </span>
                 <StatusBadge status={status} />
@@ -75,7 +75,7 @@ export default function PrintHeader({ orderId, customerName, status, activeTab, 
       </div>
 
       {/* ── Tab Navigation ───────────────────────────── */}
-      <div className="border-b border-neutral-200 bg-white">
+      <div className="border-b border-neutral-200 bg-card">
         <div className="px-6 flex gap-0">
           {[
             { key: 'label', label: 'Shipping Label', icon: Tag },

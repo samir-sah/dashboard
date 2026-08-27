@@ -31,7 +31,7 @@ export default function InventoryPage() {
         <>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+              <div key={i} className="bg-card rounded-2xl border border-border p-6 shadow-sm">
                 <Skeleton className="w-24 h-3 mb-3" />
                 <Skeleton className="w-20 h-8" />
               </div>
@@ -58,8 +58,8 @@ export default function InventoryPage() {
         </>
       ) : (
         !loading && !error && (
-          <div className="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
-            <p className="text-gray-500">No active product found in inventory.</p>
+          <div className="text-center py-20 bg-surface-2 rounded-2xl border border-dashed border-border">
+            <p className="text-muted-foreground">No active product found in inventory.</p>
           </div>
         )
       )}

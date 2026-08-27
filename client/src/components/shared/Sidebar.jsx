@@ -1,10 +1,11 @@
 'use client'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
-  LayoutDashboard, ShoppingCart, Users, TrendingUp,
-  Package, CreditCard, BarChart2, HeadphonesIcon,
+  LayoutDashboard, ShoppingCart, Users, Package, CreditCard,
+  BarChart2, HeadphonesIcon, ChevronLeft, ChevronRight,
 } from 'lucide-react'
 
 const navItems = [
@@ -19,53 +20,77 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname()
+  const [collapsed, setCollapsed] = useState(() => (
+    typeof window !== 'undefined' &&
+    window.localStorage.getItem('flowboard-sidebar-collapsed') === 'true'
+  ))
+
+  const toggleCollapsed = () => {
+    setCollapsed((current) => {
+      const next = !current
+      window.localStorage.setItem('flowboard-sidebar-collapsed', String(next))
+      return next
+    })
+  }
 
   const isActive = (href) =>
     pathname === href || pathname.startsWith(href + '/')
 
   return (
-    <aside className="w-55 min-w-55 h-screen bg-white border-gray-200 flex flex-col">
+    <aside
+      className={`flex h-[calc(100vh-2rem)] shrink-0 flex-col rounded-[1.35rem] border border-sidebar-border bg-sidebar text-sidebar-foreground shadow-[var(--shadow-soft)] transition-all duration-200 ease-out ${collapsed ? 'w-[5.25rem]' : 'w-[17.5rem]'}`}
+    >
 
-      {/* Logo — h-16 matches navbar height for perfect top alignment */}
-      <div className="h-16 flex items-center px-5 border-b border-gray-200 shrink-0">
-        <Image
-          src="/LOGO-H.png"
-          alt="Mavoix"
-          width={120}
-          height={32}
-          style={{ objectFit: 'contain', objectPosition: 'left', width: 'auto' }}
-          priority
-        />
+      <div className={`flex h-[72px] shrink-0 items-center border-b border-sidebar-border ${collapsed ? 'justify-center px-3' : 'justify-between px-5'}`}>
+        {!collapsed && (
+          <Image
+            src="/LOGO-H.png"
+            alt="Mavoix"
+            width={120}
+            height={32}
+            style={{ objectFit: 'contain', objectPosition: 'left', width: 'auto' }}
+            priority
+          />
+        )}
+        <button
+          type="button"
+          onClick={toggleCollapsed}
+          className="grid size-9 place-items-center rounded-full border border-border bg-background text-muted-foreground shadow-xs transition-all hover:border-brand-300 hover:bg-brand-50 hover:text-brand-800 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
+          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
+          {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </button>
       </div>
 
-      {/* Nav items */}
-      <nav className="flex-1 overflow-y-auto px-3 py-3 flex flex-col gap-0.5">
+      <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-4">
         {navItems.map(({ label, href, icon: Icon }) => (
           <Link key={href} href={href}>
-            <div className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm cursor-pointer transition-colors
+            <div className={`group flex items-center gap-3 rounded-full px-3 py-2.5 text-sm cursor-pointer transition-all duration-200 ease-out
               ${isActive(href)
-                ? 'bg-[#eeecfb] text-[#5048e5] font-semibold'
-                : 'text-gray-500 font-medium hover:bg-gray-50 hover:text-gray-800'
+                ? 'bg-brand-50 text-brand-800 font-semibold shadow-[inset_0_0_0_1px_var(--brand-100)]'
+                : 'text-muted-foreground font-medium hover:bg-surface-2 hover:text-ink'
               }`}
             >
-              <Icon size={18} strokeWidth={isActive(href) ? 2.2 : 1.8} aria-hidden="true" />
-              {label}
+              <span className={`grid size-8 shrink-0 place-items-center rounded-full transition-colors ${isActive(href) ? 'bg-brand-700 text-white' : 'bg-transparent text-faint group-hover:text-brand-700'}`}>
+                <Icon size={18} strokeWidth={isActive(href) ? 2.2 : 1.8} aria-hidden="true" />
+              </span>
+              {!collapsed && <span className="truncate">{label}</span>}
             </div>
           </Link>
         ))}
       </nav>
 
-      {/* Bottom: Settings + User */}
-      <div className="border-t border-gray-200 px-3 py-3 flex flex-col gap-0.5">
-
-        <div className="flex items-center gap-3 px-3 py-2.5 mt-1">
-          <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-white text-xs font-semibold shrink-0">
+      <div className="border-t border-sidebar-border px-3 py-4">
+        <div className={`flex items-center gap-3 rounded-[1.1rem] bg-surface-2 px-3 py-3 ${collapsed ? 'justify-center' : ''}`}>
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--gradient-start)] via-[var(--gradient-mid)] to-[var(--gradient-end)] text-xs font-semibold text-white shadow-[var(--shadow-lift)]">
             SG
           </div>
-          <div className="min-w-0">
-            <p className="text-sm font-semibold text-gray-900 truncate">Suprokash Goswami</p>
-            <p className="text-xs text-slate-400">Admin</p>
-          </div>
+          {!collapsed && (
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold text-ink">Suprokash Goswami</p>
+              <p className="text-xs font-medium text-muted-foreground">Admin</p>
+            </div>
+          )}
         </div>
       </div>
 

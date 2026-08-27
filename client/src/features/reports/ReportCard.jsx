@@ -6,7 +6,7 @@ export default function ReportCard({ title, tabs, defaultTab, onTabChange, child
   return (
     <Card className="flex flex-col h-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
-        <CardTitle className="text-base font-semibold uppercase tracking-wider text-muted-foreground">{title}</CardTitle>
+        <CardTitle className="text-base font-semibold uppercase  text-muted-foreground">{title}</CardTitle>
         {tabs && (
           <ReportTabs tabs={tabs} defaultValue={defaultTab} onValueChange={onTabChange} />
         )}

@@ -7,26 +7,26 @@ export default function TopPerformingStates({ params }) {
   const topPerformingStatesData = query.data || []
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm h-full w-full flex flex-col">
-      <h3 className="text-xl font-bold text-gray-900 mb-6">Top Performing States</h3>
+    <div className="flex h-full w-full flex-col rounded-[1.1rem] border border-border bg-card p-8 shadow-[var(--shadow-soft)]">
+      <h3 className="mb-6 text-xl font-semibold text-ink">Top Performing States</h3>
       {query.isLoading ? (
-        <div className="space-y-4">{Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-12 bg-muted animate-pulse rounded-lg" />)}</div>
+        <div className="space-y-4">{Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-12 animate-pulse rounded-[1.1rem] bg-surface-elevated" />)}</div>
       ) : query.error ? (
-        <div className="rounded-lg border border-red-100 bg-red-50 p-4 text-sm text-red-700">{query.error.message}</div>
+        <div className="rounded-[1.1rem] border border-red-100 bg-red-50 p-4 text-sm text-red-700">{query.error.message}</div>
       ) : (
         <div className="flex flex-col gap-4 flex-1 justify-center">
           {topPerformingStatesData.map((state) => (
-            <div key={state.rank} className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100">
+            <div key={state.rank} className="flex items-center justify-between rounded-[1.1rem] border border-transparent p-3 transition-colors hover:border-brand-100 hover:bg-brand-50/60">
               <div className="flex items-center gap-4">
-                <span className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-900 text-white text-xs font-bold">{state.rank}</span>
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-800 text-xs font-semibold text-white">{state.rank}</span>
                 <div className="flex flex-col">
-                  <span className="text-sm font-bold text-gray-900">{state.state}</span>
-                  <span className="text-xs text-gray-500">{state.orders} Orders</span>
+                  <span className="text-sm font-semibold text-ink">{state.state}</span>
+                  <span className="text-xs text-muted-foreground">{state.orders} Orders</span>
                 </div>
               </div>
               <div className="flex flex-col items-end">
-                <span className="text-sm font-bold text-gray-900">{state.revenue}</span>
-                <span className="text-xs font-semibold text-green-600">{state.growth}</span>
+                <span className="text-sm font-semibold text-ink">{state.revenue}</span>
+                <span className="text-xs font-semibold text-brand-700">{state.growth}</span>
               </div>
             </div>
           ))}

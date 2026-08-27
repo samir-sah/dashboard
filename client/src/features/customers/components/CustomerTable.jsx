@@ -54,10 +54,10 @@ export default function CustomerTable({
   
   const getCustomBadgeStyle = (status) => {
     switch (status) {
-      case "Active": return "bg-emerald-100 text-emerald-700 hover:bg-emerald-200 border-transparent";
+      case "Active": return "bg-brand-100 text-brand-800 hover:bg-brand-100 border-transparent";
       case "Inactive": return "bg-rose-100 text-rose-700 hover:bg-rose-200 border-transparent";
-      case "New": return "bg-purple-100 text-purple-700 hover:bg-purple-200 border-transparent";
-      default: return "bg-gray-100 text-gray-700 hover:bg-gray-200 border-transparent";
+      case "New": return "bg-brand-100 text-brand-800 hover:bg-brand-100 border-transparent";
+      default: return "bg-surface-elevated text-foreground hover:bg-surface-elevated border-transparent";
     }
   };
 
@@ -69,9 +69,9 @@ export default function CustomerTable({
   };
 
   return (
-    <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden flex flex-col">
+    <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden flex flex-col">
       {/* Table Toolbar */}
-      <div className="p-4 border-b border-border flex flex-wrap items-center gap-4 justify-between bg-white">
+      <div className="p-4 border-b border-border flex flex-wrap items-center gap-4 justify-between bg-card">
         <div className="relative flex-1 min-w-[200px]">
           <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
             <Search size={15} className="text-muted-foreground" />
@@ -83,13 +83,13 @@ export default function CustomerTable({
             placeholder="Search customers..."
             className={cn(
               "h-10 w-full rounded-xl border border-border bg-background pl-9 pr-4 text-[13.5px] text-foreground shadow-xs transition-all",
-              "outline-none focus:border-indigo-400 focus:ring-3 focus:ring-indigo-500/10",
+              "outline-none focus:border-brand-300 focus:ring-3 focus:ring-ring/30",
               "placeholder:text-muted-foreground"
             )}
           />
         </div>
         <div className="relative min-w-[160px] sm:w-48">
-          <span className="absolute -top-1.5 left-3 px-1 bg-white text-[9px] font-bold uppercase tracking-wider text-muted-foreground z-10 pointer-events-none">
+          <span className="absolute -top-1.5 left-3 px-1 bg-card text-[9px] font-bold uppercase  text-muted-foreground z-10 pointer-events-none">
             Status
           </span>
           <Select value={statusFilter} onValueChange={onStatusChange}>

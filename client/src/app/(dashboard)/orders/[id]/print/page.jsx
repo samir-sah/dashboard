@@ -97,8 +97,8 @@ export default function PrintCenterPage() {
   // ── Loading State ───────────────────────────────────
   if (loading) {
     return (
-      <div className="rounded-2xl border border-neutral-200 bg-white overflow-hidden shadow-sm">
-        <div className="print-hide border-b border-neutral-200 bg-white">
+      <div className="rounded-2xl border border-neutral-200 bg-card overflow-hidden shadow-sm">
+        <div className="print-hide border-b border-neutral-200 bg-card">
           <div className="px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Skeleton className="w-8 h-8 rounded-lg" />
@@ -118,7 +118,7 @@ export default function PrintCenterPage() {
             </div>
           </div>
         </div>
-        <div className="print-hide border-b border-neutral-200 bg-white">
+        <div className="print-hide border-b border-neutral-200 bg-card">
           <div className="px-6 flex gap-4">
             <Skeleton className="w-32 h-10 rounded" />
             <Skeleton className="w-28 h-10 rounded" />
@@ -126,7 +126,7 @@ export default function PrintCenterPage() {
         </div>
         <div className="px-6 py-6">
           <div className="flex justify-center py-8">
-            <div className="bg-white rounded-xl border border-neutral-200 p-10">
+            <div className="bg-card rounded-xl border border-neutral-200 p-10">
               <div className="flex flex-col items-center gap-3 w-80">
                 <div className="w-10 h-10 rounded-lg bg-neutral-100 flex items-center justify-center animate-pulse">
                   <Printer size={20} className="text-neutral-300" />
@@ -177,7 +177,7 @@ export default function PrintCenterPage() {
 
   // ── Main Render ─────────────────────────────────────
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white overflow-hidden shadow-sm">
+    <div className="rounded-2xl border border-neutral-200 bg-card overflow-hidden shadow-sm">
       <PrintHeader
         orderId={orderId}
         customerName={customerName || 'Customer'}

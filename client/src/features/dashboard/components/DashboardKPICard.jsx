@@ -1,7 +1,6 @@
 'use client'
 
-import { ShoppingBag, Users, Package, Truck, AlertTriangle, Wallet, TrendingUp, TrendingDown, IndianRupee, PackageCheck } from "lucide-react"
-import { LineChart, Line, ResponsiveContainer } from "recharts"
+import { ShoppingBag, Users, Package, Truck, AlertTriangle, Wallet, TrendingUp, IndianRupee, PackageCheck } from "lucide-react"
 
 const iconMap = {
   "total-revenue": Wallet,
@@ -20,34 +19,35 @@ const iconMap = {
 }
 
 const colorMap = {
-  "total-revenue": { bg: "bg-green-100 text-green-600", stroke: "#16a34a" },
-  "total-orders": { bg: "bg-blue-100 text-blue-600", stroke: "#2563eb" },
-  "active-customers": { bg: "bg-purple-100 text-purple-600", stroke: "#9333ea" },
+  "total-revenue": { bg: "bg-brand-50 text-brand-800", stroke: "#2f8159" },
+  "total-orders": { bg: "bg-brand-50 text-brand-700", stroke: "#57a47b" },
+  "active-customers": { bg: "bg-brand-100 text-brand-900", stroke: "#246646" },
   "pending-deliveries": { bg: "bg-orange-100 text-orange-600", stroke: "#ea580c" },
   "low-stock-products": { bg: "bg-red-100 text-red-600", stroke: "#dc2626" },
-  "avg-order-value": { bg: "bg-teal-100 text-teal-600", stroke: "#0d9488" },
-  "conversion-rate": { bg: "bg-indigo-100 text-indigo-600", stroke: "#4f46e5" },
-  "avg-session-duration": { bg: "bg-pink-100 text-pink-600", stroke: "#db2777" },
+  "avg-order-value": { bg: "bg-brand-50 text-brand-800", stroke: "#2f8159" },
+  "conversion-rate": { bg: "bg-brand-100 text-brand-900", stroke: "#246646" },
+  "avg-session-duration": { bg: "bg-surface-2 text-muted-foreground", stroke: "#5d5d6e" },
   "cart-abandonment": { bg: "bg-rose-100 text-rose-600", stroke: "#e11d48" },
   "pending-deliveries-insight": { bg: "bg-orange-100 text-orange-600", stroke: "#ea580c" },
-  "todays-revenue": { bg: "bg-green-100 text-green-600", stroke: "#16a34a" },
-  "todays-orders": { bg: "bg-blue-100 text-blue-600", stroke: "#2563eb" },
-  "delivered-orders-insight": { bg: "bg-teal-100 text-teal-600", stroke: "#0d9488" },
+  "todays-revenue": { bg: "bg-brand-50 text-brand-800", stroke: "#2f8159" },
+  "todays-orders": { bg: "bg-brand-50 text-brand-700", stroke: "#57a47b" },
+  "delivered-orders-insight": { bg: "bg-brand-100 text-brand-900", stroke: "#246646" },
 }
 
 export default function DashboardKPICard({ kpi }) {
   const Icon = iconMap[kpi.id] || ShoppingBag;
-  const colors = colorMap[kpi.id] || { bg: "bg-gray-100 text-gray-600", stroke: "#4b5563" };
+  const colors = colorMap[kpi.id] || { bg: "bg-surface-2 text-muted-foreground", stroke: "#5d5d6e" };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5 flex items-center shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group min-h-[96px]">
-      <div className="flex items-center gap-4 w-full">
-        <div className={`p-3 rounded-xl ${colors.bg}`}>
+    <div className="kpi-card group relative flex min-h-[108px] items-center overflow-hidden rounded-[1.1rem] border border-border bg-card p-5 shadow-[var(--shadow-soft)] transition-all duration-200 ease-out">
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[var(--gradient-start)] via-[var(--gradient-mid)] to-[var(--gradient-end)] opacity-80" />
+      <div className="flex w-full items-center gap-4">
+        <div className={`rounded-full p-3 ${colors.bg}`}>
           <Icon className="w-5 h-5" />
         </div>
         <div className="flex flex-col gap-0.5">
-          <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">{kpi.label}</span>
-          <span className="text-2xl font-bold text-gray-900 leading-none">{kpi.value}</span>
+          <span className="text-xs font-semibold uppercase text-muted-foreground">{kpi.label}</span>
+          <span className="text-2xl font-semibold leading-none text-ink">{kpi.value}</span>
         </div>
       </div>
     </div>

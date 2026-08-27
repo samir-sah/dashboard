@@ -7,26 +7,26 @@ export default function ActivityTimeline({ timeline }) {
   const getIconForAction = (action) => {
     const act = action.toLowerCase();
     if (act.includes('created')) return <FileText className="w-4 h-4 text-white" />;
-    if (act.includes('assign')) return <UserPlus className="w-4 h-4 text-gray-500" />;
+    if (act.includes('assign')) return <UserPlus className="w-4 h-4 text-muted-foreground" />;
     if (act.includes('status')) return <Info className="w-4 h-4 text-white" />;
-    if (act.includes('comment') || act.includes('troubleshooting')) return <MessageSquare className="w-4 h-4 text-gray-500" />;
-    if (act.includes('resolv')) return <CheckCircle2 className="w-4 h-4 text-gray-500" />;
-    return <Info className="w-4 h-4 text-gray-500" />;
+    if (act.includes('comment') || act.includes('troubleshooting')) return <MessageSquare className="w-4 h-4 text-muted-foreground" />;
+    if (act.includes('resolv')) return <CheckCircle2 className="w-4 h-4 text-muted-foreground" />;
+    return <Info className="w-4 h-4 text-muted-foreground" />;
   };
 
   const getIconBgClass = (action) => {
     const act = action.toLowerCase();
-    if (act.includes('created') || act.includes('status')) return "bg-indigo-500 ring-4 ring-indigo-50";
-    return "bg-gray-100 ring-4 ring-white border border-gray-200";
+    if (act.includes('created') || act.includes('status')) return "bg-brand-500 ring-4 ring-brand-50";
+    return "bg-surface-elevated ring-4 ring-white border border-border";
   };
 
   return (
-    <Card className="shadow-sm border border-gray-200">
+    <Card className="shadow-sm border border-border">
       <CardHeader className="pb-4 pt-6 px-6">
-        <CardTitle className="text-[17px] font-bold text-gray-900">Activity Timeline</CardTitle>
+        <CardTitle className="text-[17px] font-bold text-ink">Activity Timeline</CardTitle>
       </CardHeader>
       <CardContent className="px-6 pb-6">
-        <div className="relative border-l-2 border-gray-100 ml-[15px] space-y-8 pb-2">
+        <div className="relative border-l-2 border-border ml-[15px] space-y-8 pb-2">
           {timeline.map((item, index) => {
             return (
               <div key={item.id} className="relative pl-8 pr-2 flex justify-between group">
@@ -35,14 +35,14 @@ export default function ActivityTimeline({ timeline }) {
                 </div>
                 
                 <div className="flex flex-col flex-1 min-w-0 pr-4">
-                  <span className="text-[14px] font-bold text-gray-900 mb-1">{item.action}</span>
-                  <span className="text-[13px] text-gray-500 leading-snug break-words">
+                  <span className="text-[14px] font-bold text-ink mb-1">{item.action}</span>
+                  <span className="text-[13px] text-muted-foreground leading-snug break-words">
                     {item.description || "-"}
                   </span>
                 </div>
 
                 <div className="flex-shrink-0 text-right min-w-[120px] pt-0.5">
-                  <span className="text-[12px] font-medium text-gray-500">
+                  <span className="text-[12px] font-medium text-muted-foreground">
                     {item.date ? new Date(item.date).toLocaleString('en-IN', {
                       day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true
                     }).toUpperCase() : "-"}

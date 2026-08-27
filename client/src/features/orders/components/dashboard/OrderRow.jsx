@@ -10,7 +10,7 @@ export default function OrderRow({ order, isLast }) {
       style={{ borderBottom: isLast ? 'none' : '1px solid #f3f4f6', transition: 'background 0.15s' }}>
       <td style={{ padding: '15px 20px' }}>
         <span onClick={() => router.push(`/orders/${order.id}`)}
-          style={{ color: '#4f46e5', fontWeight: '600', fontSize: '14px', cursor: 'pointer' }}>
+          style={{ color: '#2f8159', fontWeight: '600', fontSize: '14px', cursor: 'pointer' }}>
           #{order.id}
         </span>
       </td>
@@ -20,9 +20,9 @@ export default function OrderRow({ order, isLast }) {
       <td style={{ padding: '15px 20px' }}><StatusBadge status={order.status} /></td>
       <td style={{ padding: '15px 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <ActionBtn icon={Eye}     label="View Order"   onClick={() => router.push(`/orders/${order.id}`)}       hoverBg="#eef2ff" hoverColor="#4f46e5" />
+          <ActionBtn icon={Eye}     label="View Order"   onClick={() => router.push(`/orders/${order.id}`)}       hoverBg="#eef2ff" hoverColor="#2f8159" />
           <ActionBtn icon={Pencil}  label="Edit Details" onClick={() => router.push(`/orders/${order.id}/edit`)} hoverBg="#fefce8" hoverColor="#a16207" />
-          <ActionBtn icon={Printer} label="Print Center" onClick={() => router.push(`/orders/${order.id}/print`)} hoverBg="#f0fdf4" hoverColor="#15803d" />
+          <ActionBtn icon={Printer} label="Print Center" onClick={() => router.push(`/orders/${order.id}/print`)} hoverBg="#ebf6ef" hoverColor="#246646" />
         </div>
       </td>
     </tr>

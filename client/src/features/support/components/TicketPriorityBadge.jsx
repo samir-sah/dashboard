@@ -9,9 +9,9 @@ export default function TicketPriorityBadge({ priority }) {
       case "med":
         return "bg-amber-100 text-amber-800 hover:bg-amber-200 border-transparent";
       case "low":
-        return "bg-gray-100 text-gray-800 hover:bg-gray-200 border-transparent";
+        return "bg-surface-elevated text-foreground hover:bg-surface-elevated border-transparent";
       default:
-        return "bg-gray-100 text-gray-800 hover:bg-gray-200 border-transparent";
+        return "bg-surface-elevated text-foreground hover:bg-surface-elevated border-transparent";
     }
   };
 
