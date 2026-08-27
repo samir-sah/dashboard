@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import apiFetch from '@/services/api/api.service'
 
 const PAGE_SIZE = 7
 
@@ -38,12 +39,7 @@ export function useOrders() {
         ...(statusFilter !== 'All'  && { status: statusFilter }),
         ...(search.trim()           && { search: search.trim() }),
       })
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/orders?${params}`,
-        { credentials: 'include', headers: { 'Content-Type': 'application/json' } }
-      )
-      if (!res.ok) throw new Error(`Server error: ${res.status}`)
-      const data = await res.json()
+      const data = await apiFetch(`/api/orders?${params}`)
       setTotalPages(data.pages  || 1)
       setTotalOrders(data.total || 0)
 

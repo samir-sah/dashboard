@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import apiFetch from '@/services/api/api.service'
 import { ShoppingBag, CheckCircle2, Loader, Truck, PackageCheck, XCircle } from 'lucide-react'
 import StatCard from "@/features/orders/components/dashboard/StatCard"
 import OrdersTable from "@/features/orders/components/dashboard/OrdersTable"
@@ -15,13 +16,7 @@ export default function OrdersPage() {
   const [stats, setStats] = useState(defaultStats)
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/stats`, {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(r => r.json())
+    apiFetch('/api/orders/stats')
       .then(data => {
         setStats([
           { label: 'TOTAL ORDERS', value: data.total?.toLocaleString('en-IN')      ?? '—', icon: ShoppingBag,  iconColor: 'text-brand-700',    iconBg: 'bg-brand-100' },

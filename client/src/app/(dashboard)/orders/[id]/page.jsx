@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useOrderById } from '../hooks/useOrderById'
 import { useCustomerById } from '../hooks/useCustomerById'
 import { ArrowLeft, Package, MapPin, Truck, Calendar, Pencil, X, AlertCircle, CreditCard } from 'lucide-react'
+import apiFetch from '@/services/api/api.service'
 import StatusBadge from "@/components/shared/StatusBadge"
 import { cn } from '@/lib/utils'
 // REPLACE lines 8-14 with these corrected imports:
@@ -314,16 +315,10 @@ export default function OrderDetailPage() {
     setCancelLoading(true)
     setCancelError(null)
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/cancelorder/${orderId}`, {
+      const data = await apiFetch(`/api/orders/cancelorder/${orderId}`, {
         method: 'PUT',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({ reason: finalReason })
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.message || 'Failed to cancel order')
       
       setCancelModalOpen(false)
       window.location.reload()

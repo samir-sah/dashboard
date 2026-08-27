@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import apiFetch from '@/services/api/api.service'
 
 export function useOrderById(id) {
   const [order,   setOrder]   = useState(null)
@@ -12,20 +13,7 @@ export function useOrderById(id) {
       try {
         setLoading(true)
         setError(null)
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/orders/${id}`,
-          {
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
-        if (!res.ok) {
-          const err = await res.json()
-          throw new Error(err.message || `Error ${res.status}`)
-        }
-        const data = await res.json()
+        const data = await apiFetch(`/api/orders/${id}`)
         setOrder(data.order ?? data.data ?? data)
       } catch (err) {
         setError(err.message || 'Failed to fetch order')

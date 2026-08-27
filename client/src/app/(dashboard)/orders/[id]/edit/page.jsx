@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useOrderById } from '../../hooks/useOrderById'
 import { ArrowLeft, Save, Loader, CheckCircle } from 'lucide-react'
+import apiFetch from '@/services/api/api.service'
 import { Button }    from '@/components/ui/Button'
 import { Input }     from '@/components/ui/Input'
 import { Label }     from '@/components/ui/label'
@@ -93,13 +94,7 @@ export default function EditOrderPage() {
     const load = async () => {
       setCustomerLoading(true)
       try {
-        const res   = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${userId}`, {
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-        })
-        if (!res.ok) return
-        // ✅ AFTER — parse once, then check for .data wrapper
-        const json = await res.json()
+        const json = await apiFetch(`/api/users/${userId}`)
         const c    = json.data ?? json
         setFirstName(c.firstName ?? '')
         setLastName(c.lastName   ?? '')
@@ -122,20 +117,14 @@ export default function EditOrderPage() {
       }
 
       // Call 1 — update order: status + addresses (all live on the order document)
-      const orderRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderId}`, {
+      await apiFetch(`/api/orders/${orderId}`, {
         method: 'PATCH',
-        credentials: 'include',
-        headers,
         body: JSON.stringify({
           status,
           shippingAddress: shipping,
           billingAddress:  sameAsShipping ? shipping : billing,
         }),
       })
-      if (!orderRes.ok) {
-        const err = await orderRes.json().catch(() => ({}))
-        throw new Error(err.message || `Failed (${orderRes.status})`)
-      }
       
       setSaved(true)
       setTimeout(() => router.push(`/orders/${orderId}`), 1200)

@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import apiFetch from '@/services/api/api.service'
 
 const hasAddressContent = (addr = {}) => Boolean(
   addr.addressLine1 || addr.street || addr.city || addr.state || addr.pincode || addr.country
@@ -32,20 +33,7 @@ export function useCustomerById(userId) {
       try {
         setLoading(true)
         setError(null)
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/users/${userId}`,
-          {
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
-        if (!res.ok) {
-          const err = await res.json()
-          throw new Error(err.message || `Error ${res.status}`)
-        }
-        const json = await res.json()
+        const json = await apiFetch(`/api/users/${userId}`)
         // API returns { success: true, data: { user: {...}, order: [...] } }
         // We extract the user object from the data payload
         {
