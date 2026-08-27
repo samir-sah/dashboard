@@ -3,9 +3,10 @@ import { NextResponse } from 'next/server'
 export function middleware(request) {
   const { pathname } = request.nextUrl
 
-  // Skip auth check for login page, Next.js internals, and static assets
+  // Skip auth check for login page, API proxy routes, Next.js internals, and static assets
   if (
     pathname === '/login' ||
+    pathname.startsWith('/api/') ||
     pathname.startsWith('/_next/') ||
     pathname === '/favicon.ico' || pathname.endsWith('.png') || pathname.endsWith('.jpg') || pathname.endsWith('.svg')
   ) {
