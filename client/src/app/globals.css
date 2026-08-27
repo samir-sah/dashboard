@@ -37,8 +37,8 @@
 }
 
 @theme inline {
-  --font-heading: 'Google Sans Display', 'Google Sans', sans-serif;
-  --font-sans: 'Google Sans', sans-serif;
+  --font-heading: var(--font-montserrat);
+  --font-sans: var(--font-montserrat);
   --color-brand-50: var(--brand-50);
   --color-brand-100: var(--brand-100);
   --color-brand-300: var(--brand-300);
@@ -154,11 +154,10 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Google Sans', sans-serif;
     letter-spacing: 0;
   }
   html {
-    font-family: 'Google Sans', sans-serif;
+    @apply font-sans;
   }
 
   h1,

@@ -9,19 +9,19 @@ const {
 
 const TIMEZONE = 'Asia/Kolkata';
 const STATUS_COLORS = {
-    "In Cart": "#64748b",
-    Confirmed: "#3b82f6",
-    Processing: "#a855f7",
-    Shipped: "#f97316",
-    Delivered: "#22c55e",
-    Cancelled: "#ef4444",
+    "In Cart": "#9a9aae",
+    Confirmed: "#8bc4a4",
+    Processing: "#57a47b",
+    Shipped: "#2f8159",
+    Delivered: "#1d5038",
+    Cancelled: "#c75050",
 };
 const GENDER_COLORS = {
-    Male: "#3b82f6",
-    Female: "#ec4899",
-    Other: "#8b5cf6",
-    "Prefer not to say": "#64748b",
-    Unknown: "#94a3b8",
+    Male: "#2f8159",
+    Female: "#8bc4a4",
+    Other: "#57a47b",
+    "Prefer not to say": "#9a9aae",
+    Unknown: "#c4c4d0",
 };
 
 const convertISTtoUTC = (dateStr, isEnd = false) => {

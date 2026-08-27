@@ -61,8 +61,8 @@ export default function RecentOrders() {
                 let statusStyle = "bg-surface-2 text-muted-foreground border-border"
                 if (order.status === "Delivered") statusStyle = "bg-brand-100 text-brand-900 border-brand-300"
                 else if (order.status === "Processing") statusStyle = "bg-brand-50 text-brand-800 border-brand-100"
-                else if (order.status === "Shipped") statusStyle = "bg-orange-50 text-orange-700 border-orange-200"
-                else if (order.status === "Cancelled") statusStyle = "bg-red-50 text-red-700 border-red-200"
+                else if (order.status === "Shipped") statusStyle = "bg-brand-50 text-brand-900 border-brand-300"
+                else if (order.status === "Cancelled") statusStyle = "bg-red-50/60 text-red-700/80 border-red-200/60"
                 else if (order.status === "Confirmed") statusStyle = "bg-brand-50 text-brand-700 border-brand-100"
 
                 return (

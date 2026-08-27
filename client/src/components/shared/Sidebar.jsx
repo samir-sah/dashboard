@@ -1,12 +1,12 @@
 'use client'
 import { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard, ShoppingCart, Users, Package, CreditCard,
   BarChart2, HeadphonesIcon, ChevronLeft, ChevronRight,
 } from 'lucide-react'
+import SyneraWordmark from '@/components/synera-wordmark'
 
 const navItems = [
   { label: 'Dashboard', href: '/dashboard',  icon: LayoutDashboard },
@@ -42,16 +42,7 @@ export default function Sidebar() {
     >
 
       <div className={`flex h-[72px] shrink-0 items-center border-b border-sidebar-border ${collapsed ? 'justify-center px-3' : 'justify-between px-5'}`}>
-        {!collapsed && (
-          <Image
-            src="/synera-logo.png"
-            alt="Synera"
-            width={140}
-            height={36}
-            style={{ objectFit: 'contain', objectPosition: 'left', width: 'auto' }}
-            priority
-          />
-        )}
+        {!collapsed && <SyneraWordmark className="origin-left scale-[0.78]" />}
         <button
           type="button"
           onClick={toggleCollapsed}

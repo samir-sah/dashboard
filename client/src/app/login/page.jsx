@@ -1,7 +1,7 @@
-import Image from 'next/image'
 import { ShieldCheck } from 'lucide-react'
 
 import { LoginForm } from '@/components/login-form'
+import SyneraWordmark from '@/components/synera-wordmark'
 
 export const metadata = {
   title: 'Synera — Admin Login',
@@ -10,9 +10,9 @@ export const metadata = {
 
 export default function LoginPage() {
   return (
-    <main className="flex min-h-svh flex-col lg:flex-row">
+    <main className="grid min-h-svh bg-surface-2 lg:grid-cols-[minmax(0,1fr)_minmax(420px,520px)]">
       {/* Brand panel */}
-      <section className="relative hidden overflow-hidden bg-primary text-primary-foreground lg:flex lg:w-1/2 xl:w-[55%]">
+      <section className="relative hidden overflow-hidden bg-primary text-primary-foreground lg:flex">
         {/* molecular dot motif echoing the logo */}
         <div
           aria-hidden="true"
@@ -36,15 +36,7 @@ export default function LoginPage() {
         />
 
         <div className="relative z-10 flex w-full flex-col justify-between p-10 xl:p-16">
-          <Image
-            src="/synera-logo.png"
-            alt="Synera"
-            width={180}
-            height={48}
-            style={{ objectFit: 'contain', objectPosition: 'left' }}
-            priority
-            className="brightness-0 invert"
-          />
+          <SyneraWordmark light />
 
           <div className="max-w-xl">
             <p className="mb-4 inline-flex items-center text-xs font-semibold uppercase tracking-[0.2em] text-accent">
@@ -73,7 +65,7 @@ export default function LoginPage() {
       </section>
 
       {/* Form panel */}
-      <section className="relative flex flex-1 items-center justify-center overflow-hidden px-6 py-12 sm:px-10">
+      <section className="relative flex items-center justify-center overflow-hidden bg-background px-6 py-8 sm:px-8 lg:px-10">
         {/* faint dotted texture echoing the logo motif */}
         <div
           aria-hidden="true"
@@ -94,21 +86,14 @@ export default function LoginPage() {
           className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-primary/5 blur-3xl"
         />
 
-        <div className="relative z-10 w-full max-w-sm">
+        <div className="relative z-10 w-full max-w-[420px]">
           {/* Mobile-only logo */}
-          <div className="mb-8 flex items-center gap-2.5 lg:hidden">
-            <Image
-              src="/synera-logo.png"
-              alt="Synera"
-              width={160}
-              height={42}
-              style={{ objectFit: 'contain' }}
-              priority
-            />
+          <div className="mb-8 flex items-center justify-center lg:hidden">
+            <SyneraWordmark />
           </div>
 
           {/* Card */}
-          <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-7 shadow-xl shadow-primary/5 sm:p-9">
+          <div className="relative overflow-hidden rounded-[1.1rem] border border-border bg-card p-7 shadow-[var(--shadow-soft)] sm:p-9">
             <span
               aria-hidden="true"
               className="absolute inset-x-0 top-0 h-1 bg-accent"
