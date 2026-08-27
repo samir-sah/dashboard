@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import apiFetch from '@/services/api/api.service';
 
 export function useInventory() {
   const [product, setProduct] = useState(null);
@@ -12,9 +13,7 @@ export function useInventory() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`http://localhost:4400/api/inventory/product/dashboard?days=${days}`, { credentials: 'include' });
-      if (!res.ok) throw new Error('Failed to fetch dashboard data');
-      const data = await res.json();
+      const data = await apiFetch(`/api/inventory/product/dashboard?days=${days}`);
       setProduct(data.product || null);
       setDashboardData(data);
     } catch (err) {
