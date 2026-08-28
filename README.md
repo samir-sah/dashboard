@@ -1,8 +1,9 @@
-# HealthyBit Admin Dashboard & API
+# Synera — Business Admin Dashboard & API
 
 <div align="center">
 
-![HealthyBit Dashboard](https://img.shields.io/badge/HealthyBit-Operations%20Platform-0070F3?style=for-the-badge&logo=next.js&logoColor=white)
+[![Synera Platform](https://img.shields.io/badge/Synera-Operations%20Platform-0070F3?style=for-the-badge&logo=next.js&logoColor=white)](https://syneraaa.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-syneraaa.vercel.app-success?style=for-the-badge&logo=vercel&logoColor=white)](https://syneraaa.vercel.app)
 [![Next.js](https://img.shields.io/badge/Next.js-16.2.6-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.2.4-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
@@ -11,7 +12,9 @@
 [![AWS Lambda](https://img.shields.io/badge/AWS-Lambda%20%26%20EventBridge-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/lambda/)
 [![Razorpay](https://img.shields.io/badge/Payments-Razorpay-0C2340?style=for-the-badge&logo=razorpay&logoColor=528FF0)](https://razorpay.com/)
 
-**The mission-critical business operations console and serverless backend engine for Mavoix Solutions.**
+**The mission-critical business operations console and serverless backend engine for Synera.**
+
+🌐 **Live Application:** [https://syneraaa.vercel.app](https://syneraaa.vercel.app)
 
 [Overview](#-overview) • [Architecture](#-architecture) • [Features](#-core-features--modules) • [Tech Stack](#-tech-stack) • [Getting Started](#-getting-started) • [API Reference](#-api-reference) • [Deployment](#-deployment--serverless)
 
@@ -21,9 +24,9 @@
 
 ## 📌 Overview
 
-**HealthyBit Operations Platform** is an enterprise-grade, monorepo operations console and RESTful API backend engineered for **Mavoix Solutions**. It serves as the unified nervous system for internal teams—including executive management, warehouse operations, support engineers, and billing administrators.
+**Synera Operations Platform** is an enterprise-grade, monorepo business operations console and RESTful API backend. It serves as the unified central hub for internal teams—including executive managers, warehouse dispatchers, support engineers, and billing administrators—to orchestrate and monitor end-to-end commerce operations.
 
-The platform streamlines high-volume e-commerce, real-time inventory synchronization, order fulfillment workflows, customer relationship management (CRM), financial transaction reconciliation via Razorpay, and multi-tier customer support ticketing.
+The platform streamlines high-volume order processing, real-time inventory synchronization, customer relationship management (CRM), financial transaction reconciliation via Razorpay, and multi-tier customer support ticketing.
 
 ### Key Capabilities at a Glance
 
@@ -44,13 +47,13 @@ The platform streamlines high-volume e-commerce, real-time inventory synchroniza
 The repository is organized as an integrated monorepo separating the modern **Next.js 16 App Router** frontend from the **Express 5 / AWS Serverless** backend API.
 
 ```
-mavoix-production-frontend/
+dashboard/
 ├── client/                     # Next.js 16 Frontend Application
 │   ├── src/
 │   │   ├── app/                # Next.js App Router (Dashboard & Login routes)
 │   │   │   ├── (dashboard)/    # Authenticated dashboard views (customers, inventory, orders, payments, reports, support)
 │   │   │   └── login/          # Administrative authentication portal
-│   │   ├── components/         # Reusable UI library (Shadcn UI, Radix primitives, branded logos)
+│   │   ├── components/         # Reusable UI library (Shadcn UI, Radix primitives, branded Synera logos)
 │   │   ├── config/             # Client API and Company GST/Billing configuration
 │   │   ├── contexts/           # React Context providers (Auth, Navigation, State)
 │   │   ├── features/           # Modular domain-driven UI views and business logic
@@ -141,7 +144,7 @@ graph TD
 
 ### 4. 📦 Inventory & Product Catalog
 - **Stock Tracking:** Real-time unit counts, allocated quantities, threshold alerts, and SKU management.
-- **Product Management:** Full CRUD capabilities for devices, accessories, specifications, and dynamic pricing models.
+- **Product Management:** Full CRUD capabilities for products, devices, accessories, specifications, and dynamic pricing models.
 - **Low-Stock Alerts:** Automated visual and operational alerts when units drop below safety thresholds.
 
 ### 5. 👥 Customer Relationship Management (CRM)
@@ -213,8 +216,8 @@ Ensure you have the following installed on your development machine:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/samir-sah/dashboard.git mavoix-production-frontend
-cd mavoix-production-frontend
+git clone https://github.com/samir-sah/dashboard.git
+cd dashboard
 ```
 
 ---
@@ -277,16 +280,16 @@ cd mavoix-production-frontend
 |---|---|:---:|---|---|
 | `PORT` | Number | No | Local server port | `4400` |
 | `NODE_ENV` | String | No | Application environment | `development` / `production` |
-| `MONGO_URI` | String | **Yes** | MongoDB connection string | `mongodb://localhost:27017/healthybit` |
+| `MONGO_URI` | String | **Yes** | MongoDB connection string | `mongodb://localhost:27017/synera` |
 | `ACCESS_TOKEN_SECRET` | String | **Yes** | Secret for signing short-lived JWT access tokens | `your_access_token_secret_key` |
 | `REFRESH_TOKEN_SECRET` | String | **Yes** | Secret for signing long-lived JWT refresh tokens | `your_refresh_token_secret_key` |
-| `CORS_ORIGINS` | String | No | Comma-separated list of allowed origins | `http://localhost:3000` |
-| `CLIENT_ORIGIN` | String | No | Primary frontend URL | `http://localhost:3000` |
+| `CORS_ORIGINS` | String | No | Comma-separated list of allowed origins | `http://localhost:3000,https://syneraaa.vercel.app` |
+| `CLIENT_ORIGIN` | String | No | Primary frontend URL | `https://syneraaa.vercel.app` |
 | `RAZORPAY_KEY_ID` | String | **Yes** | Razorpay public key ID | `rzp_test_XXXXXXXXXXXX` |
 | `RAZORPAY_KEY_SECRET` | String | **Yes** | Razorpay secret key | `your_razorpay_secret` |
 | `RAZORPAY_WEBHOOK_SECRET` | String | No | Razorpay webhook verification secret | `your_webhook_secret` |
 | `FACTOR_API_KEY` | String | No | 2Factor SMS gateway API key | `your_2factor_api_key` |
-| `SENDER_ID` | String | No | 2Factor SMS header sender ID | `MAVOIX` |
+| `SENDER_ID` | String | No | 2Factor SMS header sender ID | `SYNERA` |
 | `SMTP_HOST` | String | No | Nodemailer SMTP server host | `smtp.mailgun.org` |
 | `SMTP_PORT` | Number | No | SMTP port | `587` |
 | `SMTP_USER` | String | No | SMTP authentication user | `postmaster@domain.com` |
@@ -416,7 +419,7 @@ The backend is configured for deployment as an AWS Serverless application via th
 
 ### Deploying the Frontend (Next.js)
 
-The Next.js client can be deployed to **Vercel**, **AWS Amplify**, or containerized via Docker:
+The Next.js client is deployed to **Vercel** ([https://syneraaa.vercel.app](https://syneraaa.vercel.app)):
 
 ```bash
 cd client
@@ -424,7 +427,7 @@ npm run build
 npm run start
 ```
 
-Ensure `NEXT_PUBLIC_API_URL` points to your deployed AWS HTTP API Gateway endpoint.
+Ensure `NEXT_PUBLIC_API_URL` in Vercel project settings points to your deployed AWS HTTP API Gateway endpoint.
 
 ---
 
@@ -466,5 +469,5 @@ Ensure `NEXT_PUBLIC_API_URL` points to your deployed AWS HTTP API Gateway endpoi
 
 ## 📄 License & Ownership
 
-Copyright © 2026 **Mavoix Solutions Pvt. Ltd.** All rights reserved.  
+Copyright © 2026 **Synera**. All rights reserved.  
 *Proprietary and Confidential. Unauthorized copying, distribution, or deployment of this software is strictly prohibited.*

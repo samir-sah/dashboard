@@ -6,8 +6,8 @@
  */
 
 module.exports = {
-    name: "HealthyBit",
-    legalName: "Mavoix Private Limited",
+    name: "Synera",
+    legalName: "Synera Private Limited",
 
     // Tax identifiers (India)
     gstin: "09AAACM1234A1Z5",
@@ -26,8 +26,8 @@ module.exports = {
 
     // Contact
     phone: "+91 98765 43210",
-    email: "billing@mavoix.com",
-    website: "www.mavoix.com",
+    email: "billing@synera.com",
+    website: "https://syneraaa.vercel.app",
 
     // Bank details (for invoice payment info)
     bankDetails: {

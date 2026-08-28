@@ -1,9 +1,6 @@
-# Mavoix Solutions
-## HBT-SBX-API
+# Synera Backend REST API
 
-# Business Dashboard Backend API
-
-A comprehensive backend API for managing orders, customers, revenue analytics, inventory, and customer support.
+A high-performance backend API engineered with Express 5 and AWS Serverless for managing orders, customers, revenue analytics, inventory, and customer support.
 
 ## Table of Contents
 
@@ -17,15 +14,15 @@ A comprehensive backend API for managing orders, customers, revenue analytics, i
 
 ### Prerequisites
 
-- Node.js v16+
+- Node.js v20+
 - MongoDB
-- npm/yarn
+- npm
 
 ### Installation
 
 ```bash
-git clone https://github.com/yourusername/sbx-hbt-api.git
-cd sbx-hbt-api
+git clone https://github.com/samir-sah/dashboard.git
+cd dashboard/server
 npm install
 ```
 
@@ -33,8 +30,12 @@ npm install
 
 ```env
 PORT=4400
-MONGODB_URI=mongodb://localhost:27017/business-dashboard
-
+MONGO_URI=mongodb://localhost:27017/synera
+ACCESS_TOKEN_SECRET=your_access_token_secret
+REFRESH_TOKEN_SECRET=your_refresh_token_secret
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+CORS_ORIGINS=http://localhost:3000
 ```
 
 ### Running the Server

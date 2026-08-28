@@ -274,8 +274,8 @@ const sendEmailOTP = async (email) => {
                                                 </p>
 
                                                 <p style="font-size:16px; color:#555555; line-height:1.6;">
-                                                     Thank you for choosing HealthyBit.
-                                                     Please use the following One-Time Password (OTP) to verify your email address.
+                                                    Thank you for choosing Synera.
+                                                    Please use the following One-Time Password (OTP) to verify your email address.
                                                 </p>
 
                                                 <div style="text-align:center; margin:30px 0;">
@@ -300,7 +300,7 @@ const sendEmailOTP = async (email) => {
 
                                                  <p style="font-size:14px; color:#666666; text-align:center; margin-top:20px;">
                                                          Regards,<br>
-                                                        <strong>HealthyBit Team</strong>
+                                                        <strong>Synera Team</strong>
                                                 </p>
                                             </td>
                                         </tr>
@@ -396,7 +396,7 @@ const responseEmail = async (email, type) => {
                                                 </p>
 
                                                 <p style="font-size:16px; color:#555555; line-height:1.6;">
-                                                      Thank you for choosing HealthyBit.
+                                                      Thank you for choosing Synera.
                                                       We have received your order and your orderId is ${orderId}.
                                                 </p>
 
@@ -430,7 +430,7 @@ const responseEmail = async (email, type) => {
 
                                                  <p style="font-size:14px; color:#666666; text-align:center; margin-top:20px;">
                                                          Regards,<br>
-                                                        <strong>HealthyBit Team</strong>
+                                                        <strong>Synera Team</strong>
                                                 </p>
                                             </td>
                                         </tr>
@@ -473,7 +473,7 @@ const responseEmail = async (email, type) => {
                                                 </p>
 
                                                 <p style="font-size:16px; color:#555555; line-height:1.6;">
-                                                      Thank you for choosing HealthyBit.
+                                                      Thank you for choosing Synera.
                                                       We have received your payment successfully.
                                                 </p>
 
@@ -502,7 +502,7 @@ const responseEmail = async (email, type) => {
 
                                                  <p style="font-size:14px; color:#666666; text-align:center; margin-top:20px;">
                                                          Regards,<br>
-                                                        <strong>HealthyBit Team</strong>
+                                                        <strong>Synera Team</strong>
                                                 </p>
                                             </td>
                                         </tr>
@@ -572,7 +572,7 @@ const responseEmail = async (email, type) => {
 
                                                  <p style="font-size:14px; color:#666666; text-align:center; margin-top:20px;">
                                                          Regards,<br>
-                                                        <strong>HealthyBit Team</strong>
+                                                        <strong>Synera Team</strong>
                                                 </p>
                                             </td>
                                         </tr>

@@ -17,7 +17,7 @@ export const COMPANY_INFO = {
   cin: 'U74999UP2024PTC123456',
   email: 'billing@synera.com',
   phone: '+91 98765 43210',
-  website: 'www.synera.com',
+  website: 'https://syneraaa.vercel.app',
   logo: '/synera-logo.png',
   bankDetails: {
     bankName: 'HDFC Bank',
